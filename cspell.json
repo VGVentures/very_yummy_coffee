@@ -1,0 +1,35 @@
+{
+    "version": "0.2",
+    "language": "en",
+    "words": [
+      "very_yummy_coffee",
+      "firestore",
+      "l10n",
+      "bloc",
+      "go_router"
+    ],
+    "ignorePaths": [
+      "build/**",
+      ".dart_tool/**",
+      "ios/**",
+      "android/**",
+      "linux/**",
+      "windows/**",
+      "macos/**",
+      "web/**",
+      "*.g.dart",
+      "*.freezed.dart",
+      "*.gr.dart",
+      "*.mocks.dart",
+      "pubspec.lock",
+      "assets/**"
+    ],
+    "dictionaries": [
+      "dart",
+      "flutter",
+      "companies",
+      "softwareTerms",
+      "misc"
+    ]
+  }
+  
