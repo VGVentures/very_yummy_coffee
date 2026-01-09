@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:very_yummy_coffee/core/core.dart';
 
-import 'core/core.dart';
 
 void main() {
   runApp(const MainApp());

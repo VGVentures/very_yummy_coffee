@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:very_yummy_coffee/core/core.dart';
 
-import 'app_route_paths.dart';
 
 final GoRouter router = GoRouter(
   routes: <RouteBase>[
