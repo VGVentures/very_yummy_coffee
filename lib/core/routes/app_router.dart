@@ -8,11 +8,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: AppRoutePaths.root,
       builder: (BuildContext context, GoRouterState state) {
-        return const Scaffold(
-          body: Center(
-            child: Text('Hello World!'),
-          ),
-        );
+        return const Scaffold(body: Center(child: Text('Hello World!')));
       },
     ),
   ],
