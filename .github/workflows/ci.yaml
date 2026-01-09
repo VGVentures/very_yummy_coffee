@@ -11,3 +11,4 @@ jobs:
     with:
       flutter_channel: stable
       min_coverage: 100
+      coverage_excludes: "*.g.dart *.freezed.dart"
