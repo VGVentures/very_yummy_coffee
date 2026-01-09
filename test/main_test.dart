@@ -8,7 +8,7 @@ void main() {
     expect(find.text('Hello World!'), findsOneWidget);
   });
 
-  testWidgets('startApp runs and mounts MainApp', (tester) async {
+  testWidgets('should startApp runs and mounts MainApp', (tester) async {
     app.startApp();
 
     await tester.pump();
@@ -24,7 +24,7 @@ void main() {
     expect(find.text('Hello World!'), findsOneWidget);
   });
 
-  testWidgets('library main() calls startApp', (tester) async {
+  testWidgets('should library main() calls startApp', (tester) async {
     app.main();
 
     await tester.pumpAndSettle();
