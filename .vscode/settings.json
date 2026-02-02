@@ -1,0 +1,15 @@
+{
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  "terminal.integrated.env.osx": {
+    "PATH": "${workspaceFolder}/.fvm/flutter_sdk/bin:${env:PATH}"
+  },
+  "terminal.integrated.env.linux": {
+    "PATH": "${workspaceFolder}/.fvm/flutter_sdk/bin:${env:PATH}"
+  },
+  "terminal.integrated.env.windows": {
+    "PATH": "${workspaceFolder}\\.fvm\\flutter_sdk\\bin;${env:PATH}"
+  }
+}
