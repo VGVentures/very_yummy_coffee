@@ -2,12 +2,27 @@
   "version": "0.2",
   "language": "en",
   "words": [
+    "allprojects",
+    "APPL",
     "bloc",
+    "dists",
     "endtemplate",
+    "excalidraw",
     "firestore",
+    "FMWK",
+    "genhtml",
     "go_router",
+    "jvmargs",
     "l10n",
-    "very_yummy_coffee"
+    "Metaspace",
+    "pbxproj",
+    "Subproject",
+    "subprojects",
+    "very_yummy_coffee",
+    "xcassets",
+    "xcodeproj",
+    "xcscheme",
+    "xcworkspace"
   ],
   "ignorePaths": [
     "build/**",
@@ -23,8 +38,15 @@
     "*.gr.dart",
     "*.mocks.dart",
     "pubspec.lock",
-    "assets/**"
+    "assets/**",
+    "**/Runner.xcscheme",
+    "**/project.pbxproj",
+    "**/*.storyboard",
+    "**/.gitignore",
+    "**/macos/**",
+    "**/*.excalidraw"
   ],
+  "useGitignore": true,
   "dictionaries": [
     "dart",
     "flutter",
