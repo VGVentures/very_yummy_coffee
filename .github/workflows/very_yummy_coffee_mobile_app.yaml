@@ -1,0 +1,63 @@
+name: Very Yummy Coffee Mobile App Verify and Test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+    paths:
+      - ".github/workflows/very_yummy_coffee_mobile_app_verify_and_test.yaml"
+      - "applications/mobile_app/**"
+
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "applications/mobile_app/**"
+
+
+jobs:
+  verify_and_test:
+    name: Verify and Test
+    defaults:
+      run:
+        working-directory: applications/mobile_app
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v6
+
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.38.9
+          channel: stable
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+
+      - name: 📦 Install Dependencies
+        run: |
+          flutter pub global activate very_good_cli
+          very_good packages get --recursive --ignore=!*
+
+      - name: ✨ Check Formatting
+        run: dart format --set-exit-if-changed lib test
+      
+      - name: 🕵️ Analyze
+        run: flutter analyze lib test
+
+      - name: ✅ Bloc Lint
+        run: |
+          flutter pub global activate bloc_tools
+          bloc lint .
+
+      - name: 🧪 Run Tests
+        run: very_good test -j 4 --optimization --coverage --test-randomize-ordering-seed random
