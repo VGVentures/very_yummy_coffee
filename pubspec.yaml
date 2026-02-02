@@ -12,6 +12,7 @@ dependencies:
   go_router: ^17.0.1
 
 dev_dependencies:
+  bloc_lint: ^0.3.6
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.0.0

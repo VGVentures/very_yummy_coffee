@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:very_yummy_coffee/core/core.dart';
 
 
-void main() {
+void main() => startApp();
+
+void startApp() {
   runApp(const MainApp());
 }
 
