@@ -5,3 +5,6 @@ include:
 linter:
   rules:
     public_member_api_docs: false
+
+formatter:
+  trailing_commas: automate

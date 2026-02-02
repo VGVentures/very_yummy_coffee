@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:very_yummy_coffee/core/core.dart';
 
-
 void main() => startApp();
 
 void startApp() {
