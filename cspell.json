@@ -45,7 +45,8 @@
     "**/*.storyboard",
     "**/.gitignore",
     "**/macos/**",
-    "**/*.excalidraw"
+    "**/*.excalidraw",
+    "**/*.pen"
   ],
   "useGitignore": true,
   "dictionaries": [
