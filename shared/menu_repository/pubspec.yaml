@@ -1,4 +1,4 @@
-name: menu_domain
+name: menu_repository
 description: A repository managing the menu domain.
 version: 0.1.0+1
 publish_to: none
@@ -10,8 +10,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  dart_mappable: ^4.6.1
 
 dev_dependencies:
+  build_runner: ^2.10.5
+  dart_mappable_builder: ^4.6.4
   flutter_test:
     sdk: flutter
   mocktail: ^1.0.4
