@@ -1,0 +1,1161 @@
+{
+  "version": "2.6",
+  "children": [
+    {
+      "type": "frame",
+      "id": "mobileFrame",
+      "x": 0,
+      "y": 0,
+      "name": "Menu Groups - Mobile",
+      "clip": true,
+      "width": 390,
+      "height": 709,
+      "fill": "#F5F2EC",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "header",
+          "name": "header",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E0D9D0"
+          },
+          "layout": "vertical",
+          "gap": 20,
+          "padding": [
+            20,
+            56,
+            20,
+            20
+          ],
+          "children": [
+            {
+              "type": "text",
+              "id": "headerTitle",
+              "name": "headerTitle",
+              "fill": "#4A2A22",
+              "content": "Very Yummy Coffee",
+              "fontFamily": "IBM Plex Sans",
+              "fontSize": 22,
+              "fontWeight": "600"
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "contentArea",
+          "name": "contentArea",
+          "width": "fill_container",
+          "height": 555,
+          "layout": "vertical",
+          "gap": 16,
+          "padding": 20,
+          "children": [
+            {
+              "type": "frame",
+              "id": "menuGroupList",
+              "name": "menuGroupList",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "cardMain",
+                  "name": "cardMain",
+                  "width": "fill_container",
+                  "height": 100,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 18,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E0D9D0"
+                  },
+                  "padding": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "cardMainContent",
+                      "name": "cardMainContent",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "cardMainTitle",
+                          "name": "cardMainTitle",
+                          "fill": "#4A2A22",
+                          "content": "Main",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 20,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "cardMainDesc",
+                          "name": "cardMainDesc",
+                          "fill": "#6B5344",
+                          "content": "Sandwiches, wraps & more",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 14,
+                      "id": "imgMain",
+                      "name": "imgMain",
+                      "fill": "#F0EFE8",
+                      "width": 72,
+                      "height": 72
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cardDrinks",
+                  "name": "cardDrinks",
+                  "width": "fill_container",
+                  "height": 100,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 18,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E0D9D0"
+                  },
+                  "padding": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "cardDrinksContent",
+                      "name": "cardDrinksContent",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "cardDrinksTitle",
+                          "name": "cardDrinksTitle",
+                          "fill": "#4A2A22",
+                          "content": "Drinks",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 20,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "cardDrinksDesc",
+                          "name": "cardDrinksDesc",
+                          "fill": "#6B5344",
+                          "content": "Coffee, tea & beverages",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 14,
+                      "id": "imgDrinks",
+                      "name": "imgDrinks",
+                      "fill": "#E8DDD6",
+                      "width": 72,
+                      "height": 72
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cardDesserts",
+                  "name": "cardDesserts",
+                  "width": "fill_container",
+                  "height": 100,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 18,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E0D9D0"
+                  },
+                  "padding": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "frame",
+                      "id": "cardDessertsContent",
+                      "name": "cardDessertsContent",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "cardDessertsTitle",
+                          "name": "cardDessertsTitle",
+                          "fill": "#4A2A22",
+                          "content": "Desserts",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 20,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "cardDessertsDesc",
+                          "name": "cardDessertsDesc",
+                          "fill": "#6B5344",
+                          "content": "Pastries, cakes & sweets",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 14,
+                      "id": "imgDesserts",
+                      "name": "imgDesserts",
+                      "fill": "#F5E6C8",
+                      "width": 72,
+                      "height": 72
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "bottomNav",
+          "name": "bottomNav",
+          "width": "fill_container",
+          "height": 88,
+          "fill": "#4A2A22",
+          "padding": [
+            16,
+            12
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "navRecent",
+              "name": "navRecent",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 4,
+                  "id": "navRecentIcon",
+                  "name": "navRecentIcon",
+                  "fill": "#B8A99A",
+                  "width": 24,
+                  "height": 24
+                },
+                {
+                  "type": "text",
+                  "id": "navRecentLabel",
+                  "name": "navRecentLabel",
+                  "fill": "#B8A99A",
+                  "content": "Recent",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "navRewards",
+              "name": "navRewards",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 4,
+                  "id": "navRewardsIcon",
+                  "name": "navRewardsIcon",
+                  "fill": "#B8A99A",
+                  "width": 24,
+                  "height": 24
+                },
+                {
+                  "type": "text",
+                  "id": "navRewardsLabel",
+                  "name": "navRewardsLabel",
+                  "fill": "#B8A99A",
+                  "content": "Rewards",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "navMenu",
+              "name": "navMenu",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 6,
+                  "id": "navMenuIcon",
+                  "name": "navMenuIcon",
+                  "fill": "#E7BD5A",
+                  "width": 28,
+                  "height": 28
+                },
+                {
+                  "type": "text",
+                  "id": "navMenuLabel",
+                  "name": "navMenuLabel",
+                  "fill": "#E7BD5A",
+                  "content": "Menu",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "navStore",
+              "name": "navStore",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 4,
+                  "id": "navStoreIcon",
+                  "name": "navStoreIcon",
+                  "fill": "#B8A99A",
+                  "width": 24,
+                  "height": 24
+                },
+                {
+                  "type": "text",
+                  "id": "navStoreLabel",
+                  "name": "navStoreLabel",
+                  "fill": "#B8A99A",
+                  "content": "Store",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "navMore",
+              "name": "navMore",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 4,
+                  "id": "navMoreIcon",
+                  "name": "navMoreIcon",
+                  "fill": "#B8A99A",
+                  "width": 24,
+                  "height": 24
+                },
+                {
+                  "type": "text",
+                  "id": "navMoreLabel",
+                  "name": "navMoreLabel",
+                  "fill": "#B8A99A",
+                  "content": "More",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "frame",
+      "id": "menuItemsFrame",
+      "x": 420,
+      "y": 0,
+      "name": "Menu Items - Drinks",
+      "clip": true,
+      "width": 390,
+      "height": 844,
+      "fill": "#F5F2EC",
+      "layout": "vertical",
+      "children": [
+        {
+          "type": "frame",
+          "id": "itemsHeader",
+          "name": "itemsHeader",
+          "width": "fill_container",
+          "fill": "#FFFFFF",
+          "stroke": {
+            "align": "inside",
+            "thickness": 1,
+            "fill": "#E0D9D0"
+          },
+          "gap": 12,
+          "padding": [
+            20,
+            56,
+            20,
+            20
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "rectangle",
+              "cornerRadius": 14,
+              "id": "backButton",
+              "name": "backButton",
+              "fill": "#F0EFE8",
+              "width": 40,
+              "height": 40
+            },
+            {
+              "type": "frame",
+              "id": "headerContent",
+              "name": "headerContent",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "itemsHeaderTitle",
+                  "name": "itemsHeaderTitle",
+                  "fill": "#4A2A22",
+                  "content": "Drinks",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 22,
+                  "fontWeight": "600"
+                },
+                {
+                  "type": "text",
+                  "id": "itemsHeaderSubtitle",
+                  "name": "itemsHeaderSubtitle",
+                  "fill": "#6B5344",
+                  "content": "Coffee, tea & beverages",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 14,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "itemsContentArea",
+          "name": "itemsContentArea",
+          "width": "fill_container",
+          "height": "fill_container",
+          "layout": "vertical",
+          "gap": 12,
+          "padding": [
+            20,
+            20,
+            32,
+            20
+          ],
+          "children": [
+            {
+              "type": "frame",
+              "id": "menuItemList",
+              "name": "menuItemList",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 16,
+              "children": [
+                {
+                  "type": "frame",
+                  "id": "itemCard1",
+                  "name": "itemCard1",
+                  "width": "fill_container",
+                  "height": 90,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 18,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E0D9D0"
+                  },
+                  "padding": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 14,
+                      "id": "itemImg1",
+                      "name": "itemImg1",
+                      "fill": "#E8DDD6",
+                      "width": 56,
+                      "height": 56
+                    },
+                    {
+                      "type": "frame",
+                      "id": "itemContent1",
+                      "name": "itemContent1",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": [
+                        0,
+                        0,
+                        0,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "itemName1",
+                          "name": "itemName1",
+                          "fill": "#4A2A22",
+                          "content": "Espresso",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "itemPrice1",
+                          "name": "itemPrice1",
+                          "fill": "#6B5344",
+                          "content": "$3.00",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "itemCard2",
+                  "name": "itemCard2",
+                  "width": "fill_container",
+                  "height": 90,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 18,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E0D9D0"
+                  },
+                  "padding": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 14,
+                      "id": "itemImg2",
+                      "name": "itemImg2",
+                      "fill": "#E8DDD6",
+                      "width": 56,
+                      "height": 56
+                    },
+                    {
+                      "type": "frame",
+                      "id": "itemContent2",
+                      "name": "itemContent2",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": [
+                        0,
+                        0,
+                        0,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "itemName2",
+                          "name": "itemName2",
+                          "fill": "#4A2A22",
+                          "content": "Latte",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "itemPrice2",
+                          "name": "itemPrice2",
+                          "fill": "#6B5344",
+                          "content": "$4.75",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "itemCard3",
+                  "name": "itemCard3",
+                  "width": "fill_container",
+                  "height": 90,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 18,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E0D9D0"
+                  },
+                  "padding": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 14,
+                      "id": "itemImg3",
+                      "name": "itemImg3",
+                      "fill": "#E8DDD6",
+                      "width": 56,
+                      "height": 56
+                    },
+                    {
+                      "type": "frame",
+                      "id": "itemContent3",
+                      "name": "itemContent3",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": [
+                        0,
+                        0,
+                        0,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "itemName3",
+                          "name": "itemName3",
+                          "fill": "#4A2A22",
+                          "content": "Americano",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "itemPrice3",
+                          "name": "itemPrice3",
+                          "fill": "#6B5344",
+                          "content": "$3.50",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "yRpLf",
+                  "name": "item4",
+                  "width": "fill_container",
+                  "height": 90,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 18,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E0D9D0"
+                  },
+                  "padding": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 14,
+                      "id": "CAwKi",
+                      "name": "img4",
+                      "fill": "#E8DDD6",
+                      "width": 56,
+                      "height": 56
+                    },
+                    {
+                      "type": "frame",
+                      "id": "iQL2O",
+                      "name": "content4",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": [
+                        0,
+                        0,
+                        0,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "6kASK",
+                          "name": "name4",
+                          "fill": "#4A2A22",
+                          "content": "Cappuccino",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "3VvSK",
+                          "name": "price4",
+                          "fill": "#6B5344",
+                          "content": "$4.50",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "fMRCE",
+                  "name": "item5",
+                  "width": "fill_container",
+                  "height": 90,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 18,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E0D9D0"
+                  },
+                  "padding": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 14,
+                      "id": "f9ir4",
+                      "name": "img5",
+                      "fill": "#E8DDD6",
+                      "width": 56,
+                      "height": 56
+                    },
+                    {
+                      "type": "frame",
+                      "id": "zB4xy",
+                      "name": "content5",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": [
+                        0,
+                        0,
+                        0,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "ASGPM",
+                          "name": "name5",
+                          "fill": "#4A2A22",
+                          "content": "Iced Latte",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "u1ufD",
+                          "name": "price5",
+                          "fill": "#6B5344",
+                          "content": "$5.25",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "PZiOp",
+                  "name": "item6",
+                  "width": "fill_container",
+                  "height": 90,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 18,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E0D9D0"
+                  },
+                  "padding": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 14,
+                      "id": "dol5i",
+                      "name": "img6",
+                      "fill": "#E8DDD6",
+                      "width": 56,
+                      "height": 56
+                    },
+                    {
+                      "type": "frame",
+                      "id": "zHXNl",
+                      "name": "content6",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": [
+                        0,
+                        0,
+                        0,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "MIoSb",
+                          "name": "name6",
+                          "fill": "#4A2A22",
+                          "content": "Mocha",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "sUYhY",
+                          "name": "price6",
+                          "fill": "#6B5344",
+                          "content": "$5.00",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "type": "frame",
+                  "id": "cwjr0",
+                  "name": "item7",
+                  "width": "fill_container",
+                  "height": 90,
+                  "fill": "#FFFFFF",
+                  "cornerRadius": 18,
+                  "stroke": {
+                    "align": "inside",
+                    "thickness": 1,
+                    "fill": "#E0D9D0"
+                  },
+                  "padding": 20,
+                  "alignItems": "center",
+                  "children": [
+                    {
+                      "type": "rectangle",
+                      "cornerRadius": 14,
+                      "id": "z7CCl",
+                      "name": "img7",
+                      "fill": "#E8DDD6",
+                      "width": 56,
+                      "height": 56
+                    },
+                    {
+                      "type": "frame",
+                      "id": "XeBAe",
+                      "name": "content7",
+                      "width": "fill_container",
+                      "layout": "vertical",
+                      "gap": 4,
+                      "padding": [
+                        0,
+                        0,
+                        0,
+                        16
+                      ],
+                      "children": [
+                        {
+                          "type": "text",
+                          "id": "2Mh1v",
+                          "name": "name7",
+                          "fill": "#4A2A22",
+                          "content": "Green Tea",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 18,
+                          "fontWeight": "600"
+                        },
+                        {
+                          "type": "text",
+                          "id": "tGFoP",
+                          "name": "price7",
+                          "fill": "#6B5344",
+                          "content": "$3.25",
+                          "fontFamily": "IBM Plex Sans",
+                          "fontSize": 14,
+                          "fontWeight": "normal"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "itemsBottomNav",
+          "name": "itemsBottomNav",
+          "width": "fill_container",
+          "height": 88,
+          "fill": "#4A2A22",
+          "padding": [
+            16,
+            12
+          ],
+          "alignItems": "center",
+          "children": [
+            {
+              "type": "frame",
+              "id": "itemsNavRecent",
+              "name": "itemsNavRecent",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 4,
+                  "id": "itemsNavRecentIcon",
+                  "name": "itemsNavRecentIcon",
+                  "fill": "#B8A99A",
+                  "width": 24,
+                  "height": 24
+                },
+                {
+                  "type": "text",
+                  "id": "itemsNavRecentLabel",
+                  "name": "itemsNavRecentLabel",
+                  "fill": "#B8A99A",
+                  "content": "Recent",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "itemsNavRewards",
+              "name": "itemsNavRewards",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 4,
+                  "id": "itemsNavRewardsIcon",
+                  "name": "itemsNavRewardsIcon",
+                  "fill": "#B8A99A",
+                  "width": 24,
+                  "height": 24
+                },
+                {
+                  "type": "text",
+                  "id": "itemsNavRewardsLabel",
+                  "name": "itemsNavRewardsLabel",
+                  "fill": "#B8A99A",
+                  "content": "Rewards",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "itemsNavMenu",
+              "name": "itemsNavMenu",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 6,
+                  "id": "itemsNavMenuIcon",
+                  "name": "itemsNavMenuIcon",
+                  "fill": "#E7BD5A",
+                  "width": 28,
+                  "height": 28
+                },
+                {
+                  "type": "text",
+                  "id": "itemsNavMenuLabel",
+                  "name": "itemsNavMenuLabel",
+                  "fill": "#E7BD5A",
+                  "content": "Menu",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 11,
+                  "fontWeight": "600"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "itemsNavStore",
+              "name": "itemsNavStore",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 4,
+                  "id": "itemsNavStoreIcon",
+                  "name": "itemsNavStoreIcon",
+                  "fill": "#B8A99A",
+                  "width": 24,
+                  "height": 24
+                },
+                {
+                  "type": "text",
+                  "id": "itemsNavStoreLabel",
+                  "name": "itemsNavStoreLabel",
+                  "fill": "#B8A99A",
+                  "content": "Store",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "itemsNavMore",
+              "name": "itemsNavMore",
+              "width": "fill_container",
+              "layout": "vertical",
+              "gap": 6,
+              "justifyContent": "center",
+              "alignItems": "center",
+              "children": [
+                {
+                  "type": "rectangle",
+                  "cornerRadius": 4,
+                  "id": "itemsNavMoreIcon",
+                  "name": "itemsNavMoreIcon",
+                  "fill": "#B8A99A",
+                  "width": 24,
+                  "height": 24
+                },
+                {
+                  "type": "text",
+                  "id": "itemsNavMoreLabel",
+                  "name": "itemsNavMoreLabel",
+                  "fill": "#B8A99A",
+                  "content": "More",
+                  "fontFamily": "IBM Plex Sans",
+                  "fontSize": 11,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variables": {
+    "--primary": {
+      "type": "color",
+      "value": "#C96B45"
+    },
+    "--accent-gold": {
+      "type": "color",
+      "value": "#E7BD5A"
+    },
+    "--foreground": {
+      "type": "color",
+      "value": "#4A2A22"
+    },
+    "--background": {
+      "type": "color",
+      "value": "#F5F2EC"
+    },
+    "--secondary": {
+      "type": "color",
+      "value": "#F0EFE8"
+    },
+    "--card": {
+      "type": "color",
+      "value": "#FFFFFF"
+    },
+    "--border": {
+      "type": "color",
+      "value": "#E0D9D0"
+    },
+    "--muted-foreground": {
+      "type": "color",
+      "value": "#6B5344"
+    }
+  }
+}
