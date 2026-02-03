@@ -13,5 +13,6 @@
   "clearOldWorkflows": true,
   "mainJobName": "verify_and_test",
   "licenseCheckJobName": "license_check",
-  "preserve": ""
+  "preserve": "",
+  "runsOn": "ubuntu-latest"
 }
