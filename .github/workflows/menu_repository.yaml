@@ -1,4 +1,4 @@
-name: Menu Domain Verify and Test
+name: Menu Repository Verify and Test
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,8 +10,8 @@ on:
       - master
       - main
     paths:
-      - ".github/workflows/menu_domain_verify_and_test.yaml"
-      - "shared/menu_domain/**"
+      - ".github/workflows/menu_repository_verify_and_test.yaml"
+      - "shared/menu_repository/**"
 
   push:
     branches:
@@ -19,7 +19,7 @@ on:
       - main
     paths:
       - ".github/workflows/**"
-      - "shared/menu_domain/**"
+      - "shared/menu_repository/**"
 
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
     name: Verify and Test
     defaults:
       run:
-        working-directory: shared/menu_domain
+        working-directory: shared/menu_repository
 
     runs-on: ubuntu-latest
 
