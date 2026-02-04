@@ -1,0 +1,25 @@
+name: very_yummy_coffee_widgetbook
+description: "A Widgetbook for Very Yummy Coffee UI components."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.8
+
+dependencies:
+  flutter:
+    sdk: flutter
+  very_yummy_coffee_ui:
+    path: ../../shared/very_yummy_coffee_ui
+  widgetbook: ^3.8.0
+  widgetbook_annotation: ^3.2.0
+
+dev_dependencies:
+  build_runner: ^2.4.6
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^6.0.0
+  widgetbook_generator: ^3.8.0
+
+flutter:
+  uses-material-design: true
