@@ -16,11 +16,14 @@ abstract class SharedSpacing {
   /// Large spacing: 16px
   static const double lg = 16;
 
-  /// Extra large spacing: 24px
-  static const double xl = 24;
+  /// Extra large spacing: 20px
+  static const double xl = 20;
+
+  /// Extra extra large spacing: 24px
+  static const double xxl = 24;
 
   /// Extra extra large spacing: 32px
-  static const double xxl = 32;
+  static const double huge = 32;
 
   // EdgeInsets helpers for common spacing patterns
 
@@ -42,6 +45,9 @@ abstract class SharedSpacing {
   /// All sides extra extra large padding
   static const EdgeInsets allXxl = EdgeInsets.all(xxl);
 
+  /// All sides huge padding
+  static const EdgeInsets allHuge = EdgeInsets.all(huge);
+
   /// Horizontal small padding
   static const EdgeInsets horizontalSm = EdgeInsets.symmetric(horizontal: sm);
 
@@ -54,6 +60,9 @@ abstract class SharedSpacing {
   /// Horizontal extra large padding
   static const EdgeInsets horizontalXl = EdgeInsets.symmetric(horizontal: xl);
 
+  /// Horizontal extra extra large padding
+  static const EdgeInsets horizontalXxl = EdgeInsets.symmetric(horizontal: xxl);
+
   /// Vertical small padding
   static const EdgeInsets verticalSm = EdgeInsets.symmetric(vertical: sm);
 
@@ -65,4 +74,7 @@ abstract class SharedSpacing {
 
   /// Vertical extra large padding
   static const EdgeInsets verticalXl = EdgeInsets.symmetric(vertical: xl);
+
+  /// Vertical extra extra large padding
+  static const EdgeInsets verticalXxl = EdgeInsets.symmetric(vertical: xxl);
 }
