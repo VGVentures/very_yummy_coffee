@@ -5,10 +5,12 @@ import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 enum BaseButtonVariant {
   /// Primary button variant with coffee-themed accent color.
   primary,
+
   /// Secondary button variant with a lighter, complementary color.
   secondary,
+
   /// Cancel button variant with an outlined style.
-  cancel
+  cancel,
 }
 
 /// {@template base_button}
