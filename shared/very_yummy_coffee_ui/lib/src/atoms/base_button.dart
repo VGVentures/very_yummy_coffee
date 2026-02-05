@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
-enum BaseButtonVariant { primary, secondary, cancel }
+/// The visual and semantic variants for a BaseButton.
+enum BaseButtonVariant {
+  /// Primary button variant with coffee-themed accent color.
+  primary,
+  /// Secondary button variant with a lighter, complementary color.
+  secondary,
+  /// Cancel button variant with an outlined style.
+  cancel
+}
 
 /// {@template base_button}
 /// A styled button component with predefined variants.
