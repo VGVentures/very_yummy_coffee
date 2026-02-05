@@ -10,31 +10,43 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:very_yummy_coffee_widgetbook/components/buttons.dart'
-    as _very_yummy_coffee_widgetbook_components_buttons;
+import 'package:very_yummy_coffee_widgetbook/components/base_button.dart'
+    as _very_yummy_coffee_widgetbook_components_base_button;
+import 'package:very_yummy_coffee_widgetbook/components/base_card.dart'
+    as _very_yummy_coffee_widgetbook_components_base_card;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
   _widgetbook.WidgetbookFolder(
-    name: 'material',
+    name: 'atoms',
     children: [
       _widgetbook.WidgetbookComponent(
-        name: 'ElevatedButton',
+        name: 'BaseButton',
         useCases: [
           _widgetbook.WidgetbookUseCase(
-            name: 'Elevated Button',
-            builder: _very_yummy_coffee_widgetbook_components_buttons
-                .elevatedButtonUseCase,
+            name: 'Cancel',
+            builder: _very_yummy_coffee_widgetbook_components_base_button
+                .baseButtonCancelUseCase,
+          ),
+          _widgetbook.WidgetbookUseCase(
+            name: 'Primary',
+            builder: _very_yummy_coffee_widgetbook_components_base_button
+                .baseButtonPrimaryUseCase,
+          ),
+          _widgetbook.WidgetbookUseCase(
+            name: 'Secondary',
+            builder: _very_yummy_coffee_widgetbook_components_base_button
+                .baseButtonSecondaryUseCase,
           ),
         ],
       ),
       _widgetbook.WidgetbookComponent(
-        name: 'TextButton',
+        name: 'BaseCard',
         useCases: [
           _widgetbook.WidgetbookUseCase(
-            name: 'Text Button',
-            builder: _very_yummy_coffee_widgetbook_components_buttons
-                .textButtonUseCase,
+            name: 'Default',
+            builder: _very_yummy_coffee_widgetbook_components_base_card
+                .baseCardUseCase,
           ),
         ],
       ),
