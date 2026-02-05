@@ -4,6 +4,7 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'Primary', type: BaseButton)
+/// Renders a use case for the primary variant of the BaseButton component.
 Widget baseButtonPrimaryUseCase(BuildContext context) {
   return BaseButton(
     onPressed: () {},
@@ -12,6 +13,7 @@ Widget baseButtonPrimaryUseCase(BuildContext context) {
 }
 
 @widgetbook.UseCase(name: 'Secondary', type: BaseButton)
+/// Renders a use case for the secondary variant of the BaseButton component.
 Widget baseButtonSecondaryUseCase(BuildContext context) {
   return BaseButton(
     onPressed: () {},
@@ -24,6 +26,7 @@ Widget baseButtonSecondaryUseCase(BuildContext context) {
 }
 
 @widgetbook.UseCase(name: 'Cancel', type: BaseButton)
+/// Renders a use case for the cancel variant of the BaseButton component.
 Widget baseButtonCancelUseCase(BuildContext context) {
   return BaseButton(
     onPressed: () {},

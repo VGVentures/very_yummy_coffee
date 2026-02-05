@@ -4,6 +4,7 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart' as widgetbook;
 
 @widgetbook.UseCase(name: 'Default', type: BaseCard)
+/// Renders a use case for the BaseCard component.
 Widget baseCardUseCase(BuildContext context) {
   return BaseCard(
     padding: context.knobs.object.dropdown<BaseCardPadding>(
