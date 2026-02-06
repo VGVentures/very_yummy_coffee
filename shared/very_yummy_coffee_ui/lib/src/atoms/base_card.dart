@@ -64,7 +64,7 @@ class BaseCard extends StatelessWidget {
   /// Defaults to `BaseCardPadding.large`.
   final BaseCardPadding padding;
 
-  EdgeInsetsGeometry _getPadding() {
+  EdgeInsetsGeometry get _getPadding {
     switch (padding) {
       case BaseCardPadding.none:
         return EdgeInsets.zero;
@@ -80,7 +80,7 @@ class BaseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: _getPadding(),
+      padding: _getPadding,
       decoration: BoxDecoration(
         color: SharedColors.card,
         borderRadius: SharedRadius.largeAll,
