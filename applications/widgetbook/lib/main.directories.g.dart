@@ -14,6 +14,8 @@ import 'package:very_yummy_coffee_widgetbook/components/base_button.dart'
     as _very_yummy_coffee_widgetbook_components_base_button;
 import 'package:very_yummy_coffee_widgetbook/components/base_card.dart'
     as _very_yummy_coffee_widgetbook_components_base_card;
+import 'package:very_yummy_coffee_widgetbook/components/bottom_tab_bar.dart'
+    as _very_yummy_coffee_widgetbook_components_bottom_tab_bar;
 import 'package:widgetbook/widgetbook.dart' as _widgetbook;
 
 final directories = <_widgetbook.WidgetbookNode>[
@@ -47,6 +49,21 @@ final directories = <_widgetbook.WidgetbookNode>[
             name: 'Default',
             builder: _very_yummy_coffee_widgetbook_components_base_card
                 .baseCardUseCase,
+          ),
+        ],
+      ),
+    ],
+  ),
+  _widgetbook.WidgetbookFolder(
+    name: 'molecules',
+    children: [
+      _widgetbook.WidgetbookComponent(
+        name: 'BottomTabBar',
+        useCases: [
+          _widgetbook.WidgetbookUseCase(
+            name: 'Default',
+            builder: _very_yummy_coffee_widgetbook_components_bottom_tab_bar
+                .bottomTabBarDefaultUseCase,
           ),
         ],
       ),
