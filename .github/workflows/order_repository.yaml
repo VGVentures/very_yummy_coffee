@@ -1,0 +1,50 @@
+name: Order Repository Verify and Test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+    paths:
+      - ".github/workflows/order_repository_verify_and_test.yaml"
+      - "shared/order_repository/**"
+
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "shared/order_repository/**"
+
+
+jobs:
+  verify_and_test:
+    name: Verify and Test
+    defaults:
+      run:
+        working-directory: shared/order_repository
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v6
+
+      - name: 🎯 Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: 📦 Install Dependencies
+        run: dart pub get
+
+      - name: ✨ Check Formatting
+        run: dart format --set-exit-if-changed lib
+      
+      - name: 🕵️ Analyze
+        run: dart analyze --fatal-infos --fatal-warnings lib

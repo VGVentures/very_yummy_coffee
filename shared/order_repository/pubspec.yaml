@@ -1,0 +1,19 @@
+name: order_repository
+description: A repository managing the ordering domain
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.10.0
+
+dev_dependencies:
+  build_runner: ^2.11.0
+  dart_mappable_builder: ^4.6.4
+  mocktail: ^1.0.4
+  test: ^1.29.0
+  very_good_analysis: ^10.1.0
+dependencies:
+  collection: ^1.19.1
+  dart_mappable: ^4.6.1
+  rxdart: ^0.28.0
+  uuid: ^4.5.2
