@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
+import 'package:very_yummy_coffee_ui/src/theme/coffee_theme.dart';
 
 /// Predefined padding variants for [BaseCard].
 enum BaseCardPadding {
@@ -64,28 +64,32 @@ class BaseCard extends StatelessWidget {
   /// Defaults to `BaseCardPadding.large`.
   final BaseCardPadding padding;
 
-  EdgeInsetsGeometry get _getPadding {
-    switch (padding) {
-      case BaseCardPadding.none:
-        return EdgeInsets.zero;
-      case BaseCardPadding.small:
-        return SharedSpacing.allSm;
-      case BaseCardPadding.medium:
-        return SharedSpacing.allMd;
-      case BaseCardPadding.large:
-        return SharedSpacing.allLg;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final radius = context.radius;
+    final spacing = context.spacing;
+
+    EdgeInsetsGeometry getPadding() {
+      switch (padding) {
+        case BaseCardPadding.none:
+          return EdgeInsets.zero;
+        case BaseCardPadding.small:
+          return EdgeInsets.all(spacing.sm);
+        case BaseCardPadding.medium:
+          return EdgeInsets.all(spacing.md);
+        case BaseCardPadding.large:
+          return EdgeInsets.all(spacing.lg);
+      }
+    }
+
     return Container(
-      padding: _getPadding,
+      padding: getPadding(),
       decoration: BoxDecoration(
-        color: SharedColors.card,
-        borderRadius: SharedRadius.largeAll,
+        color: colors.card,
+        borderRadius: BorderRadius.all(Radius.circular(radius.large)),
         border: Border.all(
-          color: SharedColors.border,
+          color: colors.border,
         ),
       ),
       child: child,

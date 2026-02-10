@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
+import 'package:very_yummy_coffee_ui/src/theme/coffee_theme.dart';
 
 /// The visual and semantic variants for a BaseButton.
 enum BaseButtonVariant {
@@ -67,27 +67,32 @@ class BaseButton extends StatelessWidget {
   /// The variant of the button.
   final BaseButtonVariant variant;
 
-  static const _buttonPadding = EdgeInsets.symmetric(
-    horizontal: SharedSpacing.lg,
-    vertical: SharedSpacing.xl,
-  );
-
-  static const _buttonShape = RoundedRectangleBorder(
-    borderRadius: SharedRadius.mediumAll,
-  );
-
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final typography = context.typography;
+    final spacing = context.spacing;
+    final radius = context.radius;
+
+    final buttonPadding = EdgeInsets.symmetric(
+      horizontal: spacing.lg,
+      vertical: spacing.xl,
+    );
+
+    final buttonShape = RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(radius.medium)),
+    );
+
     switch (variant) {
       case BaseButtonVariant.primary:
         return TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(
-            backgroundColor: SharedColors.primary,
-            foregroundColor: SharedColors.primaryForeground,
-            shape: _buttonShape,
-            padding: _buttonPadding,
-            textStyle: SharedTypography.button,
+            backgroundColor: colors.primary,
+            foregroundColor: colors.primaryForeground,
+            shape: buttonShape,
+            padding: buttonPadding,
+            textStyle: typography.button,
           ),
           child: Text(label),
         );
@@ -95,11 +100,11 @@ class BaseButton extends StatelessWidget {
         return TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(
-            backgroundColor: SharedColors.secondary,
-            foregroundColor: SharedColors.foreground,
-            shape: _buttonShape,
-            padding: _buttonPadding,
-            textStyle: SharedTypography.button,
+            backgroundColor: colors.secondary,
+            foregroundColor: colors.foreground,
+            shape: buttonShape,
+            padding: buttonPadding,
+            textStyle: typography.button,
           ),
           child: Text(label),
         );
@@ -107,12 +112,12 @@ class BaseButton extends StatelessWidget {
         return OutlinedButton(
           onPressed: onPressed,
           style: OutlinedButton.styleFrom(
-            backgroundColor: SharedColors.background,
-            foregroundColor: SharedColors.foreground,
-            side: const BorderSide(color: SharedColors.border),
-            shape: _buttonShape,
-            padding: _buttonPadding,
-            textStyle: SharedTypography.button,
+            backgroundColor: colors.background,
+            foregroundColor: colors.foreground,
+            side: BorderSide(color: colors.border),
+            shape: buttonShape,
+            padding: buttonPadding,
+            textStyle: typography.button,
           ),
           child: Text(label),
         );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:very_yummy_coffee_ui/src/tokens/shared_icon_size.dart';
-import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
+import 'package:very_yummy_coffee_ui/src/theme/coffee_theme.dart';
 
 /// Data class representing a single item in the BottomTabBar.
 class NavItemData {
@@ -62,27 +61,27 @@ class BottomTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
+    final typography = context.typography;
+    final iconSize = context.iconSize;
+
     return Container(
       height: 88,
-      color: SharedColors.navBarBackground,
+      color: colors.navBarBackground,
       child: NavigationBarTheme(
         data: NavigationBarThemeData(
-          backgroundColor: SharedColors.navBarBackground,
+          backgroundColor: colors.navBarBackground,
           indicatorColor: Colors.transparent,
           labelTextStyle: WidgetStateProperty.resolveWith<TextStyle?>((states) {
             return states.contains(WidgetState.selected)
-                ? SharedTypography.navLabelActive
-                : SharedTypography.navLabel;
+                ? typography.navLabelActive
+                : typography.navLabel;
           }),
           iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
             final selected = states.contains(WidgetState.selected);
             return IconThemeData(
-              color: selected
-                  ? SharedColors.accentGold
-                  : SharedColors.navBarInactive,
-              size: selected
-                  ? SharedIconSize.large + 4.0
-                  : SharedIconSize.large,
+              color: selected ? colors.accentGold : colors.navBarInactive,
+              size: selected ? iconSize.largeSelected : iconSize.large,
             );
           }),
         ),
