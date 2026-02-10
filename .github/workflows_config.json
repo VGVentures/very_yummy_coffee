@@ -14,5 +14,7 @@
   "mainJobName": "verify_and_test",
   "licenseCheckJobName": "license_check",
   "preserve": "",
-  "runsOn": "ubuntu-latest"
+  "runsOn": "ubuntu-latest",
+  "setup_step_name": "",
+  "setup_step_run": ""
 }
