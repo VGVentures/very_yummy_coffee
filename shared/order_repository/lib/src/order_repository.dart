@@ -1,86 +1,117 @@
+import 'dart:async';
+
+import 'package:api_client/api_client.dart';
 import 'package:collection/collection.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
 
 /// {@template order_repository}
-/// A repository managing the ordering domain
+/// A repository managing the ordering domain.
+///
+/// All mutations are sent to the server as WebSocket actions, which broadcasts
+/// the resulting state change to all subscribed clients. The [ordersStream]
+/// subscribes to the 'orders' topic on first access and stays active for the
+/// session, so all derived streams ([currentOrderStream], [orderStream]) stay
+/// in sync with the server.
 /// {@endtemplate}
 class OrderRepository {
   /// {@macro order_repository}
   OrderRepository({
+    required WsRpcClient wsRpcClient,
     this.currentOrderId,
-  });
+  }) : _wsRpcClient = wsRpcClient;
+
+  final WsRpcClient _wsRpcClient;
 
   String? currentOrderId;
   static const Uuid _uuid = Uuid();
 
-  final BehaviorSubject<Orders> _currentOrdersSubject = BehaviorSubject.seeded(
-    const Orders(orders: []),
-  );
+  BehaviorSubject<Orders>? _ordersSubject;
+  StreamSubscription<Map<String, dynamic>>? _ordersWsSub;
 
-  Stream<Orders> get ordersStream => _currentOrdersSubject.stream;
-  Stream<Order?> get currentOrderStream => _currentOrdersSubject.stream.map(
+  /// A live stream of all orders, synced from the server.
+  ///
+  /// Subscribes to the 'orders' WebSocket topic on first access.
+  Stream<Orders> get ordersStream {
+    _initOrdersIfNeeded();
+    return _ordersSubject!.stream;
+  }
+
+  /// A live stream of the current order (tracked by [currentOrderId]).
+  Stream<Order?> get currentOrderStream => ordersStream.map(
     (orders) =>
         orders.orders.firstWhereOrNull((order) => order.id == currentOrderId),
   );
-  Stream<Order?> orderStream(String orderId) =>
-      _currentOrdersSubject.stream.map(
-        (orders) =>
-            orders.orders.firstWhereOrNull((order) => order.id == orderId),
-      );
 
-  List<Order> get _orders => _currentOrdersSubject.value.orders;
-  Order? get _currentOrder =>
-      _orders.firstWhereOrNull((order) => order.id == currentOrderId);
+  /// A live stream of a specific order by [orderId].
+  Stream<Order?> orderStream(String orderId) => ordersStream.map(
+    (orders) => orders.orders.firstWhereOrNull((order) => order.id == orderId),
+  );
 
-  set _currentOrder(Order order) {
-    if (currentOrderId == order.id) {
-      final index = _orders.indexWhere((o) => o.id == order.id);
-      if (index >= 0) {
-        _currentOrdersSubject.add(
-          _currentOrdersSubject.value.copyWith.orders.replace(index, order),
-        );
-      }
-    } else {
-      _currentOrdersSubject.add(
-        _currentOrdersSubject.value.copyWith.orders.add(order),
-      );
-      currentOrderId = order.id;
-    }
+  /// Creates a new order on the server.
+  ///
+  /// Sets [currentOrderId] immediately so derived streams reflect the new
+  /// order once the server broadcasts the update.
+  Future<void> createOrder() async {
+    final id = _uuid.v4();
+    currentOrderId = id;
+    _wsRpcClient.sendAction('createOrder', {'id': id});
   }
 
+  /// Adds an item to the current order on the server.
   void addItemToCurrentOrder({
     required String itemName,
     required int itemPrice,
   }) {
-    if (_currentOrder != null) {
-      final id = _uuid.v4();
-      final item = LineItem(id: id, name: itemName, price: itemPrice);
-      _currentOrder = _currentOrder!.copyWith.items.add(item);
-    }
+    if (currentOrderId == null) return;
+    _wsRpcClient.sendAction('addItemToOrder', {
+      'orderId': currentOrderId,
+      'lineItemId': _uuid.v4(),
+      'itemName': itemName,
+      'itemPrice': itemPrice,
+    });
   }
 
+  /// Removes an item from the current order on the server.
   void removeItemFromCurrentOrder(String lineItemId) {
-    final order = _currentOrder;
-    if (order == null) return;
-    _currentOrder = order.copyWith.items.removeAt(
-      order.items.indexWhere((i) => i.id == lineItemId),
-    );
+    if (currentOrderId == null) return;
+    _wsRpcClient.sendAction('removeItemFromOrder', {
+      'orderId': currentOrderId,
+      'lineItemId': lineItemId,
+    });
   }
 
+  /// Completes the current order on the server.
   void completeCurrentOrder() {
-    final order = _currentOrder;
-    if (order == null) return;
-    _currentOrder = order.copyWith(status: OrderStatus.completed);
+    if (currentOrderId == null) return;
+    _wsRpcClient.sendAction('completeOrder', {'orderId': currentOrderId});
     currentOrderId = null;
   }
 
-  Future<void> createOrder() async {
-    _currentOrder = Order(
-      id: _uuid.v4(),
-      items: [],
-      status: OrderStatus.pending,
-    );
+  /// Cancels the WebSocket subscription and closes the orders stream.
+  ///
+  /// Call this when the repository is no longer needed.
+  Future<void> dispose() async {
+    await _ordersWsSub?.cancel();
+    await _ordersSubject?.close();
+    _ordersWsSub = null;
+    _ordersSubject = null;
+  }
+
+  void _initOrdersIfNeeded() {
+    if (_ordersSubject != null) return;
+
+    _ordersSubject = BehaviorSubject.seeded(const Orders(orders: []));
+
+    _ordersWsSub = _wsRpcClient.subscribe('orders').listen((payload) {
+      final orderList = payload['orders'] as List<dynamic>?;
+      if (orderList == null) return;
+
+      final orders = orderList
+          .map((e) => OrderMapper.fromMap(e as Map<String, dynamic>))
+          .toList();
+      _ordersSubject?.add(Orders(orders: orders));
+    });
   }
 }

@@ -6,19 +6,63 @@
 
 ## About This Project
 
-[Describe your project here: what it does, key features, target platforms]
-
-## Project-Specific Standards
-
-[Add any project-specific coding standards, conventions, or overrides here]
+Very Yummy Coffee is a Flutter/Dart monorepo for a coffee ordering app. It targets mobile (iOS/Android) via `applications/mobile_app`. A Dart Frog backend serves menu and order data with real-time sync via WebSocket RPC.
 
 ## Key Dependencies
 
-[List important packages and their purpose in this project]
+| Package | Purpose |
+|---|---|
+| `dart_frog` | Backend API framework |
+| `dart_frog_web_socket` | WebSocket support for the RPC endpoint |
+| `api_client` (shared) | HTTP + WebSocket client; exports `ApiClient`, `LiveConnection`, `WsRpcClient` |
+| `menu_repository` (shared) | Menu domain; lazy WS subscription with ref-counting |
+| `order_repository` (shared) | Order domain; WS-synced mutations |
+| `very_yummy_coffee_models` (shared) | Shared models: `MenuGroup`, `MenuItem` (with `groupId` + `available`) |
+| `rxdart` | `BehaviorSubject` for replay streams, `doOnCancel` for ref-counting |
+| `dart_mappable` | JSON serialization for all models |
 
 ## Architecture Notes
 
-[Document any project-specific architectural decisions]
+### WebSocket RPC Layer
+
+Real-time sync uses a single WebSocket endpoint at `GET /api/rpc` (`routes/api/rpc.dart`). Clients connect once per app via `WsRpcClient` (`shared/api_client/lib/src/ws_rpc_client.dart`), which multiplexes multiple topic subscriptions over one connection.
+
+**Client → server messages:**
+```json
+{"type": "subscribe",   "topic": "menu"}
+{"type": "subscribe",   "topic": "orders"}
+{"type": "subscribe",   "topic": "order:<id>"}
+{"type": "unsubscribe", "topic": "menu"}
+{"type": "action", "action": "updateMenuItemAvailability", "payload": {"itemId": "101", "available": false}}
+{"type": "action", "action": "createOrder",         "payload": {"id": "<uuid>"}}
+{"type": "action", "action": "addItemToOrder",      "payload": {"orderId": "<uuid>", "lineItemId": "<uuid>", "itemName": "...", "itemPrice": 550}}
+{"type": "action", "action": "removeItemFromOrder", "payload": {"orderId": "<uuid>", "lineItemId": "<uuid>"}}
+{"type": "action", "action": "completeOrder",       "payload": {"orderId": "<uuid>"}}
+{"type": "action", "action": "cancelOrder",         "payload": {"orderId": "<uuid>"}}
+```
+
+**Server → client messages:**
+```json
+{"type": "update", "topic": "menu",        "payload": {"groups": [...], "items": [...]}}
+{"type": "update", "topic": "orders",      "payload": {"orders": [...]}}
+{"type": "update", "topic": "order:<id>",  "payload": {...order...}}
+```
+
+On `subscribe`, the server immediately sends the current snapshot, then sends updates whenever state changes due to any client's action.
+
+### Server State
+
+`api/lib/src/server_state.dart` — in-memory singleton (`serverState`) holding the current menu (loaded from `fixtures/menu.json`) and all orders. Manages topic subscriptions as `Map<String, Set<StreamSink>>` and broadcasts to relevant subscribers after each action.
+
+### WsRpcClient
+
+`shared/api_client/lib/src/ws_rpc_client.dart` — calling `subscribe(topic)` twice returns the same broadcast stream (no duplicate WS messages). Created via `WsRpcClient.fromApiClient(apiClient)`.
+
+### Repository Subscription Pattern
+
+**MenuRepository** (`shared/menu_repository/lib/src/menu_repository.dart`): `Rx.defer` + `BehaviorSubject` + `doOnCancel` for ref-counted lazy subscriptions. First subscriber triggers HTTP fetch (initial state) + WS subscribe. Last subscriber cancels the WS subscription. `getMenuGroups()` and `getMenuItems(groupId)` share one WS subscription and one HTTP initial fetch.
+
+**OrderRepository** (`shared/order_repository/lib/src/order_repository.dart`): Subscribes to `orders` WS topic on first `ordersStream` access and stays open. All mutations send WS actions — no local state mutation. Call `dispose()` when done.
 
 <!-- ============================================================
      VGV STANDARDS - Do not edit below this line

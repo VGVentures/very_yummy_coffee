@@ -19,7 +19,7 @@ void main() {
   group('MenuItem', () {
     test('can be instantiated', () {
       expect(
-        const MenuItem(id: '1', name: 'Item 1', price: 100),
+        const MenuItem(id: '1', name: 'Item 1', price: 100, groupId: '1'),
         isNotNull,
       );
     });

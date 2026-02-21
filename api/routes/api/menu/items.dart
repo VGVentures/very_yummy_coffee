@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:very_yummy_coffee_models/very_yummy_coffee_models.dart';
 
-Response onRequest(RequestContext context, String id) {
+Response onRequest(RequestContext context) {
   if (context.request.method != HttpMethod.get) {
     return Response(statusCode: HttpStatus.methodNotAllowed);
   }
@@ -14,7 +14,6 @@ Response onRequest(RequestContext context, String id) {
   ) as Map<String, dynamic>;
 
   final items = (fixture['items'] as List<dynamic>)
-      .where((e) => (e as Map<String, dynamic>)['groupId'] == id)
       .map((e) => MenuItemMapper.fromMap(e as Map<String, dynamic>))
       .toList();
 

@@ -13,6 +13,8 @@ dev_dependencies:
   test: ^1.29.0
   very_good_analysis: ^10.1.0
 dependencies:
+  api_client:
+    path: ../api_client
   collection: ^1.19.1
   dart_mappable: ^4.6.1
   rxdart: ^0.28.0

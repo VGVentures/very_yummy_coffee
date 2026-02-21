@@ -28,12 +28,23 @@ class MenuItemMapper extends ClassMapperBase<MenuItem> {
   static const Field<MenuItem, String> _f$name = Field('name', _$name);
   static int _$price(MenuItem v) => v.price;
   static const Field<MenuItem, int> _f$price = Field('price', _$price);
+  static String _$groupId(MenuItem v) => v.groupId;
+  static const Field<MenuItem, String> _f$groupId = Field('groupId', _$groupId);
+  static bool _$available(MenuItem v) => v.available;
+  static const Field<MenuItem, bool> _f$available = Field(
+    'available',
+    _$available,
+    opt: true,
+    def: true,
+  );
 
   @override
   final MappableFields<MenuItem> fields = const {
     #id: _f$id,
     #name: _f$name,
     #price: _f$price,
+    #groupId: _f$groupId,
+    #available: _f$available,
   };
 
   static MenuItem _instantiate(DecodingData data) {
@@ -41,6 +52,8 @@ class MenuItemMapper extends ClassMapperBase<MenuItem> {
       id: data.dec(_f$id),
       name: data.dec(_f$name),
       price: data.dec(_f$price),
+      groupId: data.dec(_f$groupId),
+      available: data.dec(_f$available),
     );
   }
 
@@ -101,7 +114,13 @@ extension MenuItemValueCopy<$R, $Out> on ObjectCopyWith<$R, MenuItem, $Out> {
 
 abstract class MenuItemCopyWith<$R, $In extends MenuItem, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? name, int? price});
+  $R call({
+    String? id,
+    String? name,
+    int? price,
+    String? groupId,
+    bool? available,
+  });
   MenuItemCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -114,11 +133,19 @@ class _MenuItemCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MenuItem> $mapper =
       MenuItemMapper.ensureInitialized();
   @override
-  $R call({String? id, String? name, int? price}) => $apply(
+  $R call({
+    String? id,
+    String? name,
+    int? price,
+    String? groupId,
+    bool? available,
+  }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (name != null) #name: name,
       if (price != null) #price: price,
+      if (groupId != null) #groupId: groupId,
+      if (available != null) #available: available,
     }),
   );
   @override
@@ -126,6 +153,8 @@ class _MenuItemCopyWithImpl<$R, $Out>
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
     price: data.get(#price, or: $value.price),
+    groupId: data.get(#groupId, or: $value.groupId),
+    available: data.get(#available, or: $value.available),
   );
 
   @override
