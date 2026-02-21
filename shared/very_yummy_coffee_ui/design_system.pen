@@ -1,5 +1,5 @@
 {
-  "version": "2.6",
+  "version": "2.8",
   "children": [
     {
       "type": "frame",
@@ -530,10 +530,7 @@
               "height": 88,
               "fill": "#4A2A22",
               "cornerRadius": 20,
-              "layout": "horizontal",
-              "gap": 0,
-              "padding": [12, 12, 12, 12],
-              "justifyContent": "space-evenly",
+              "padding": 12,
               "alignItems": "center",
               "children": [
                 {
@@ -543,17 +540,17 @@
                   "width": 64,
                   "layout": "vertical",
                   "gap": 6,
-                  "alignItems": "center",
                   "justifyContent": "center",
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "rectangle",
+                      "cornerRadius": 4,
                       "id": "dsNavRecentIcon",
                       "name": "dsNavRecentIcon",
-                      "width": 24,
-                      "height": 24,
                       "fill": "#B8A99A",
-                      "cornerRadius": 4
+                      "width": 24,
+                      "height": 24
                     },
                     {
                       "type": "text",
@@ -574,17 +571,17 @@
                   "width": 64,
                   "layout": "vertical",
                   "gap": 6,
-                  "alignItems": "center",
                   "justifyContent": "center",
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "rectangle",
+                      "cornerRadius": 4,
                       "id": "dsNavRewardsIcon",
                       "name": "dsNavRewardsIcon",
-                      "width": 24,
-                      "height": 24,
                       "fill": "#B8A99A",
-                      "cornerRadius": 4
+                      "width": 24,
+                      "height": 24
                     },
                     {
                       "type": "text",
@@ -605,17 +602,17 @@
                   "width": 64,
                   "layout": "vertical",
                   "gap": 6,
-                  "alignItems": "center",
                   "justifyContent": "center",
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "rectangle",
+                      "cornerRadius": 6,
                       "id": "dsNavMenuIcon",
                       "name": "dsNavMenuIcon",
-                      "width": 28,
-                      "height": 28,
                       "fill": "#E7BD5A",
-                      "cornerRadius": 6
+                      "width": 28,
+                      "height": 28
                     },
                     {
                       "type": "text",
@@ -636,17 +633,17 @@
                   "width": 64,
                   "layout": "vertical",
                   "gap": 6,
-                  "alignItems": "center",
                   "justifyContent": "center",
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "rectangle",
+                      "cornerRadius": 4,
                       "id": "dsNavStoreIcon",
                       "name": "dsNavStoreIcon",
-                      "width": 24,
-                      "height": 24,
                       "fill": "#B8A99A",
-                      "cornerRadius": 4
+                      "width": 24,
+                      "height": 24
                     },
                     {
                       "type": "text",
@@ -667,17 +664,17 @@
                   "width": 64,
                   "layout": "vertical",
                   "gap": 6,
-                  "alignItems": "center",
                   "justifyContent": "center",
+                  "alignItems": "center",
                   "children": [
                     {
                       "type": "rectangle",
+                      "cornerRadius": 4,
                       "id": "dsNavMoreIcon",
                       "name": "dsNavMoreIcon",
-                      "width": 24,
-                      "height": 24,
                       "fill": "#B8A99A",
-                      "cornerRadius": 4
+                      "width": 24,
+                      "height": 24
                     },
                     {
                       "type": "text",
