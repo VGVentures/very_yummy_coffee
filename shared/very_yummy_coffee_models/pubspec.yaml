@@ -1,0 +1,17 @@
+name: very_yummy_coffee_models
+description: Shared domain models for the Very Yummy Coffee app.
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  dart_mappable: ^4.6.1
+
+dev_dependencies:
+  build_runner: ^2.10.5
+  dart_mappable_builder: ^4.6.4
+  mocktail: ^1.0.4
+  test: ^1.29.0
+  very_good_analysis: ^10.2.0

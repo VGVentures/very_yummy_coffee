@@ -1,36 +1,40 @@
-import 'package:menu_repository/menu_repository.dart';
+import 'dart:convert';
+
+import 'package:api_client/api_client.dart';
+import 'package:very_yummy_coffee_models/very_yummy_coffee_models.dart';
 
 /// {@template menu_repository}
 /// A repository managing the menu domain.
 /// {@endtemplate}
 class MenuRepository {
   /// {@macro menu_repository}
-  const MenuRepository();
+  const MenuRepository({required ApiClient apiClient}) : _apiClient = apiClient;
 
-  Stream<List<MenuGroup>> getMenuGroups() => Stream.value([
-    const MenuGroup(
-      id: '1',
-      name: 'Main',
-      description: 'Sandwiches, wraps & more',
-      color: 0xFFF0EFE8,
-    ),
-    const MenuGroup(
-      id: '2',
-      name: 'Drinks',
-      description: 'Coffee, tea & beverages',
-      color: 0xFFE8DDD6,
-    ),
-    const MenuGroup(
-      id: '3',
-      name: 'Desserts',
-      description: 'Pastries, cakes & sweets',
-      color: 0xFFF5E6C8,
-    ),
-  ]);
+  final ApiClient _apiClient;
 
-  Stream<List<MenuItem>> getMenuItems(String groupId) => Stream.value([
-    const MenuItem(id: '1', name: 'Item 1', price: 100),
-    const MenuItem(id: '2', name: 'Item 2', price: 200),
-    const MenuItem(id: '3', name: 'Item 3', price: 300),
-  ]);
+  /// Returns a stream of menu groups.
+  Stream<List<MenuGroup>> getMenuGroups() => Stream.fromFuture(
+    _apiClient.get<List<MenuGroup>>(
+      '/menu/groups',
+      responseFromJson: (body) {
+        final list = jsonDecode(body) as List<dynamic>;
+        return list
+            .map((e) => MenuGroupMapper.fromMap(e as Map<String, dynamic>))
+            .toList();
+      },
+    ),
+  );
+
+  /// Returns a stream of menu items for the given [groupId].
+  Stream<List<MenuItem>> getMenuItems(String groupId) => Stream.fromFuture(
+    _apiClient.get<List<MenuItem>>(
+      '/menu/groups/$groupId/items',
+      responseFromJson: (body) {
+        final list = jsonDecode(body) as List<dynamic>;
+        return list
+            .map((e) => MenuItemMapper.fromMap(e as Map<String, dynamic>))
+            .toList();
+      },
+    ),
+  );
 }
