@@ -15,6 +15,6 @@ class MenuGroup with MenuGroupMappable {
   final String id;
   final String name;
   final String description;
-  final int color; // Color value (0xAARRGGBB)
+  final int color;
   final String? imageUrl;
 }
