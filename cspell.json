@@ -23,7 +23,8 @@
     "xcassets",
     "xcodeproj",
     "xcscheme",
-    "xcworkspace"
+    "xcworkspace",
+    "listview"
   ],
   "ignorePaths": [
     "build/**",
@@ -46,7 +47,9 @@
     "**/.gitignore",
     "**/macos/**",
     "**/*.excalidraw",
-    "**/*.pen"
+    "**/*.pen",
+    "**/skills/**",
+    "ai-coding/**"
   ],
   "useGitignore": true,
   "dictionaries": [

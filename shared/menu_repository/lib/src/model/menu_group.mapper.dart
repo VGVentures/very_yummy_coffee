@@ -26,12 +26,37 @@ class MenuGroupMapper extends ClassMapperBase<MenuGroup> {
   static const Field<MenuGroup, String> _f$id = Field('id', _$id);
   static String _$name(MenuGroup v) => v.name;
   static const Field<MenuGroup, String> _f$name = Field('name', _$name);
+  static String _$description(MenuGroup v) => v.description;
+  static const Field<MenuGroup, String> _f$description = Field(
+    'description',
+    _$description,
+  );
+  static int _$color(MenuGroup v) => v.color;
+  static const Field<MenuGroup, int> _f$color = Field('color', _$color);
+  static String? _$imageUrl(MenuGroup v) => v.imageUrl;
+  static const Field<MenuGroup, String> _f$imageUrl = Field(
+    'imageUrl',
+    _$imageUrl,
+    opt: true,
+  );
 
   @override
-  final MappableFields<MenuGroup> fields = const {#id: _f$id, #name: _f$name};
+  final MappableFields<MenuGroup> fields = const {
+    #id: _f$id,
+    #name: _f$name,
+    #description: _f$description,
+    #color: _f$color,
+    #imageUrl: _f$imageUrl,
+  };
 
   static MenuGroup _instantiate(DecodingData data) {
-    return MenuGroup(id: data.dec(_f$id), name: data.dec(_f$name));
+    return MenuGroup(
+      id: data.dec(_f$id),
+      name: data.dec(_f$name),
+      description: data.dec(_f$description),
+      color: data.dec(_f$color),
+      imageUrl: data.dec(_f$imageUrl),
+    );
   }
 
   @override
@@ -93,7 +118,13 @@ extension MenuGroupValueCopy<$R, $Out> on ObjectCopyWith<$R, MenuGroup, $Out> {
 
 abstract class MenuGroupCopyWith<$R, $In extends MenuGroup, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? name});
+  $R call({
+    String? id,
+    String? name,
+    String? description,
+    int? color,
+    String? imageUrl,
+  });
   MenuGroupCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -106,13 +137,28 @@ class _MenuGroupCopyWithImpl<$R, $Out>
   late final ClassMapperBase<MenuGroup> $mapper =
       MenuGroupMapper.ensureInitialized();
   @override
-  $R call({String? id, String? name}) => $apply(
-    FieldCopyWithData({if (id != null) #id: id, if (name != null) #name: name}),
+  $R call({
+    String? id,
+    String? name,
+    String? description,
+    int? color,
+    Object? imageUrl = $none,
+  }) => $apply(
+    FieldCopyWithData({
+      if (id != null) #id: id,
+      if (name != null) #name: name,
+      if (description != null) #description: description,
+      if (color != null) #color: color,
+      if (imageUrl != $none) #imageUrl: imageUrl,
+    }),
   );
   @override
   MenuGroup $make(CopyWithData data) => MenuGroup(
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
+    description: data.get(#description, or: $value.description),
+    color: data.get(#color, or: $value.color),
+    imageUrl: data.get(#imageUrl, or: $value.imageUrl),
   );
 
   @override

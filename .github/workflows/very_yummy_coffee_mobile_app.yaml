@@ -12,7 +12,8 @@ on:
     paths:
       - ".github/workflows/very_yummy_coffee_mobile_app_verify_and_test.yaml"
       - "applications/mobile_app/**"
-
+      - "shared/menu_repository/**"
+      - "shared/very_yummy_coffee_ui/**"
   push:
     branches:
       - master
@@ -20,7 +21,8 @@ on:
     paths:
       - ".github/workflows/**"
       - "applications/mobile_app/**"
-
+      - "shared/menu_repository/**"
+      - "shared/very_yummy_coffee_ui/**"
 
 jobs:
   verify_and_test:
