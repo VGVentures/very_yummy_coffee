@@ -12,7 +12,8 @@ on:
     paths:
       - ".github/workflows/menu_repository_verify_and_test.yaml"
       - "shared/menu_repository/**"
-
+      - "shared/api_client/**"
+      - "shared/very_yummy_coffee_models/**"
   push:
     branches:
       - master
@@ -20,7 +21,8 @@ on:
     paths:
       - ".github/workflows/**"
       - "shared/menu_repository/**"
-
+      - "shared/api_client/**"
+      - "shared/very_yummy_coffee_models/**"
 
 jobs:
   verify_and_test:
@@ -38,7 +40,7 @@ jobs:
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.38.9
+          flutter-version: 3.41.2
           channel: stable
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}

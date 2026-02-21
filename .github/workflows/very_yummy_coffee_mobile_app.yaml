@@ -12,7 +12,9 @@ on:
     paths:
       - ".github/workflows/very_yummy_coffee_mobile_app_verify_and_test.yaml"
       - "applications/mobile_app/**"
+      - "shared/api_client/**"
       - "shared/menu_repository/**"
+      - "shared/very_yummy_coffee_models/**"
       - "shared/very_yummy_coffee_ui/**"
   push:
     branches:
@@ -21,7 +23,9 @@ on:
     paths:
       - ".github/workflows/**"
       - "applications/mobile_app/**"
+      - "shared/api_client/**"
       - "shared/menu_repository/**"
+      - "shared/very_yummy_coffee_models/**"
       - "shared/very_yummy_coffee_ui/**"
 
 jobs:
@@ -40,7 +44,7 @@ jobs:
       - name: 🐦 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 3.38.9
+          flutter-version: 3.41.2
           channel: stable
           cache: true
           cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
