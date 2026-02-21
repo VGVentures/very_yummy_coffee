@@ -1,0 +1,1765 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://vgv.dev/schemas/migration-manifest.schema.json",
+  "title": "Native to Flutter Migration Manifest",
+  "description": "Schema for documenting native iOS/Android codebases for Flutter migration",
+  "type": "object",
+  "required": ["version", "generated_at", "project"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Schema version",
+      "const": "2.0"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when this manifest was generated"
+    },
+    "project": {
+      "$ref": "#/definitions/ProjectMetadata"
+    },
+    "ios": {
+      "$ref": "#/definitions/PlatformAnalysis"
+    },
+    "android": {
+      "$ref": "#/definitions/PlatformAnalysis"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Feature"
+      },
+      "description": "Unified list of features/screens across both platforms"
+    },
+    "dependencies": {
+      "$ref": "#/definitions/DependencyInventory"
+    },
+    "api": {
+      "$ref": "#/definitions/ApiInventory"
+    },
+    "data_models": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/DataModel"
+      }
+    },
+    "platform_apis": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/PlatformApiUsage"
+      },
+      "description": "Platform-specific APIs that need special handling"
+    },
+    "testing": {
+      "$ref": "#/definitions/TestingInfrastructure",
+      "description": "Testing infrastructure analysis"
+    },
+    "cicd": {
+      "$ref": "#/definitions/CicdConfiguration",
+      "description": "CI/CD configuration analysis"
+    },
+    "localization": {
+      "$ref": "#/definitions/LocalizationAnalysis",
+      "description": "Localization and internationalization analysis"
+    },
+    "accessibility": {
+      "$ref": "#/definitions/AccessibilityAnalysis",
+      "description": "Accessibility implementation analysis"
+    },
+    "analytics": {
+      "$ref": "#/definitions/AnalyticsTracking",
+      "description": "Analytics and tracking analysis"
+    },
+    "error_handling": {
+      "$ref": "#/definitions/ErrorHandlingAnalysis",
+      "description": "Error handling and crash reporting analysis"
+    },
+    "startup_sequence": {
+      "$ref": "#/definitions/StartupSequence",
+      "description": "App initialization sequence analysis"
+    },
+    "migration_plan": {
+      "$ref": "#/definitions/MigrationPlan"
+    },
+    "prd": {
+      "$ref": "#/definitions/ProductRequirementsDocument",
+      "description": "Auto-generated Product Requirements Document"
+    },
+    "analysis_report_path": {
+      "type": "string",
+      "description": "Path to MIGRATION_ANALYSIS.md human-readable report"
+    },
+    "feature_reports_path": {
+      "type": "string",
+      "description": "Path to the docs/features/ directory containing per-feature reports"
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Additional observations and recommendations"
+    }
+  },
+  "definitions": {
+    "EffortSize": {
+      "type": "string",
+      "enum": ["XS", "S", "M", "L", "XL"],
+      "description": "T-shirt sizing for effort estimation: XS (<1 day), S (1-2 days), M (3-5 days), L (1-2 weeks), XL (2+ weeks)"
+    },
+    "Risk": {
+      "type": "object",
+      "required": ["id", "description", "rationale", "severity"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique risk identifier (e.g., risk_healthkit_complexity)"
+        },
+        "description": {
+          "type": "string",
+          "description": "What is the risk"
+        },
+        "rationale": {
+          "type": "string",
+          "description": "WHY this is a risk - detailed reasoning explaining the technical context"
+        },
+        "impact": {
+          "type": "string",
+          "description": "What happens if this risk materializes"
+        },
+        "probability": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "Likelihood of the risk occurring"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["low", "medium", "high", "critical"],
+          "description": "Impact severity if risk occurs"
+        },
+        "mitigation": {
+          "type": "string",
+          "description": "Strategy to address or reduce the risk"
+        },
+        "affected_features": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Feature IDs impacted by this risk"
+        }
+      }
+    },
+    "ProjectMetadata": {
+      "type": "object",
+      "required": ["name", "platforms"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Project/app name"
+        },
+        "bundle_id_ios": {
+          "type": "string",
+          "description": "iOS bundle identifier"
+        },
+        "package_name_android": {
+          "type": "string",
+          "description": "Android package name"
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["ios", "android"]
+          }
+        },
+        "min_ios_version": {
+          "type": "string"
+        },
+        "min_android_sdk": {
+          "type": "integer"
+        },
+        "target_ios_version": {
+          "type": "string"
+        },
+        "target_android_sdk": {
+          "type": "integer"
+        },
+        "project_type": {
+          "type": "string",
+          "enum": ["single_app", "multi_module", "monorepo"],
+          "description": "Overall project structure type"
+        },
+        "estimated_total_screens": {
+          "type": "integer"
+        },
+        "estimated_lines_of_code": {
+          "type": "object",
+          "properties": {
+            "ios": { "type": "integer" },
+            "android": { "type": "integer" }
+          }
+        }
+      }
+    },
+    "PlatformAnalysis": {
+      "type": "object",
+      "properties": {
+        "project_structure": {
+          "$ref": "#/definitions/ProjectStructure"
+        },
+        "architecture": {
+          "$ref": "#/definitions/ArchitectureAnalysis"
+        },
+        "ui_framework": {
+          "$ref": "#/definitions/UiFrameworkAnalysis"
+        },
+        "navigation": {
+          "$ref": "#/definitions/NavigationAnalysis"
+        },
+        "dependency_injection": {
+          "$ref": "#/definitions/DiAnalysis"
+        },
+        "state_management": {
+          "$ref": "#/definitions/StateManagementAnalysis"
+        },
+        "screens": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/NativeScreen"
+          }
+        },
+        "build_configuration": {
+          "$ref": "#/definitions/BuildConfiguration"
+        }
+      }
+    },
+    "ProjectStructure": {
+      "type": "object",
+      "properties": {
+        "root_path": {
+          "type": "string"
+        },
+        "modules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "path": { "type": "string" },
+              "type": {
+                "type": "string",
+                "enum": ["app", "library", "framework", "feature_module"]
+              }
+            }
+          }
+        },
+        "source_directories": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "resource_directories": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "ArchitectureAnalysis": {
+      "type": "object",
+      "required": ["primary_pattern"],
+      "properties": {
+        "primary_pattern": {
+          "type": "string",
+          "enum": ["mvc", "mvvm", "mvp", "mvi", "viper", "tca", "clean", "unstructured", "mixed"],
+          "description": "Dominant architectural pattern"
+        },
+        "secondary_patterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Additional patterns detected"
+        },
+        "layer_separation": {
+          "type": "string",
+          "enum": ["none", "partial", "strict"],
+          "description": "How well layers are separated"
+        },
+        "layers_identified": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "path_pattern": { "type": "string" },
+              "responsibilities": { "type": "string" }
+            }
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Confidence in architecture detection (0-1)"
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "UiFrameworkAnalysis": {
+      "type": "object",
+      "properties": {
+        "primary_framework": {
+          "type": "string",
+          "enum": ["uikit", "swiftui", "xml_views", "jetpack_compose", "mixed"]
+        },
+        "framework_distribution": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number",
+            "description": "Percentage of screens using this framework"
+          }
+        },
+        "custom_components": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "reusable": { "type": "boolean" },
+              "complexity": { "$ref": "#/definitions/ComplexityScore" }
+            }
+          }
+        }
+      }
+    },
+    "NavigationAnalysis": {
+      "type": "object",
+      "properties": {
+        "pattern": {
+          "type": "string",
+          "enum": [
+            "storyboard_segues",
+            "programmatic_uikit",
+            "coordinator",
+            "swiftui_navigation",
+            "navigation_component",
+            "multi_activity",
+            "compose_navigation",
+            "custom",
+            "mixed"
+          ]
+        },
+        "entry_points": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["main", "deep_link", "notification", "widget", "shortcut"]
+              },
+              "target_screen": { "type": "string" },
+              "uri_pattern": { "type": "string" }
+            }
+          }
+        },
+        "deep_links": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scheme": { "type": "string" },
+              "host": { "type": "string" },
+              "path_pattern": { "type": "string" },
+              "target_screen": { "type": "string" }
+            }
+          }
+        },
+        "navigation_graph": {
+          "type": "object",
+          "description": "Adjacency list representation of navigation",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "DiAnalysis": {
+      "type": "object",
+      "properties": {
+        "framework": {
+          "type": "string",
+          "enum": ["hilt", "koin", "dagger", "swinject", "resolver", "factory", "manual", "none"]
+        },
+        "scope_types": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Scopes used (singleton, activity, viewmodel, etc.)"
+        },
+        "flutter_equivalent": {
+          "type": "string",
+          "description": "Suggested Flutter DI approach"
+        }
+      }
+    },
+    "StateManagementAnalysis": {
+      "type": "object",
+      "properties": {
+        "primary_approach": {
+          "type": "string",
+          "enum": [
+            "combine",
+            "rxswift",
+            "livedata",
+            "stateflow",
+            "rxjava",
+            "observable_object",
+            "tca_store",
+            "custom",
+            "none"
+          ]
+        },
+        "patterns": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "flutter_equivalent": {
+          "type": "string",
+          "enum": ["bloc", "cubit", "riverpod", "provider", "redux", "mobx", "getx"]
+        },
+        "complexity": {
+          "$ref": "#/definitions/ComplexityScore"
+        }
+      }
+    },
+    "NativeScreen": {
+      "type": "object",
+      "required": ["id", "name", "file_path"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for cross-platform mapping"
+        },
+        "name": {
+          "type": "string",
+          "description": "Class/struct name"
+        },
+        "file_path": {
+          "type": "string"
+        },
+        "ui_framework": {
+          "type": "string",
+          "enum": ["uikit", "swiftui", "xml_views", "jetpack_compose"]
+        },
+        "screen_type": {
+          "type": "string",
+          "enum": ["list", "detail", "form", "dashboard", "auth", "settings", "onboarding", "modal", "tab_container", "other"]
+        },
+        "viewmodel_class": {
+          "type": "string",
+          "description": "Associated ViewModel/Presenter class name"
+        },
+        "viewmodel_path": {
+          "type": "string"
+        },
+        "storyboard_id": {
+          "type": "string",
+          "description": "iOS storyboard identifier if applicable"
+        },
+        "navigation_id": {
+          "type": "string",
+          "description": "Android navigation graph destination ID"
+        },
+        "is_entry_point": {
+          "type": "boolean"
+        },
+        "has_deep_link": {
+          "type": "boolean"
+        }
+      }
+    },
+    "BuildConfiguration": {
+      "type": "object",
+      "properties": {
+        "flavors": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "bundle_id": { "type": "string" },
+              "config_differences": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "build_types": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "signing_configs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "environment_configs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "base_url": { "type": "string" },
+              "feature_flags": { "type": "object" }
+            }
+          }
+        }
+      }
+    },
+    "Feature": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique feature identifier (used for Flutter package naming)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Human-readable feature name"
+        },
+        "description": {
+          "type": "string"
+        },
+        "platforms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["ios", "android"]
+          }
+        },
+        "ios_screens": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "References to NativeScreen.id"
+        },
+        "android_screens": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "References to NativeScreen.id"
+        },
+        "api_dependencies": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "API endpoint IDs this feature uses"
+        },
+        "data_model_dependencies": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Data model IDs this feature uses"
+        },
+        "platform_api_dependencies": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Platform API IDs this feature requires"
+        },
+        "feature_dependencies": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Other feature IDs this depends on"
+        },
+        "flutter_package": {
+          "type": "string",
+          "description": "Target Flutter package name (e.g., feature_auth)"
+        },
+        "complexity": {
+          "$ref": "#/definitions/ComplexityScore"
+        },
+        "effort_size": {
+          "$ref": "#/definitions/EffortSize",
+          "description": "T-shirt size estimate for migration effort"
+        },
+        "migration_status": {
+          "type": "string",
+          "enum": ["not_started", "in_progress", "blocked", "review", "complete"],
+          "default": "not_started"
+        },
+        "migration_notes": {
+          "type": "string"
+        },
+        "parity_notes": {
+          "type": "string",
+          "description": "Differences between iOS and Android implementations"
+        }
+      }
+    },
+    "DependencyInventory": {
+      "type": "object",
+      "properties": {
+        "ios": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/NativeDependency" }
+        },
+        "android": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/NativeDependency" }
+        }
+      }
+    },
+    "NativeDependency": {
+      "type": "object",
+      "required": ["name", "category"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "package_manager": {
+          "type": "string",
+          "enum": ["cocoapods", "spm", "carthage", "gradle", "maven"]
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "networking",
+            "state_management",
+            "dependency_injection",
+            "database",
+            "analytics",
+            "crash_reporting",
+            "authentication",
+            "ui_components",
+            "image_loading",
+            "json_parsing",
+            "reactive",
+            "logging",
+            "testing",
+            "security",
+            "push_notifications",
+            "payments",
+            "maps",
+            "video",
+            "ads",
+            "feature_flags",
+            "other"
+          ]
+        },
+        "flutter_equivalent": {
+          "type": "object",
+          "properties": {
+            "package_name": { "type": "string" },
+            "pub_dev_url": { "type": "string" },
+            "mapping_type": {
+              "type": "string",
+              "enum": ["drop_in", "similar", "partial", "custom", "none"]
+            },
+            "notes": { "type": "string" }
+          }
+        },
+        "usage_locations": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Feature IDs or file paths where this is used"
+        },
+        "migration_complexity": {
+          "$ref": "#/definitions/ComplexityScore"
+        },
+        "effort_size": {
+          "$ref": "#/definitions/EffortSize",
+          "description": "T-shirt size estimate for dependency migration"
+        }
+      }
+    },
+    "ApiInventory": {
+      "type": "object",
+      "properties": {
+        "swagger_source": {
+          "type": "string",
+          "description": "Path to Swagger/OpenAPI file if provided"
+        },
+        "swagger_version": {
+          "type": "string",
+          "enum": ["swagger_2.0", "openapi_3.0", "openapi_3.1"],
+          "description": "Swagger/OpenAPI specification version"
+        },
+        "endpoints_from_spec": {
+          "type": "boolean",
+          "description": "Whether endpoints were derived from Swagger/OpenAPI spec"
+        },
+        "base_urls": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "environment": { "type": "string" },
+              "url": { "type": "string" }
+            }
+          }
+        },
+        "authentication": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["none", "api_key", "bearer_token", "oauth2", "basic", "custom"]
+            },
+            "oauth_provider": { "type": "string" },
+            "token_storage": { "type": "string" },
+            "refresh_mechanism": { "type": "string" }
+          }
+        },
+        "endpoints": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ApiEndpoint" }
+        },
+        "http_client": {
+          "type": "object",
+          "properties": {
+            "ios": { "type": "string" },
+            "android": { "type": "string" },
+            "flutter_recommendation": { "type": "string" }
+          }
+        }
+      }
+    },
+    "ApiEndpoint": {
+      "type": "object",
+      "required": ["id", "method", "path"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string",
+          "enum": ["GET", "POST", "PUT", "PATCH", "DELETE"]
+        },
+        "path": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "request_model": {
+          "type": "string",
+          "description": "Reference to DataModel.id"
+        },
+        "response_model": {
+          "type": "string",
+          "description": "Reference to DataModel.id"
+        },
+        "used_by_features": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "requires_auth": {
+          "type": "boolean"
+        },
+        "pagination": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "enum": ["offset", "cursor", "page", "none"] },
+            "params": { "type": "object" }
+          }
+        }
+      }
+    },
+    "DataModel": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["entity", "dto", "request", "response", "local_entity", "enum"]
+        },
+        "ios_class": {
+          "type": "string"
+        },
+        "ios_path": {
+          "type": "string"
+        },
+        "android_class": {
+          "type": "string"
+        },
+        "android_path": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "type": { "type": "string" },
+              "nullable": { "type": "boolean" },
+              "json_key": { "type": "string" },
+              "ios_type": { "type": "string" },
+              "android_type": { "type": "string" },
+              "dart_type": { "type": "string" }
+            }
+          }
+        },
+        "flutter_package": {
+          "type": "string",
+          "description": "Target package (shared_models or feature-specific)"
+        },
+        "serialization_strategy": {
+          "type": "string",
+          "enum": ["json_serializable", "freezed", "manual"]
+        },
+        "parity_issues": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Differences between iOS and Android models"
+        }
+      }
+    },
+    "PlatformApiUsage": {
+      "type": "object",
+      "required": ["id", "api_name", "complexity"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "api_name": {
+          "type": "string",
+          "description": "e.g., HealthKit, ARCore, Push Notifications"
+        },
+        "platforms": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["ios", "android"] }
+        },
+        "ios_frameworks": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "android_apis": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "complexity": {
+          "$ref": "#/definitions/ComplexityScore"
+        },
+        "effort_size": {
+          "$ref": "#/definitions/EffortSize",
+          "description": "T-shirt size estimate for platform API integration"
+        },
+        "flutter_solution": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["plugin", "platform_channel", "ffi", "federated_plugin", "not_supported"]
+            },
+            "recommended_package": { "type": "string" },
+            "requires_custom_implementation": { "type": "boolean" },
+            "notes": { "type": "string" }
+          }
+        },
+        "used_by_features": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "permissions_required": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "TestingInfrastructure": {
+      "type": "object",
+      "description": "Testing infrastructure analysis for both platforms",
+      "properties": {
+        "ios": {
+          "type": "object",
+          "properties": {
+            "frameworks": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Testing frameworks (XCTest, Quick, Nimble, etc.)"
+            },
+            "coverage_percentage": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Test coverage percentage if available"
+            },
+            "mock_tools": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Mocking frameworks used"
+            },
+            "snapshot_testing": {
+              "type": "boolean",
+              "description": "Whether snapshot testing is used"
+            },
+            "ui_testing": {
+              "type": "boolean",
+              "description": "Whether UI tests (XCUITest) exist"
+            },
+            "test_organization": {
+              "type": "string",
+              "enum": ["by_feature", "by_type", "flat", "mixed"],
+              "description": "How tests are organized"
+            },
+            "test_count": {
+              "type": "object",
+              "properties": {
+                "unit": { "type": "integer" },
+                "integration": { "type": "integer" },
+                "ui": { "type": "integer" }
+              }
+            }
+          }
+        },
+        "android": {
+          "type": "object",
+          "properties": {
+            "frameworks": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Testing frameworks (JUnit, MockK, Mockito, etc.)"
+            },
+            "coverage_percentage": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100,
+              "description": "Test coverage percentage (JaCoCo) if available"
+            },
+            "mock_tools": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Mocking frameworks used"
+            },
+            "instrumented_tests": {
+              "type": "boolean",
+              "description": "Whether instrumented tests exist"
+            },
+            "espresso_tests": {
+              "type": "boolean",
+              "description": "Whether Espresso UI tests exist"
+            },
+            "test_organization": {
+              "type": "string",
+              "enum": ["by_feature", "by_type", "flat", "mixed"],
+              "description": "How tests are organized"
+            },
+            "test_count": {
+              "type": "object",
+              "properties": {
+                "unit": { "type": "integer" },
+                "integration": { "type": "integer" },
+                "ui": { "type": "integer" }
+              }
+            }
+          }
+        },
+        "flutter_recommendation": {
+          "type": "object",
+          "properties": {
+            "frameworks": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Recommended Flutter testing packages"
+            },
+            "coverage_target": {
+              "type": "number",
+              "description": "Target coverage percentage for Flutter"
+            },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "CicdConfiguration": {
+      "type": "object",
+      "description": "CI/CD configuration analysis",
+      "properties": {
+        "ios": {
+          "type": "object",
+          "properties": {
+            "build_automation": {
+              "type": "string",
+              "enum": ["fastlane", "xcode_cloud", "bitrise", "github_actions", "jenkins", "circleci", "none"],
+              "description": "Primary build automation tool"
+            },
+            "fastlane_lanes": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Available Fastlane lanes"
+            },
+            "code_signing": {
+              "type": "string",
+              "enum": ["match", "manual", "automatic", "fastlane_match"],
+              "description": "Code signing approach"
+            },
+            "deployment_targets": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Where builds are deployed (TestFlight, App Store, etc.)"
+            },
+            "ci_provider": {
+              "type": "string",
+              "description": "CI service used"
+            }
+          }
+        },
+        "android": {
+          "type": "object",
+          "properties": {
+            "build_automation": {
+              "type": "string",
+              "enum": ["fastlane", "github_actions", "bitrise", "jenkins", "circleci", "gradle_play_publisher", "none"],
+              "description": "Primary build automation tool"
+            },
+            "fastlane_lanes": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Available Fastlane lanes"
+            },
+            "signing_configs": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Signing configurations defined"
+            },
+            "product_flavors": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Product flavors defined"
+            },
+            "deployment_targets": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Where builds are deployed (Play Store, Firebase, etc.)"
+            },
+            "ci_provider": {
+              "type": "string",
+              "description": "CI service used"
+            }
+          }
+        },
+        "secrets_management": {
+          "type": "string",
+          "enum": ["environment_variables", "vault", "github_secrets", "fastlane_match", "manual"],
+          "description": "How secrets are managed"
+        },
+        "flutter_recommendation": {
+          "type": "object",
+          "properties": {
+            "suggested_ci": { "type": "string" },
+            "codemagic_compatible": { "type": "boolean" },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "LocalizationAnalysis": {
+      "type": "object",
+      "description": "Localization and internationalization analysis",
+      "properties": {
+        "ios": {
+          "type": "object",
+          "properties": {
+            "format": {
+              "type": "string",
+              "enum": ["strings", "xcstrings", "stringsdict", "mixed"],
+              "description": "Localization file format"
+            },
+            "supported_locales": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "List of supported locale codes"
+            },
+            "string_count": {
+              "type": "integer",
+              "description": "Approximate number of localized strings"
+            },
+            "uses_swiftgen": {
+              "type": "boolean",
+              "description": "Whether SwiftGen is used for type-safe access"
+            },
+            "pluralization": {
+              "type": "boolean",
+              "description": "Whether plural forms are handled"
+            },
+            "rtl_support": {
+              "type": "boolean",
+              "description": "Whether RTL languages are supported"
+            }
+          }
+        },
+        "android": {
+          "type": "object",
+          "properties": {
+            "supported_locales": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "List of supported locale codes (from res/values-XX)"
+            },
+            "string_count": {
+              "type": "integer",
+              "description": "Approximate number of localized strings"
+            },
+            "res_configs": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "resConfigs defined in build.gradle"
+            },
+            "pluralization": {
+              "type": "boolean",
+              "description": "Whether plurals.xml is used"
+            },
+            "rtl_support": {
+              "type": "boolean",
+              "description": "Whether supportsRtl is enabled"
+            }
+          }
+        },
+        "parity": {
+          "type": "object",
+          "properties": {
+            "matching_locales": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Locales supported on both platforms"
+            },
+            "ios_only_locales": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "android_only_locales": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "flutter_recommendation": {
+          "type": "object",
+          "properties": {
+            "package": {
+              "type": "string",
+              "description": "Recommended localization package (flutter_localizations, easy_localization, etc.)"
+            },
+            "arb_generation": {
+              "type": "boolean",
+              "description": "Whether ARB files can be auto-generated from native strings"
+            },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "AccessibilityAnalysis": {
+      "type": "object",
+      "description": "Accessibility implementation analysis",
+      "properties": {
+        "ios": {
+          "type": "object",
+          "properties": {
+            "accessibility_labels": {
+              "type": "boolean",
+              "description": "Whether accessibilityLabel is consistently used"
+            },
+            "accessibility_traits": {
+              "type": "boolean",
+              "description": "Whether accessibilityTraits are properly set"
+            },
+            "voiceover_support": {
+              "type": "string",
+              "enum": ["none", "partial", "full"],
+              "description": "Level of VoiceOver support"
+            },
+            "dynamic_type": {
+              "type": "boolean",
+              "description": "Whether Dynamic Type (font scaling) is supported"
+            },
+            "reduce_motion": {
+              "type": "boolean",
+              "description": "Whether Reduce Motion preference is respected"
+            },
+            "accessibility_audit_issues": {
+              "type": "integer",
+              "description": "Number of accessibility issues detected"
+            }
+          }
+        },
+        "android": {
+          "type": "object",
+          "properties": {
+            "content_descriptions": {
+              "type": "boolean",
+              "description": "Whether contentDescription is consistently used"
+            },
+            "talkback_support": {
+              "type": "string",
+              "enum": ["none", "partial", "full"],
+              "description": "Level of TalkBack support"
+            },
+            "font_scaling": {
+              "type": "boolean",
+              "description": "Whether font scaling is supported (sp units)"
+            },
+            "touch_target_size": {
+              "type": "boolean",
+              "description": "Whether minimum touch target sizes are met"
+            },
+            "accessibility_scanner_issues": {
+              "type": "integer",
+              "description": "Number of issues from Accessibility Scanner"
+            }
+          }
+        },
+        "compliance_level": {
+          "type": "string",
+          "enum": ["none", "wcag_a", "wcag_aa", "wcag_aaa"],
+          "description": "Estimated WCAG compliance level"
+        },
+        "flutter_recommendation": {
+          "type": "object",
+          "properties": {
+            "semantics_usage": { "type": "string" },
+            "packages": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "AnalyticsTracking": {
+      "type": "object",
+      "description": "Analytics and event tracking analysis",
+      "properties": {
+        "providers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "description": "Provider name (Firebase, Mixpanel, Amplitude, etc.)"
+              },
+              "platforms": {
+                "type": "array",
+                "items": { "type": "string", "enum": ["ios", "android"] }
+              },
+              "flutter_equivalent": {
+                "type": "string",
+                "description": "Flutter package for this provider"
+              }
+            }
+          }
+        },
+        "event_patterns": {
+          "type": "object",
+          "properties": {
+            "naming_convention": {
+              "type": "string",
+              "description": "Event naming pattern (snake_case, camelCase, etc.)"
+            },
+            "event_count": {
+              "type": "integer",
+              "description": "Approximate number of tracked events"
+            },
+            "user_properties": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "User properties being tracked"
+            }
+          }
+        },
+        "privacy_compliance": {
+          "type": "object",
+          "properties": {
+            "gdpr_consent": {
+              "type": "boolean",
+              "description": "Whether GDPR consent is implemented"
+            },
+            "att_prompt": {
+              "type": "boolean",
+              "description": "iOS App Tracking Transparency prompt"
+            },
+            "data_deletion": {
+              "type": "boolean",
+              "description": "Whether data deletion is supported"
+            }
+          }
+        },
+        "flutter_recommendation": {
+          "type": "object",
+          "properties": {
+            "packages": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "ErrorHandlingAnalysis": {
+      "type": "object",
+      "description": "Error handling and crash reporting analysis",
+      "properties": {
+        "crash_reporting": {
+          "type": "object",
+          "properties": {
+            "provider": {
+              "type": "string",
+              "description": "Crash reporting service (Crashlytics, Sentry, Bugsnag, etc.)"
+            },
+            "platforms": {
+              "type": "array",
+              "items": { "type": "string", "enum": ["ios", "android"] }
+            },
+            "flutter_equivalent": {
+              "type": "string"
+            }
+          }
+        },
+        "ios": {
+          "type": "object",
+          "properties": {
+            "error_types": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Custom error types defined"
+            },
+            "result_pattern": {
+              "type": "boolean",
+              "description": "Whether Result type pattern is used"
+            },
+            "global_error_handler": {
+              "type": "boolean",
+              "description": "Whether a global error handler exists"
+            },
+            "retry_patterns": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Retry patterns observed"
+            }
+          }
+        },
+        "android": {
+          "type": "object",
+          "properties": {
+            "error_types": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Custom exception classes defined"
+            },
+            "coroutine_exception_handler": {
+              "type": "boolean",
+              "description": "Whether CoroutineExceptionHandler is used"
+            },
+            "global_error_handler": {
+              "type": "boolean",
+              "description": "Whether Thread.setDefaultUncaughtExceptionHandler is set"
+            },
+            "retry_patterns": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Retry patterns observed"
+            }
+          }
+        },
+        "logging": {
+          "type": "object",
+          "properties": {
+            "ios_framework": {
+              "type": "string",
+              "description": "Logging framework (OSLog, CocoaLumberjack, etc.)"
+            },
+            "android_framework": {
+              "type": "string",
+              "description": "Logging framework (Timber, slf4j, etc.)"
+            },
+            "log_levels_used": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "flutter_recommendation": {
+          "type": "object",
+          "properties": {
+            "crash_reporting_package": { "type": "string" },
+            "logging_package": { "type": "string" },
+            "error_handling_pattern": { "type": "string" },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "StartupSequence": {
+      "type": "object",
+      "description": "App initialization sequence analysis",
+      "properties": {
+        "ios": {
+          "type": "object",
+          "properties": {
+            "entry_point": {
+              "type": "string",
+              "description": "Main entry point (AppDelegate, @main struct)"
+            },
+            "initialization_steps": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/InitStep" },
+              "description": "Ordered list of initialization steps"
+            },
+            "uses_scene_delegate": {
+              "type": "boolean",
+              "description": "Whether SceneDelegate is used for multi-scene support"
+            },
+            "splash_screen_type": {
+              "type": "string",
+              "enum": ["launch_storyboard", "launch_screen_xib", "programmatic"],
+              "description": "Type of splash screen implementation"
+            },
+            "pre_main_operations": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Operations before main() (load commands, static initializers)"
+            }
+          }
+        },
+        "android": {
+          "type": "object",
+          "properties": {
+            "application_class": {
+              "type": "string",
+              "description": "Custom Application class if any"
+            },
+            "initialization_steps": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/InitStep" },
+              "description": "Ordered list of initialization steps"
+            },
+            "uses_content_providers": {
+              "type": "boolean",
+              "description": "Whether ContentProviders are used for initialization"
+            },
+            "startup_initializers": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "App Startup library initializers"
+            },
+            "splash_screen_type": {
+              "type": "string",
+              "enum": ["splash_screen_api", "legacy_theme", "activity"],
+              "description": "Splash screen implementation type"
+            }
+          }
+        },
+        "critical_path": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Initialization steps that block app display"
+        },
+        "blocking_operations": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Operations running on main thread during startup"
+        },
+        "estimated_cold_start_time": {
+          "type": "object",
+          "properties": {
+            "ios_ms": { "type": "integer" },
+            "android_ms": { "type": "integer" }
+          },
+          "description": "Estimated cold start time in milliseconds"
+        },
+        "flutter_recommendation": {
+          "type": "object",
+          "properties": {
+            "initialization_pattern": {
+              "type": "string",
+              "description": "Recommended Flutter initialization approach"
+            },
+            "suggested_packages": {
+              "type": "array",
+              "items": { "type": "string" },
+              "description": "Packages to help with initialization"
+            },
+            "native_splash_approach": {
+              "type": "string",
+              "description": "Recommended native splash screen handling"
+            },
+            "notes": { "type": "string" }
+          }
+        }
+      }
+    },
+    "InitStep": {
+      "type": "object",
+      "description": "A single initialization step in the startup sequence",
+      "required": ["name", "order"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the initialization step"
+        },
+        "order": {
+          "type": "integer",
+          "description": "Order in the initialization sequence"
+        },
+        "description": {
+          "type": "string",
+          "description": "What this step initializes"
+        },
+        "blocking": {
+          "type": "boolean",
+          "description": "Whether this step blocks the main thread"
+        },
+        "async": {
+          "type": "boolean",
+          "description": "Whether this step runs asynchronously"
+        },
+        "dependencies": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Other init steps this depends on"
+        },
+        "estimated_duration_ms": {
+          "type": "integer",
+          "description": "Estimated duration in milliseconds"
+        }
+      }
+    },
+    "MigrationPlan": {
+      "type": "object",
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "enum": ["big_bang", "strangler_fig", "parallel", "feature_by_feature"],
+          "description": "Overall migration approach"
+        },
+        "phases": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/MigrationPhase" }
+        },
+        "critical_path": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Feature IDs that must be completed in order"
+        },
+        "parallelizable_features": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "description": "Groups of feature IDs that can be migrated in parallel"
+        },
+        "risks": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Risk" },
+          "description": "Migration risks with detailed rationale"
+        },
+        "spikes_needed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "effort_size": { "$ref": "#/definitions/EffortSize" },
+              "blocks_features": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        },
+        "total_effort_size": {
+          "$ref": "#/definitions/EffortSize",
+          "description": "Overall migration effort t-shirt size"
+        }
+      }
+    },
+    "MigrationPhase": {
+      "type": "object",
+      "required": ["id", "name", "features"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "features": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Feature IDs in this phase"
+        },
+        "prerequisites": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Phase IDs that must complete first"
+        },
+        "deliverables": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "effort_size": {
+          "$ref": "#/definitions/EffortSize",
+          "description": "T-shirt size for this phase"
+        },
+        "team_size_recommendation": {
+          "type": "integer"
+        }
+      }
+    },
+    "ProductRequirementsDocument": {
+      "type": "object",
+      "description": "Auto-generated PRD from codebase analysis",
+      "properties": {
+        "app_name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "description": "App description inferred from analysis"
+        },
+        "business_domain": {
+          "type": "string",
+          "description": "Business domain (e.g., health, finance, social)"
+        },
+        "target_platforms": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "user_personas": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "primary_use_cases": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          },
+          "description": "Inferred user personas"
+        },
+        "core_features": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "feature_id": { "type": "string" },
+              "name": { "type": "string" },
+              "description": { "type": "string" },
+              "priority": {
+                "type": "string",
+                "enum": ["P0", "P1", "P2", "P3"]
+              },
+              "user_stories": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "acceptance_criteria": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            }
+          }
+        },
+        "non_functional_requirements": {
+          "type": "object",
+          "properties": {
+            "performance": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "security": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "accessibility": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "localization": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "technical_constraints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Technical constraints from platform API usage"
+        },
+        "out_of_scope": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Features not detected in codebase"
+        },
+        "open_questions": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ambiguities found during analysis"
+        }
+      }
+    },
+    "FeatureReport": {
+      "type": "object",
+      "description": "Per-feature detailed report",
+      "required": ["feature_id", "path"],
+      "properties": {
+        "feature_id": {
+          "type": "string",
+          "description": "Reference to Feature.id"
+        },
+        "path": {
+          "type": "string",
+          "description": "Path to feature report directory"
+        },
+        "files": {
+          "type": "object",
+          "properties": {
+            "analysis": {
+              "type": "string",
+              "description": "Path to ANALYSIS.md"
+            },
+            "screens": {
+              "type": "string",
+              "description": "Path to screens.yaml"
+            },
+            "dependencies": {
+              "type": "string",
+              "description": "Path to dependencies.yaml"
+            },
+            "api_endpoints": {
+              "type": "string",
+              "description": "Path to api_endpoints.yaml"
+            },
+            "data_models": {
+              "type": "string",
+              "description": "Path to data_models.yaml"
+            },
+            "migration_notes": {
+              "type": "string",
+              "description": "Path to migration_notes.md"
+            }
+          }
+        }
+      }
+    },
+    "ComplexityScore": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "1=Trivial, 2=Simple, 3=Moderate, 4=Complex, 5=Very Complex"
+    }
+  }
+}

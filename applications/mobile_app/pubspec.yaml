@@ -7,11 +7,20 @@ environment:
   sdk: ^3.10.4
 
 dependencies:
+  bloc: ^9.0.0
+  dart_mappable: ^4.6.1
   flutter:
     sdk: flutter
+  flutter_bloc: ^9.1.1
+  menu_repository:
+    path: ../../shared/menu_repository
+  very_yummy_coffee_ui:
+    path: ../../shared/very_yummy_coffee_ui
 
 dev_dependencies:
   bloc_lint: ^0.3.6
+  build_runner: ^2.11.1
+  dart_mappable_builder: ^4.6.4
   flutter_test:
     sdk: flutter
   very_good_analysis: ^10.0.0
