@@ -48,7 +48,7 @@
     "**/macos/**",
     "**/*.excalidraw",
     "**/*.pen",
-    "**/skills/vgv-analyze-native-codebase/**",
+    "**/skills/**",
     "ai-coding/**"
   ],
   "useGitignore": true,
