@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 class AppSpacing extends ThemeExtension<AppSpacing> {
   /// {@macro app_spacing}
   const AppSpacing({
+    required this.xxs,
     required this.xs,
     required this.sm,
     required this.md,
@@ -13,6 +14,9 @@ class AppSpacing extends ThemeExtension<AppSpacing> {
     required this.xxl,
     required this.huge,
   });
+
+  /// Extra extra small spacing.
+  final double xxs;
 
   /// Extra small spacing.
   final double xs;
@@ -37,6 +41,7 @@ class AppSpacing extends ThemeExtension<AppSpacing> {
 
   @override
   AppSpacing copyWith({
+    double? xxs,
     double? xs,
     double? sm,
     double? md,
@@ -46,6 +51,7 @@ class AppSpacing extends ThemeExtension<AppSpacing> {
     double? huge,
   }) {
     return AppSpacing(
+      xxs: xxs ?? this.xxs,
       xs: xs ?? this.xs,
       sm: sm ?? this.sm,
       md: md ?? this.md,
@@ -62,6 +68,7 @@ class AppSpacing extends ThemeExtension<AppSpacing> {
       return this;
     }
     return AppSpacing(
+      xxs: lerpDouble(xxs, other.xxs, t) ?? xxs,
       xs: lerpDouble(xs, other.xs, t) ?? xs,
       sm: lerpDouble(sm, other.sm, t) ?? sm,
       md: lerpDouble(md, other.md, t) ?? md,

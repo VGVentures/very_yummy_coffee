@@ -9,6 +9,8 @@ class AppIconSize extends ThemeExtension<AppIconSize> {
     required this.medium,
     required this.large,
     required this.largeSelected,
+    required this.tapTarget,
+    required this.imageThumbnail,
   });
 
   /// Small icon size.
@@ -23,18 +25,28 @@ class AppIconSize extends ThemeExtension<AppIconSize> {
   /// Large icon size (selected).
   final double largeSelected;
 
+  /// Minimum tap target size for icon buttons.
+  final double tapTarget;
+
+  /// Size for small image thumbnails/placeholders.
+  final double imageThumbnail;
+
   @override
   AppIconSize copyWith({
     double? small,
     double? medium,
     double? large,
     double? largeSelected,
+    double? tapTarget,
+    double? imageThumbnail,
   }) {
     return AppIconSize(
       small: small ?? this.small,
       medium: medium ?? this.medium,
       large: large ?? this.large,
       largeSelected: largeSelected ?? this.largeSelected,
+      tapTarget: tapTarget ?? this.tapTarget,
+      imageThumbnail: imageThumbnail ?? this.imageThumbnail,
     );
   }
 
@@ -49,6 +61,9 @@ class AppIconSize extends ThemeExtension<AppIconSize> {
       large: lerpDouble(large, other.large, t) ?? large,
       largeSelected:
           lerpDouble(largeSelected, other.largeSelected, t) ?? largeSelected,
+      tapTarget: lerpDouble(tapTarget, other.tapTarget, t) ?? tapTarget,
+      imageThumbnail:
+          lerpDouble(imageThumbnail, other.imageThumbnail, t) ?? imageThumbnail,
     );
   }
 }
