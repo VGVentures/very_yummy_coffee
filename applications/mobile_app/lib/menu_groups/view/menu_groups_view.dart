@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:menu_repository/menu_repository.dart';
+import 'package:very_yummy_coffee_mobile_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
@@ -25,7 +26,7 @@ class MenuGroupsView extends StatelessWidget {
                   ),
                   MenuGroupsStatus.failure => Center(
                     child: Text(
-                      'Something went wrong',
+                      context.l10n.errorSomethingWentWrong,
                       style: context.typography.body,
                     ),
                   ),
@@ -54,7 +55,7 @@ class _Header extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(context.spacing.xl),
           child: Text(
-            'Very Yummy Coffee',
+            context.l10n.appTitle,
             style: context.typography.headline.copyWith(
               fontSize: 22,
               color: context.colors.primaryForeground,
