@@ -13,7 +13,6 @@ import 'package:very_yummy_coffee_models/very_yummy_coffee_models.dart';
 class ServerState {
   List<Map<String, dynamic>> _menuGroups = [];
   List<Map<String, dynamic>> _menuItems = [];
-  bool _menuLoaded = false;
 
   // orderId -> order map (raw JSON-compatible maps)
   final Map<String, Map<String, dynamic>> _orders = {};
@@ -21,15 +20,13 @@ class ServerState {
   // topic -> set of connected sinks
   final Map<String, Set<StreamSink<dynamic>>> _subs = {};
 
-  /// Loads menu data from the fixture file if not already loaded.
-  void loadMenuIfNeeded() {
-    if (_menuLoaded) return;
+  /// Loads menu data from the fixture file. Called once at server startup.
+  void loadMenu() {
     final fixture = jsonDecode(
       File('fixtures/menu.json').readAsStringSync(),
     ) as Map<String, dynamic>;
     _menuGroups = (fixture['groups'] as List<dynamic>).map((e) {
       final map = e as Map<String, dynamic>;
-      // Ensure the group can be serialized via the mapper to validate data
       MenuGroupMapper.fromMap(map);
       return map;
     }).toList();
@@ -38,7 +35,6 @@ class ServerState {
       MenuItemMapper.fromMap(map);
       return map;
     }).toList();
-    _menuLoaded = true;
   }
 
   /// Adds [sink] as a subscriber to [topic].
@@ -75,7 +71,6 @@ class ServerState {
   /// Returns a snapshot of the current state for [topic].
   Map<String, dynamic> snapshotForTopic(String topic) {
     if (topic == 'menu') {
-      loadMenuIfNeeded();
       return {'groups': _menuGroups, 'items': _menuItems};
     }
     if (topic == 'orders') {
