@@ -1,2 +1,2 @@
 export 'app.dart';
-export 'app_view.dart';
+export 'connecting_page.dart';
