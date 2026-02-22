@@ -1,0 +1,11 @@
+{
+  "@@locale": "en",
+  "appTitle": "Very Yummy Coffee",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "errorSomethingWentWrong": "Something went wrong",
+  "@errorSomethingWentWrong": {
+    "description": "Generic error message shown when an unexpected failure occurs"
+  }
+}
