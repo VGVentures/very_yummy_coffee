@@ -19,6 +19,14 @@
         "@railway/mcp-server"
       ],
       "env": {}
+    },
+    "ios-simulator": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "ios-simulator-mcp"
+      ],
+      "env": {}
     }
   }
 }

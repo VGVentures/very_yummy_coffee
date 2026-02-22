@@ -13,7 +13,9 @@ on:
       - ".github/workflows/very_yummy_coffee_mobile_app_verify_and_test.yaml"
       - "applications/mobile_app/**"
       - "shared/api_client/**"
+      - "shared/connection_repository/**"
       - "shared/menu_repository/**"
+      - "shared/order_repository/**"
       - "shared/very_yummy_coffee_models/**"
       - "shared/very_yummy_coffee_ui/**"
   push:
@@ -24,7 +26,9 @@ on:
       - ".github/workflows/**"
       - "applications/mobile_app/**"
       - "shared/api_client/**"
+      - "shared/connection_repository/**"
       - "shared/menu_repository/**"
+      - "shared/order_repository/**"
       - "shared/very_yummy_coffee_models/**"
       - "shared/very_yummy_coffee_ui/**"
 
@@ -55,15 +59,12 @@ jobs:
           very_good packages get --recursive --ignore=!*
 
       - name: ✨ Check Formatting
-        run: dart format --set-exit-if-changed lib test
+        run: dart format --set-exit-if-changed lib
       
       - name: 🕵️ Analyze
-        run: flutter analyze lib test
+        run: flutter analyze lib
 
       - name: ✅ Bloc Lint
         run: |
           flutter pub global activate bloc_tools
           bloc lint .
-
-      - name: 🧪 Run Tests
-        run: very_good test -j 4 --optimization --coverage --test-randomize-ordering-seed random

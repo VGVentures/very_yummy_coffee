@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:api_client/api_client.dart';
+import 'package:web_socket_client/web_socket_client.dart';
 
 /// {@template ws_rpc_client}
 /// A WebSocket-based RPC client that multiplexes multiple topic subscriptions
@@ -35,6 +36,12 @@ class WsRpcClient {
   final LiveConnection<Map<String, dynamic>> _connection;
   final Map<String, StreamController<Map<String, dynamic>>> _controllers = {};
   StreamSubscription<Map<String, dynamic>>? _inboundSub;
+
+  /// Emits true when the WebSocket is connected or reconnected,
+  /// and false when it disconnects.
+  Stream<bool> get isConnected => _connection.connection.map(
+    (state) => state is Connected || state is Reconnected,
+  );
 
   /// Returns a broadcast stream of update payloads for [topic].
   ///
