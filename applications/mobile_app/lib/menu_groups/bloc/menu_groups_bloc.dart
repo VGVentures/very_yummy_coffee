@@ -3,18 +3,8 @@ import 'package:dart_mappable/dart_mappable.dart';
 import 'package:menu_repository/menu_repository.dart';
 
 part 'menu_groups_bloc.mapper.dart';
+part 'menu_groups_event.dart';
 part 'menu_groups_state.dart';
-
-@MappableClass()
-abstract class MenuGroupsEvent with MenuGroupsEventMappable {
-  const MenuGroupsEvent();
-}
-
-@MappableClass()
-class MenuGroupsSubscriptionRequested extends MenuGroupsEvent
-    with MenuGroupsSubscriptionRequestedMappable {
-  const MenuGroupsSubscriptionRequested();
-}
 
 class MenuGroupsBloc extends Bloc<MenuGroupsEvent, MenuGroupsState> {
   MenuGroupsBloc({required MenuRepository menuRepository})

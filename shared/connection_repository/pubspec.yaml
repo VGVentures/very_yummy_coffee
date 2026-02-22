@@ -1,0 +1,16 @@
+name: connection_repository
+description: A repository managing the WebSocket connection state.
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  api_client:
+    path: ../api_client
+
+dev_dependencies:
+  mocktail: ^1.0.4
+  test: ^1.29.0
+  very_good_analysis: ^10.2.0

@@ -40,6 +40,9 @@ class LiveConnection<From> {
   final WebSocket _socket;
   final FromJson<From> _responseFromJson;
 
+  /// The stream of connection state changes.
+  Stream<ConnectionState> get connection => _socket.connection;
+
   /// The stream of responses from the server.
   Stream<From> get stream => _socket.messages.map((event) {
     return _responseFromJson(event as String);
