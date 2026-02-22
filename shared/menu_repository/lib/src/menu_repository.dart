@@ -26,7 +26,7 @@ class _MenuCache {
 class MenuRepository {
   /// {@macro menu_repository}
   MenuRepository({required WsRpcClient wsRpcClient})
-      : _wsRpcClient = wsRpcClient;
+    : _wsRpcClient = wsRpcClient;
 
   final WsRpcClient _wsRpcClient;
 
@@ -41,7 +41,7 @@ class MenuRepository {
   /// the WebSocket subscription is closed.
   Stream<List<MenuGroup>> getMenuGroups() => Rx.defer(() {
     _initMenuIfNeeded();
-    _menuListenerCount++;
+    _menuListenerCount += 1;
     return _menuSubject!.stream
         .map((cache) => cache.groups)
         .doOnCancel(_decrementMenuCount);
@@ -52,7 +52,7 @@ class MenuRepository {
   /// Shares the same underlying WebSocket subscription as [getMenuGroups].
   Stream<List<MenuItem>> getMenuItems(String groupId) => Rx.defer(() {
     _initMenuIfNeeded();
-    _menuListenerCount++;
+    _menuListenerCount += 1;
     return _menuSubject!.stream
         .map((cache) => cache.itemsForGroup(groupId))
         .doOnCancel(_decrementMenuCount);
@@ -82,7 +82,7 @@ class MenuRepository {
   }
 
   void _decrementMenuCount() {
-    _menuListenerCount--;
+    _menuListenerCount -= 1;
     if (_menuListenerCount == 0) {
       _wsRpcClient.unsubscribe('menu');
       unawaited(_menuWsSub?.cancel());
