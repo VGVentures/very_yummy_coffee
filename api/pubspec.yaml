@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   dart_frog: ^1.1.0
+  dart_frog_web_socket: ^1.0.3
   very_yummy_coffee_models:
     path: ../shared/very_yummy_coffee_models
 

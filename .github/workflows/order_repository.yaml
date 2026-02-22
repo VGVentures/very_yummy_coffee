@@ -12,7 +12,7 @@ on:
     paths:
       - ".github/workflows/order_repository_verify_and_test.yaml"
       - "shared/order_repository/**"
-
+      - "shared/api_client/**"
   push:
     branches:
       - master
@@ -20,7 +20,7 @@ on:
     paths:
       - ".github/workflows/**"
       - "shared/order_repository/**"
-
+      - "shared/api_client/**"
 
 jobs:
   verify_and_test:

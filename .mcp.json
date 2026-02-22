@@ -11,6 +11,14 @@
       "args": [
         "mcp"
       ]
+    },
+    "Railway": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@railway/mcp-server"
+      ],
+      "env": {}
     }
   }
 }
