@@ -15,8 +15,9 @@ void main() {
     });
 
     test('initial state is AppState with AppStatus.initial', () {
-      when(() => connectionRepository.isConnected)
-          .thenAnswer((_) => const Stream.empty());
+      when(
+        () => connectionRepository.isConnected,
+      ).thenAnswer((_) => const Stream.empty());
       expect(
         AppBloc(connectionRepository: connectionRepository).state,
         const AppState(),
@@ -27,8 +28,9 @@ void main() {
       blocTest<AppBloc, AppState>(
         'emits [connected] when isConnected emits true',
         build: () {
-          when(() => connectionRepository.isConnected)
-              .thenAnswer((_) => Stream.value(true));
+          when(
+            () => connectionRepository.isConnected,
+          ).thenAnswer((_) => Stream.value(true));
           return AppBloc(connectionRepository: connectionRepository);
         },
         act: (bloc) => bloc.add(const AppStarted()),
@@ -38,8 +40,9 @@ void main() {
       blocTest<AppBloc, AppState>(
         'emits [disconnected] when isConnected emits false',
         build: () {
-          when(() => connectionRepository.isConnected)
-              .thenAnswer((_) => Stream.value(false));
+          when(
+            () => connectionRepository.isConnected,
+          ).thenAnswer((_) => Stream.value(false));
           return AppBloc(connectionRepository: connectionRepository);
         },
         act: (bloc) => bloc.add(const AppStarted()),
@@ -49,8 +52,9 @@ void main() {
       blocTest<AppBloc, AppState>(
         'emits [connected, disconnected] when connection drops',
         build: () {
-          when(() => connectionRepository.isConnected)
-              .thenAnswer((_) => Stream.fromIterable([true, false]));
+          when(
+            () => connectionRepository.isConnected,
+          ).thenAnswer((_) => Stream.fromIterable([true, false]));
           return AppBloc(connectionRepository: connectionRepository);
         },
         act: (bloc) => bloc.add(const AppStarted()),
@@ -63,8 +67,9 @@ void main() {
       blocTest<AppBloc, AppState>(
         'emits [disconnected, connected] when connection recovers',
         build: () {
-          when(() => connectionRepository.isConnected)
-              .thenAnswer((_) => Stream.fromIterable([false, true]));
+          when(
+            () => connectionRepository.isConnected,
+          ).thenAnswer((_) => Stream.fromIterable([false, true]));
           return AppBloc(connectionRepository: connectionRepository);
         },
         act: (bloc) => bloc.add(const AppStarted()),
