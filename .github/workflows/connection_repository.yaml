@@ -1,0 +1,55 @@
+name: Connection Repository Verify and Test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    branches:
+      - master
+      - main
+    paths:
+      - ".github/workflows/connection_repository_verify_and_test.yaml"
+      - "shared/connection_repository/**"
+      - "shared/api_client/**"
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - ".github/workflows/**"
+      - "shared/connection_repository/**"
+      - "shared/api_client/**"
+
+jobs:
+  verify_and_test:
+    name: Verify and Test
+    defaults:
+      run:
+        working-directory: shared/connection_repository
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v6
+
+      - name: 🎯 Setup Dart
+        uses: dart-lang/setup-dart@v1
+        with:
+          sdk: stable
+
+      - name: 📦 Install Dependencies
+        run: dart pub get
+
+      - name: ✨ Check Formatting
+        run: dart format --set-exit-if-changed lib test
+      
+      - name: 🕵️ Analyze
+        run: dart analyze --fatal-infos --fatal-warnings lib test
+
+      - name: 🧪 Run Tests
+        run: |
+          dart pub global activate coverage 1.15.0
+          dart test -j 4 --coverage=coverage --platform=vm && dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
