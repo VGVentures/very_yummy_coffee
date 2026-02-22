@@ -18,6 +18,7 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.warning,
     required this.navBarBackground,
     required this.navBarInactive,
+    required this.imagePlaceholder,
   });
 
   /// Primary brand color.
@@ -62,6 +63,9 @@ class AppColors extends ThemeExtension<AppColors> {
   /// Navigation bar inactive item color.
   final Color navBarInactive;
 
+  /// Background color for image placeholder areas.
+  final Color imagePlaceholder;
+
   @override
   AppColors copyWith({
     Color? primary,
@@ -78,6 +82,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? warning,
     Color? navBarBackground,
     Color? navBarInactive,
+    Color? imagePlaceholder,
   }) {
     return AppColors(
       primary: primary ?? this.primary,
@@ -94,6 +99,7 @@ class AppColors extends ThemeExtension<AppColors> {
       warning: warning ?? this.warning,
       navBarBackground: navBarBackground ?? this.navBarBackground,
       navBarInactive: navBarInactive ?? this.navBarInactive,
+      imagePlaceholder: imagePlaceholder ?? this.imagePlaceholder,
     );
   }
 
@@ -124,6 +130,9 @@ class AppColors extends ThemeExtension<AppColors> {
           navBarBackground,
       navBarInactive:
           Color.lerp(navBarInactive, other.navBarInactive, t) ?? navBarInactive,
+      imagePlaceholder:
+          Color.lerp(imagePlaceholder, other.imagePlaceholder, t) ??
+          imagePlaceholder,
     );
   }
 }

@@ -5,6 +5,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
   /// {@macro app_typography}
   const AppTypography({
     required this.sectionTitle,
+    required this.pageTitle,
     required this.headline,
     required this.subtitle,
     required this.body,
@@ -18,6 +19,9 @@ class AppTypography extends ThemeExtension<AppTypography> {
 
   /// Section title style.
   final TextStyle sectionTitle;
+
+  /// Page title style (22px, used in screen headers).
+  final TextStyle pageTitle;
 
   /// Headline style.
   final TextStyle headline;
@@ -49,6 +53,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
   @override
   AppTypography copyWith({
     TextStyle? sectionTitle,
+    TextStyle? pageTitle,
     TextStyle? headline,
     TextStyle? subtitle,
     TextStyle? body,
@@ -61,6 +66,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
   }) {
     return AppTypography(
       sectionTitle: sectionTitle ?? this.sectionTitle,
+      pageTitle: pageTitle ?? this.pageTitle,
       headline: headline ?? this.headline,
       subtitle: subtitle ?? this.subtitle,
       body: body ?? this.body,
@@ -82,6 +88,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     return AppTypography(
       sectionTitle:
           TextStyle.lerp(sectionTitle, other.sectionTitle, t) ?? sectionTitle,
+      pageTitle: TextStyle.lerp(pageTitle, other.pageTitle, t) ?? pageTitle,
       headline: TextStyle.lerp(headline, other.headline, t) ?? headline,
       subtitle: TextStyle.lerp(subtitle, other.subtitle, t) ?? subtitle,
       body: TextStyle.lerp(body, other.body, t) ?? body,

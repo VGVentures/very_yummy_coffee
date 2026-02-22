@@ -30,9 +30,17 @@ abstract class CoffeeTheme {
       warning: Color(0xFFD4A354),
       navBarBackground: Color(0xFF4A2A22),
       navBarInactive: Color(0xFFB8A99A),
+      imagePlaceholder: Color(0xFFE8DDD6),
     );
 
     const typography = AppTypography(
+      pageTitle: TextStyle(
+        fontFamily: 'IBM Plex Sans',
+        fontSize: 22,
+        fontWeight: FontWeight.w600,
+        color: Color(0xFF4A2A22),
+        height: 1.3,
+      ),
       sectionTitle: TextStyle(
         fontFamily: 'IBM Plex Sans',
         fontSize: 32,
@@ -104,6 +112,7 @@ abstract class CoffeeTheme {
     );
 
     const spacing = AppSpacing(
+      xxs: 2,
       xs: 4,
       sm: 8,
       md: 12,
@@ -125,6 +134,8 @@ abstract class CoffeeTheme {
       medium: 16,
       large: 24,
       largeSelected: 28,
+      tapTarget: 40,
+      imageThumbnail: 56,
     );
 
     return ThemeData(
