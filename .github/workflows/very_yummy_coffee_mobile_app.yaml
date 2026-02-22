@@ -59,12 +59,15 @@ jobs:
           very_good packages get --recursive --ignore=!*
 
       - name: ✨ Check Formatting
-        run: dart format --set-exit-if-changed lib
+        run: dart format --set-exit-if-changed lib test
       
       - name: 🕵️ Analyze
-        run: flutter analyze lib
+        run: flutter analyze lib test
 
       - name: ✅ Bloc Lint
         run: |
           flutter pub global activate bloc_tools
           bloc lint .
+
+      - name: 🧪 Run Tests
+        run: very_good test -j 4 --optimization --coverage --test-randomize-ordering-seed random
