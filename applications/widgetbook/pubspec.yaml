@@ -1,6 +1,6 @@
 name: very_yummy_coffee_widgetbook
 description: "A Widgetbook for Very Yummy Coffee UI components."
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
