@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:menu_repository/menu_repository.dart';
 import 'package:very_yummy_coffee_mobile_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
+
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class MenuGroupsView extends StatelessWidget {
@@ -56,8 +58,7 @@ class _Header extends StatelessWidget {
           padding: EdgeInsets.all(context.spacing.xl),
           child: Text(
             context.l10n.appTitle,
-            style: context.typography.headline.copyWith(
-              fontSize: 22,
+            style: context.typography.pageTitle.copyWith(
               color: context.colors.primaryForeground,
             ),
           ),
@@ -78,7 +79,13 @@ class _MenuGroupList extends StatelessWidget {
       padding: EdgeInsets.all(context.spacing.xl),
       itemCount: menuGroups.length,
       separatorBuilder: (_, _) => SizedBox(height: context.spacing.lg),
-      itemBuilder: (context, index) => _MenuGroupCard(group: menuGroups[index]),
+      itemBuilder: (context, index) {
+        final group = menuGroups[index];
+        return GestureDetector(
+          onTap: () => context.go('/menu/${group.id}'),
+          child: _MenuGroupCard(group: group),
+        );
+      },
     );
   }
 }

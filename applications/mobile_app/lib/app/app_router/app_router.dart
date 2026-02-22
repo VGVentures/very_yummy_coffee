@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app_router/go_router_refresh_stream.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
+import 'package:very_yummy_coffee_mobile_app/menu_items/menu_items.dart';
 
 class AppRouter {
   AppRouter({
@@ -43,6 +44,17 @@ class AppRouter {
                 name: MenuGroupsPage.routeName,
                 child: MenuGroupsPage.pageBuilder(context, state),
               ),
+          routes: [
+            GoRoute(
+              name: MenuItemsPage.routeName,
+              path: MenuItemsPage.routePathTemplate,
+              pageBuilder: (BuildContext context, GoRouterState state) =>
+                  MaterialPage(
+                    name: MenuItemsPage.routeName,
+                    child: MenuItemsPage.pageBuilder(context, state),
+                  ),
+            ),
+          ],
         ),
       ],
     );

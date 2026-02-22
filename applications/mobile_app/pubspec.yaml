@@ -25,6 +25,7 @@ dependencies:
     path: ../../shared/menu_repository
   order_repository:
     path: ../../shared/order_repository
+  rxdart: ^0.28.0
   very_yummy_coffee_ui:
     path: ../../shared/very_yummy_coffee_ui
 
