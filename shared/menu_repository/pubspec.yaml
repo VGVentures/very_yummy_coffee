@@ -12,6 +12,7 @@ dependencies:
     path: ../api_client
   flutter:
     sdk: flutter
+  rxdart: ^0.28.0
   very_yummy_coffee_models:
     path: ../very_yummy_coffee_models
 

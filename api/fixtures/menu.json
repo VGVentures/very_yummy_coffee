@@ -20,11 +20,11 @@
     }
   ],
   "items": [
-    { "id": "101", "name": "Club Sandwich", "price": 1200, "groupId": "1" },
-    { "id": "102", "name": "Caesar Wrap", "price": 1050, "groupId": "1" },
-    { "id": "201", "name": "Flat White", "price": 550, "groupId": "2" },
-    { "id": "202", "name": "Chai Latte", "price": 500, "groupId": "2" },
-    { "id": "301", "name": "Croissant", "price": 450, "groupId": "3" },
-    { "id": "302", "name": "Chocolate Cake", "price": 650, "groupId": "3" }
+    { "id": "101", "name": "Club Sandwich", "price": 1200, "groupId": "1", "available": true },
+    { "id": "102", "name": "Caesar Wrap", "price": 1050, "groupId": "1", "available": true },
+    { "id": "201", "name": "Flat White", "price": 550, "groupId": "2", "available": true },
+    { "id": "202", "name": "Chai Latte", "price": 500, "groupId": "2", "available": true },
+    { "id": "301", "name": "Croissant", "price": 450, "groupId": "3", "available": true },
+    { "id": "302", "name": "Chocolate Cake", "price": 650, "groupId": "3", "available": true }
   ]
 }
