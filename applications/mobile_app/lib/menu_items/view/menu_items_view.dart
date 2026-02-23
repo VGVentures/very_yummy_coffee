@@ -111,7 +111,16 @@ class _MenuItemList extends StatelessWidget {
       ),
       itemCount: menuItems.length,
       separatorBuilder: (_, _) => SizedBox(height: context.spacing.lg),
-      itemBuilder: (context, index) => _MenuItemCard(item: menuItems[index]),
+      itemBuilder: (context, index) {
+        final item = menuItems[index];
+        return GestureDetector(
+          onTap: () => context.go(
+            '/menu/${item.groupId}/${item.id}',
+            extra: item,
+          ),
+          child: _MenuItemCard(item: item),
+        );
+      },
     );
   }
 }
