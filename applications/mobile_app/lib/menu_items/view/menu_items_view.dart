@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:menu_repository/menu_repository.dart';
 import 'package:very_yummy_coffee_mobile_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_items/menu_items.dart';
-import 'package:very_yummy_coffee_mobile_app/shared/shared.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class MenuItemsView extends StatelessWidget {
@@ -64,7 +64,7 @@ class _Header extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const CustomBackButton(),
+              CustomBackButton(onPressed: () => context.pop()),
               SizedBox(width: context.spacing.md),
               if (group != null)
                 Expanded(
