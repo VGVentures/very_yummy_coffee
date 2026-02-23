@@ -88,6 +88,11 @@ class ItemDetailBloc extends Bloc<ItemDetailEvent, ItemDetailState> {
     ItemDetailAddToCartRequested event,
     Emitter<ItemDetailState> emit,
   ) async {
+    final item = state.item;
+    if (item == null) {
+      emit(state.copyWith(status: ItemDetailStatus.failure));
+      return;
+    }
     emit(state.copyWith(status: ItemDetailStatus.adding));
     try {
       if (_orderRepository.currentOrderId == null) {
@@ -99,8 +104,8 @@ class ItemDetailBloc extends Bloc<ItemDetailEvent, ItemDetailState> {
         ...state.selectedExtras.map((e) => e.label),
       ];
       _orderRepository.addItemToCurrentOrder(
-        itemName: state.item!.name,
-        itemPrice: state.item!.price,
+        itemName: item.name,
+        itemPrice: item.price,
         options: optionsParts.join(' · '),
         quantity: state.quantity,
       );

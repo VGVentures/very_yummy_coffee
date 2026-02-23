@@ -19,12 +19,15 @@ class OrderRepository {
   /// {@macro order_repository}
   OrderRepository({
     required WsRpcClient wsRpcClient,
-    this.currentOrderId,
-  }) : _wsRpcClient = wsRpcClient;
+    String? currentOrderId,
+  }) : _wsRpcClient = wsRpcClient,
+       _currentOrderId = currentOrderId;
 
   final WsRpcClient _wsRpcClient;
 
-  String? currentOrderId;
+  String? _currentOrderId;
+
+  String? get currentOrderId => _currentOrderId;
   static const Uuid _uuid = Uuid();
 
   BehaviorSubject<Orders>? _ordersSubject;
@@ -55,7 +58,7 @@ class OrderRepository {
   /// order once the server broadcasts the update.
   Future<void> createOrder() async {
     final id = _uuid.v4();
-    currentOrderId = id;
+    _currentOrderId = id;
     _wsRpcClient.sendAction('createOrder', {'id': id});
   }
 
@@ -93,7 +96,7 @@ class OrderRepository {
   void completeCurrentOrder() {
     if (currentOrderId == null) return;
     _wsRpcClient.sendAction('completeOrder', {'orderId': currentOrderId});
-    currentOrderId = null;
+    _currentOrderId = null;
   }
 
   /// Cancels the WebSocket subscription and closes the orders stream.
