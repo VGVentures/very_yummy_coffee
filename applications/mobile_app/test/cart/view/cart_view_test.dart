@@ -72,6 +72,24 @@ void main() {
           whenListen(bloc, Stream.value(state));
         });
 
+        testWidgets('shows item count in header', (tester) async {
+          await tester.pumpApp(buildSubject());
+          expect(find.text('1 item'), findsOneWidget);
+        });
+
+        testWidgets(
+          'tapping back arrow navigates to /menu',
+          (tester) async {
+            final goRouter = MockGoRouter();
+            await tester.pumpApp(buildSubject(), goRouter: goRouter);
+
+            await tester.tap(find.byIcon(Icons.arrow_back));
+            await tester.pump();
+
+            verify(() => goRouter.go('/menu')).called(1);
+          },
+        );
+
         testWidgets('shows item name', (tester) async {
           await tester.pumpApp(buildSubject());
           expect(find.text('Espresso'), findsOneWidget);

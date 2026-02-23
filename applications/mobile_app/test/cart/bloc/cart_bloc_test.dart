@@ -50,6 +50,33 @@ void main() {
       );
 
       blocTest<CartBloc, CartState>(
+        'emits updated order when stream emits multiple values',
+        build: () {
+          const updatedOrder = Order(
+            id: 'order-1',
+            items: [_testItem],
+            status: OrderStatus.completed,
+          );
+          when(() => orderRepository.currentOrderStream).thenAnswer(
+            (_) => Stream.fromIterable([_testOrder, updatedOrder]),
+          );
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(const CartSubscriptionRequested()),
+        expect: () => [
+          const CartState(order: _testOrder, status: CartStatus.success),
+          const CartState(
+            order: Order(
+              id: 'order-1',
+              items: [_testItem],
+              status: OrderStatus.completed,
+            ),
+            status: CartStatus.success,
+          ),
+        ],
+      );
+
+      blocTest<CartBloc, CartState>(
         'emits [failure] on stream error',
         build: () {
           when(() => orderRepository.currentOrderStream).thenAnswer(
