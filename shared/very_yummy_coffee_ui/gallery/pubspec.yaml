@@ -1,0 +1,20 @@
+name: gallery
+description: Gallery project to showcase very_yummy_coffee_ui
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  very_yummy_coffee_ui:
+    path: ../
+  widgetbook: ^3.8.0
+
+dev_dependencies:
+  very_good_analysis: ^6.0.0
+
+flutter:
+  uses-material-design: true
