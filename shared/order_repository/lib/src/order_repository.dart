@@ -63,6 +63,8 @@ class OrderRepository {
   void addItemToCurrentOrder({
     required String itemName,
     required int itemPrice,
+    required String options,
+    required int quantity,
   }) {
     if (currentOrderId == null) return;
     _wsRpcClient.sendAction('addItemToOrder', {
@@ -70,15 +72,20 @@ class OrderRepository {
       'lineItemId': _uuid.v4(),
       'itemName': itemName,
       'itemPrice': itemPrice,
+      'options': options,
+      'quantity': quantity,
     });
   }
 
-  /// Removes an item from the current order on the server.
-  void removeItemFromCurrentOrder(String lineItemId) {
+  /// Updates the quantity of a line item in the current order on the server.
+  ///
+  /// Passing [quantity] of 0 removes the item.
+  void updateItemQuantity(String lineItemId, int quantity) {
     if (currentOrderId == null) return;
-    _wsRpcClient.sendAction('removeItemFromOrder', {
+    _wsRpcClient.sendAction('updateItemQuantity', {
       'orderId': currentOrderId,
       'lineItemId': lineItemId,
+      'quantity': quantity,
     });
   }
 

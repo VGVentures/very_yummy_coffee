@@ -25,4 +25,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get itemDetailAddToCart => 'Add to Cart';
+
+  @override
+  String get cartTitle => 'My Cart';
+
+  @override
+  String cartItemCount(int count) {
+    return intl.Intl.plural(
+      count,
+      locale: localeName,
+      one: '1 item',
+      other: '$count items',
+    );
+  }
+
+  @override
+  String get cartEmptyTitle => 'Your cart is empty';
+
+  @override
+  String get cartEmptySubtitle =>
+      'Add some items from the menu to get started.';
+
+  @override
+  String get cartBrowseMenu => 'Browse Menu';
+
+  @override
+  String get cartOrderSummaryLabel => 'Order Summary';
+
+  @override
+  String get cartSubtotalLabel => 'Subtotal';
+
+  @override
+  String get cartTaxLabel => 'Tax (8%)';
+
+  @override
+  String get cartTotalLabel => 'Total';
 }

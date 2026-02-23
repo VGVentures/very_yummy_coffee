@@ -93,12 +93,17 @@ class ItemDetailBloc extends Bloc<ItemDetailEvent, ItemDetailState> {
       if (_orderRepository.currentOrderId == null) {
         await _orderRepository.createOrder();
       }
-      for (var i = 0; i < state.quantity; i++) {
-        _orderRepository.addItemToCurrentOrder(
-          itemName: state.item!.name,
-          itemPrice: state.item!.price,
-        );
-      }
+      final optionsParts = [
+        state.selectedSize.label,
+        state.selectedMilk.label,
+        ...state.selectedExtras.map((e) => e.label),
+      ];
+      _orderRepository.addItemToCurrentOrder(
+        itemName: state.item!.name,
+        itemPrice: state.item!.price,
+        options: optionsParts.join(' · '),
+        quantity: state.quantity,
+      );
       emit(state.copyWith(status: ItemDetailStatus.added));
     } on Exception catch (_) {
       emit(state.copyWith(status: ItemDetailStatus.failure));

@@ -12,9 +12,13 @@ class LineItem with LineItemMappable {
     required this.id,
     required this.name,
     required this.price,
+    this.options = '',
+    this.quantity = 1,
   });
 
   final String id;
   final String name;
   final int price;
+  final String options;
+  final int quantity;
 }

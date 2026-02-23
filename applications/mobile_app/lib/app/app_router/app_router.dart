@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app_router/go_router_refresh_stream.dart';
+import 'package:very_yummy_coffee_mobile_app/cart/cart.dart';
 import 'package:very_yummy_coffee_mobile_app/item_detail/item_detail.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_items/menu_items.dart';
@@ -35,6 +36,15 @@ class AppRouter {
               NoTransitionPage(
                 name: ConnectingPage.routeName,
                 child: ConnectingPage.pageBuilder(context, state),
+              ),
+        ),
+        GoRoute(
+          name: CartPage.routeName,
+          path: CartPage.routePath,
+          pageBuilder: (BuildContext context, GoRouterState state) =>
+              MaterialPage(
+                name: CartPage.routeName,
+                child: CartPage.pageBuilder(context, state),
               ),
         ),
         GoRoute(

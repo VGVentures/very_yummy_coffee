@@ -1,13 +1,54 @@
 part of 'item_detail_bloc.dart';
 
 @MappableEnum()
-enum DrinkSize { small, medium, large }
+enum DrinkSize {
+  small,
+  medium,
+  large
+  ;
+
+  String get shortLabel => switch (this) {
+    DrinkSize.small => 'S',
+    DrinkSize.medium => 'M',
+    DrinkSize.large => 'L',
+  };
+
+  String get label => switch (this) {
+    DrinkSize.small => 'Small',
+    DrinkSize.medium => 'Medium',
+    DrinkSize.large => 'Large',
+  };
+}
 
 @MappableEnum()
-enum MilkOption { whole, oat, almond, soy }
+enum MilkOption {
+  whole,
+  oat,
+  almond,
+  soy
+  ;
+
+  String get label => switch (this) {
+    MilkOption.whole => 'Whole Milk',
+    MilkOption.oat => 'Oat Milk',
+    MilkOption.almond => 'Almond Milk',
+    MilkOption.soy => 'Soy Milk',
+  };
+}
 
 @MappableEnum()
-enum DrinkExtra { extraShot, vanillaSyrup, caramel }
+enum DrinkExtra {
+  extraShot,
+  vanillaSyrup,
+  caramel
+  ;
+
+  String get label => switch (this) {
+    DrinkExtra.extraShot => 'Extra Shot',
+    DrinkExtra.vanillaSyrup => 'Vanilla Syrup',
+    DrinkExtra.caramel => 'Caramel',
+  };
+}
 
 @MappableEnum()
 enum ItemDetailStatus { loading, idle, adding, added, failure }
