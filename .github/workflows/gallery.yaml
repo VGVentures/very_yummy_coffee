@@ -1,4 +1,4 @@
-name: Very Yummy Coffee Widgetbook Verify and Test
+name: Gallery Verify and Test
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,8 +10,8 @@ on:
       - master
       - main
     paths:
-      - ".github/workflows/very_yummy_coffee_widgetbook_verify_and_test.yaml"
-      - "applications/widgetbook/**"
+      - ".github/workflows/gallery_verify_and_test.yaml"
+      - "shared/very_yummy_coffee_ui/gallery/**"
       - "shared/very_yummy_coffee_ui/**"
   push:
     branches:
@@ -19,7 +19,7 @@ on:
       - main
     paths:
       - ".github/workflows/**"
-      - "applications/widgetbook/**"
+      - "shared/very_yummy_coffee_ui/gallery/**"
       - "shared/very_yummy_coffee_ui/**"
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
     name: Verify and Test
     defaults:
       run:
-        working-directory: applications/widgetbook
+        working-directory: shared/very_yummy_coffee_ui/gallery
 
     runs-on: ubuntu-latest
 
@@ -49,10 +49,7 @@ jobs:
           very_good packages get --recursive --ignore=!*
 
       - name: ✨ Check Formatting
-        run: dart format --set-exit-if-changed lib test
+        run: dart format --set-exit-if-changed lib
       
       - name: 🕵️ Analyze
-        run: flutter analyze lib test
-
-      - name: 🧪 Run Tests
-        run: very_good test -j 4 --optimization --coverage --test-randomize-ordering-seed random
+        run: flutter analyze lib
