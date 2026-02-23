@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:very_yummy_coffee_ui/src/theme/tokens/app_colors.dart';
-import 'package:very_yummy_coffee_ui/src/theme/tokens/app_icon_size.dart';
-import 'package:very_yummy_coffee_ui/src/theme/tokens/app_radius.dart';
-import 'package:very_yummy_coffee_ui/src/theme/tokens/app_spacing.dart';
-import 'package:very_yummy_coffee_ui/src/theme/tokens/app_typography.dart';
-
-export 'tokens/app_colors.dart';
-export 'tokens/app_icon_size.dart';
-export 'tokens/app_radius.dart';
-export 'tokens/app_spacing.dart';
-export 'tokens/app_typography.dart';
+import 'package:very_yummy_coffee_ui/src/colors/app_colors.dart';
+import 'package:very_yummy_coffee_ui/src/spacing/app_icon_size.dart';
+import 'package:very_yummy_coffee_ui/src/spacing/app_radius.dart';
+import 'package:very_yummy_coffee_ui/src/spacing/app_spacing.dart';
+import 'package:very_yummy_coffee_ui/src/typography/app_typography.dart';
 
 /// The design system theme for Very Yummy Coffee.
 abstract class CoffeeTheme {
