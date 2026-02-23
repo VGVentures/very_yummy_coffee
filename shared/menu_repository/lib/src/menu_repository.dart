@@ -47,6 +47,15 @@ class MenuRepository {
         .doOnCancel(_decrementMenuCount);
   });
 
+  /// Returns a live stream of the single [MenuItem] with [itemId] in [groupId].
+  ///
+  /// Emits `null` when the item is not found. Shares the same underlying
+  /// WebSocket subscription as [getMenuGroups].
+  Stream<MenuItem?> getMenuItem(String groupId, String itemId) =>
+      getMenuItems(groupId).map(
+        (items) => items.where((i) => i.id == itemId).firstOrNull,
+      );
+
   /// Returns a live stream of menu items for [groupId].
   ///
   /// Shares the same underlying WebSocket subscription as [getMenuGroups].

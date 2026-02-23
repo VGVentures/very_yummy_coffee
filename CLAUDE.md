@@ -64,6 +64,25 @@ On `subscribe`, the server immediately sends the current snapshot, then sends up
 
 **OrderRepository** (`shared/order_repository/lib/src/order_repository.dart`): Subscribes to `orders` WS topic on first `ordersStream` access and stays open. All mutations send WS actions — no local state mutation. Call `dispose()` when done.
 
+### State Management
+
+Prefer `Bloc` over `Cubit`. Always use `Bloc` with explicit event classes.
+
+### Navigation
+
+Always use `context.go('/path')` with hardcoded path strings. Never use `context.pushNamed`, `context.goNamed`, `context.push`, or `extra`.
+
+### Widget Tests
+
+Use the `pumpApp` helper from `test/helpers/pump_app.dart` in all widget tests. It provides theme, localization, routing, and bloc scaffolding.
+
+```dart
+await tester.pumpApp(
+  MyWidget(),
+  menuRepository: menuRepository,
+);
+```
+
 <!-- ============================================================
      VGV STANDARDS - Do not edit below this line
      Run init-project.sh to update VGV standards
@@ -72,3 +91,5 @@ On `subscribe`, the server immediately sends the current snapshot, then sends up
 # VGV Standards
 
 **IMPORTANT:** Before beginning any Flutter/Dart development work, read and apply the VGV coding standards in `ai-coding/vgv-context.md`.
+
+In addition, use the context7 mcp to look up Very Good Engineering best practices and bloc best practices when writing code.

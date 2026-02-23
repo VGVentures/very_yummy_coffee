@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app_router/go_router_refresh_stream.dart';
+import 'package:very_yummy_coffee_mobile_app/item_detail/item_detail.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_items/menu_items.dart';
 
@@ -53,6 +54,17 @@ class AppRouter {
                     name: MenuItemsPage.routeName,
                     child: MenuItemsPage.pageBuilder(context, state),
                   ),
+              routes: [
+                GoRoute(
+                  name: ItemDetailPage.routeName,
+                  path: ItemDetailPage.routePathTemplate,
+                  pageBuilder: (BuildContext context, GoRouterState state) =>
+                      MaterialPage(
+                        name: ItemDetailPage.routeName,
+                        child: ItemDetailPage.pageBuilder(context, state),
+                      ),
+                ),
+              ],
             ),
           ],
         ),
