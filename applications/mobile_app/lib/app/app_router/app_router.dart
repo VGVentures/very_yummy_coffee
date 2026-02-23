@@ -38,15 +38,7 @@ class AppRouter {
                 child: ConnectingPage.pageBuilder(context, state),
               ),
         ),
-        GoRoute(
-          name: CartPage.routeName,
-          path: CartPage.routePath,
-          pageBuilder: (BuildContext context, GoRouterState state) =>
-              MaterialPage(
-                name: CartPage.routeName,
-                child: CartPage.pageBuilder(context, state),
-              ),
-        ),
+
         GoRoute(
           name: MenuGroupsPage.routeName,
           path: MenuGroupsPage.routeName,
@@ -56,6 +48,15 @@ class AppRouter {
                 child: MenuGroupsPage.pageBuilder(context, state),
               ),
           routes: [
+            GoRoute(
+              name: CartPage.routeName,
+              path: CartPage.routePath,
+              pageBuilder: (BuildContext context, GoRouterState state) =>
+                  MaterialPage(
+                    name: CartPage.routeName,
+                    child: CartPage.pageBuilder(context, state),
+                  ),
+            ),
             GoRoute(
               name: MenuItemsPage.routeName,
               path: MenuItemsPage.routePathTemplate,

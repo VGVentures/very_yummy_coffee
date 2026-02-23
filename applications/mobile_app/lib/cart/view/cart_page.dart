@@ -11,7 +11,7 @@ class CartPage extends StatelessWidget {
       const CartPage(key: Key('cart_page'));
 
   static const routeName = 'cart';
-  static const routePath = '/cart';
+  static const routePath = 'cart';
 
   @override
   Widget build(BuildContext context) {

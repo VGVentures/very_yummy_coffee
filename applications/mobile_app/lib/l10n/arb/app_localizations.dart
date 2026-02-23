@@ -139,7 +139,7 @@ abstract class AppLocalizations {
   /// Number of items shown in the cart header
   ///
   /// In en, this message translates to:
-  /// **'1 item'** or **'{count} items'**
+  /// **'{count, plural, =1{1 item} other{{count} items}}'**
   String cartItemCount(int count);
 
   /// Heading shown when the cart has no items

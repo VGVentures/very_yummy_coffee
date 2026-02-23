@@ -31,12 +31,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String cartItemCount(int count) {
-    return intl.Intl.plural(
+    String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
-      one: '1 item',
       other: '$count items',
+      one: '1 item',
     );
+    return '$_temp0';
   }
 
   @override
