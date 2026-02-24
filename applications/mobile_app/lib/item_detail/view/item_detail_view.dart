@@ -13,8 +13,8 @@ class ItemDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<ItemDetailBloc, ItemDetailState>(
       listener: (context, state) {
-        if (state.status == ItemDetailStatus.added) {
-          context.pop();
+        if (state.status == .added) {
+          context.go('/menu/cart');
         }
       },
       builder: (context, state) {
@@ -576,35 +576,4 @@ class _AddToCartButton extends StatelessWidget {
       ),
     );
   }
-}
-
-extension on DrinkSize {
-  String get shortLabel => switch (this) {
-    DrinkSize.small => 'S',
-    DrinkSize.medium => 'M',
-    DrinkSize.large => 'L',
-  };
-
-  String get label => switch (this) {
-    DrinkSize.small => 'Small',
-    DrinkSize.medium => 'Medium',
-    DrinkSize.large => 'Large',
-  };
-}
-
-extension on MilkOption {
-  String get label => switch (this) {
-    MilkOption.whole => 'Whole Milk',
-    MilkOption.oat => 'Oat Milk',
-    MilkOption.almond => 'Almond Milk',
-    MilkOption.soy => 'Soy Milk',
-  };
-}
-
-extension on DrinkExtra {
-  String get label => switch (this) {
-    DrinkExtra.extraShot => 'Extra Shot',
-    DrinkExtra.vanillaSyrup => 'Vanilla Syrup',
-    DrinkExtra.caramel => 'Caramel',
-  };
 }

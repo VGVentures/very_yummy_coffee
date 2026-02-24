@@ -226,6 +226,8 @@ void main() {
             () => orderRepository.addItemToCurrentOrder(
               itemName: testItem.name,
               itemPrice: testItem.price,
+              options: 'Medium · Whole Milk',
+              quantity: 1,
             ),
           ).called(1);
         },
@@ -260,7 +262,7 @@ void main() {
       );
 
       blocTest<ItemDetailBloc, ItemDetailState>(
-        'calls addItemToCurrentOrder once per quantity',
+        'calls addItemToCurrentOrder once with quantity: 3',
         seed: () => const ItemDetailState(
           item: testItem,
           status: ItemDetailStatus.idle,
@@ -278,8 +280,36 @@ void main() {
             () => orderRepository.addItemToCurrentOrder(
               itemName: testItem.name,
               itemPrice: testItem.price,
+              options: 'Medium · Whole Milk',
+              quantity: 3,
             ),
-          ).called(3);
+          ).called(1);
+        },
+      );
+
+      blocTest<ItemDetailBloc, ItemDetailState>(
+        'includes extras in options string',
+        seed: () => const ItemDetailState(
+          item: testItem,
+          status: ItemDetailStatus.idle,
+          selectedExtras: [DrinkExtra.extraShot, DrinkExtra.caramel],
+        ),
+        build: () {
+          when(
+            () => orderRepository.currentOrderId,
+          ).thenReturn('existing-order');
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(const ItemDetailAddToCartRequested()),
+        verify: (_) {
+          verify(
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: testItem.name,
+              itemPrice: testItem.price,
+              options: 'Medium · Whole Milk · Extra Shot · Caramel',
+              quantity: 1,
+            ),
+          ).called(1);
         },
       );
 

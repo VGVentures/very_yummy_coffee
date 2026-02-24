@@ -129,6 +129,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add to Cart'**
   String get itemDetailAddToCart;
+
+  /// Title of the cart page
+  ///
+  /// In en, this message translates to:
+  /// **'My Cart'**
+  String get cartTitle;
+
+  /// Number of items shown in the cart header
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item} other{{count} items}}'**
+  String cartItemCount(int count);
+
+  /// Heading shown when the cart has no items
+  ///
+  /// In en, this message translates to:
+  /// **'Your cart is empty'**
+  String get cartEmptyTitle;
+
+  /// Subtitle shown when the cart has no items
+  ///
+  /// In en, this message translates to:
+  /// **'Add some items from the menu to get started.'**
+  String get cartEmptySubtitle;
+
+  /// Button label that navigates to the menu from an empty cart
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Menu'**
+  String get cartBrowseMenu;
+
+  /// Heading for the order summary section
+  ///
+  /// In en, this message translates to:
+  /// **'Order Summary'**
+  String get cartOrderSummaryLabel;
+
+  /// Label for the subtotal row in the order summary
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal'**
+  String get cartSubtotalLabel;
+
+  /// Label for the tax row in the order summary
+  ///
+  /// In en, this message translates to:
+  /// **'Tax (8%)'**
+  String get cartTaxLabel;
+
+  /// Label for the total row in the order summary
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get cartTotalLabel;
 }
 
 class _AppLocalizationsDelegate

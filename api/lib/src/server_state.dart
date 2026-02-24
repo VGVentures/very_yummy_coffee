@@ -116,21 +116,29 @@ class ServerState {
                   'id': payload['lineItemId'] as String,
                   'name': payload['itemName'] as String,
                   'price': payload['itemPrice'] as int,
+                  'options': payload['options'] as String? ?? '',
+                  'quantity': payload['quantity'] as int? ?? 1,
                 });
           _orders[orderId] = <String, dynamic>{...order, 'items': items};
           broadcast('orders', snapshotForTopic('orders'));
           broadcast('order:$orderId', _orders[orderId]!);
         }
 
-      case 'removeItemFromOrder':
+      case 'updateItemQuantity':
         final orderId = payload['orderId'] as String;
+        final lineItemId = payload['lineItemId'] as String;
+        final quantity = payload['quantity'] as int;
         final order = _orders[orderId];
         if (order != null) {
-          final items =
-              List<Map<String, dynamic>>.from(order['items'] as List<dynamic>)
-                ..removeWhere(
-                  (item) => item['id'] == payload['lineItemId'] as String,
-                );
+          final items = List<Map<String, dynamic>>.from(
+            order['items'] as List<dynamic>,
+          );
+          if (quantity == 0) {
+            items.removeWhere((item) => item['id'] == lineItemId);
+          } else {
+            final idx = items.indexWhere((item) => item['id'] == lineItemId);
+            if (idx != -1) items[idx] = {...items[idx], 'quantity': quantity};
+          }
           _orders[orderId] = <String, dynamic>{...order, 'items': items};
           broadcast('orders', snapshotForTopic('orders'));
           broadcast('order:$orderId', _orders[orderId]!);

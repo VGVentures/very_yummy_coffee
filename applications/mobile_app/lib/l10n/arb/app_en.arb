@@ -23,5 +23,46 @@
   "itemDetailAddToCart": "Add to Cart",
   "@itemDetailAddToCart": {
     "description": "Label for the add-to-cart button on the item detail page"
+  },
+  "cartTitle": "My Cart",
+  "@cartTitle": {
+    "description": "Title of the cart page"
+  },
+  "cartItemCount": "{count, plural, =1{1 item} other{{count} items}}",
+  "@cartItemCount": {
+    "description": "Number of items shown in the cart header",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartEmptyTitle": "Your cart is empty",
+  "@cartEmptyTitle": {
+    "description": "Heading shown when the cart has no items"
+  },
+  "cartEmptySubtitle": "Add some items from the menu to get started.",
+  "@cartEmptySubtitle": {
+    "description": "Subtitle shown when the cart has no items"
+  },
+  "cartBrowseMenu": "Browse Menu",
+  "@cartBrowseMenu": {
+    "description": "Button label that navigates to the menu from an empty cart"
+  },
+  "cartOrderSummaryLabel": "Order Summary",
+  "@cartOrderSummaryLabel": {
+    "description": "Heading for the order summary section"
+  },
+  "cartSubtotalLabel": "Subtotal",
+  "@cartSubtotalLabel": {
+    "description": "Label for the subtotal row in the order summary"
+  },
+  "cartTaxLabel": "Tax (8%)",
+  "@cartTaxLabel": {
+    "description": "Label for the tax row in the order summary"
+  },
+  "cartTotalLabel": "Total",
+  "@cartTotalLabel": {
+    "description": "Label for the total row in the order summary"
   }
 }
