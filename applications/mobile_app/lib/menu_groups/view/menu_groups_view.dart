@@ -56,11 +56,24 @@ class _Header extends StatelessWidget {
         bottom: false,
         child: Padding(
           padding: EdgeInsets.all(context.spacing.xl),
-          child: Text(
-            context.l10n.appTitle,
-            style: context.typography.pageTitle.copyWith(
-              color: context.colors.primaryForeground,
-            ),
+          child: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  context.l10n.appTitle,
+                  style: context.typography.pageTitle.copyWith(
+                    color: context.colors.primaryForeground,
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () => context.go('/menu/cart'),
+                child: Icon(
+                  Icons.shopping_bag_outlined,
+                  color: context.colors.primaryForeground,
+                ),
+              ),
+            ],
           ),
         ),
       ),

@@ -192,7 +192,9 @@ void main() {
     });
 
     group('added state', () {
-      testWidgets('calls pop when status becomes added', (tester) async {
+      testWidgets('navigates to /cart when status becomes added', (
+        tester,
+      ) async {
         final goRouter = _MockGoRouter();
         final state = _MockItemDetailState();
         when(() => state.status).thenReturn(ItemDetailStatus.added);
@@ -213,7 +215,7 @@ void main() {
           goRouter: goRouter,
         );
 
-        verify(goRouter.pop).called(1);
+        verify(() => goRouter.go('/menu/cart')).called(1);
       });
     });
   });

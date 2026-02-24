@@ -27,7 +27,10 @@ class Order with OrderMappable {
   final String id;
   final List<LineItem> items;
   final OrderStatus status;
-  int get total => items.fold(0, (sum, item) => sum + item.price);
+  int get total =>
+      items.fold(0, (sum, item) => sum + item.price * item.quantity);
+  int get tax => (total * 8 + 50) ~/ 100;
+  int get grandTotal => total + tax;
 }
 
 @MappableClass()
