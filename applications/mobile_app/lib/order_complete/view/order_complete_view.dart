@@ -1,0 +1,344 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:order_repository/order_repository.dart';
+import 'package:very_yummy_coffee_mobile_app/l10n/l10n.dart';
+import 'package:very_yummy_coffee_mobile_app/order_complete/order_complete.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
+
+class OrderCompleteView extends StatelessWidget {
+  const OrderCompleteView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      child: BlocBuilder<OrderCompleteBloc, OrderCompleteState>(
+        builder: (context, state) {
+          if (state.status == OrderCompleteStatus.loading) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          if (state.status == OrderCompleteStatus.failure) {
+            return Scaffold(
+              backgroundColor: context.colors.background,
+              body: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      context.l10n.errorSomethingWentWrong,
+                      style: context.typography.body.copyWith(
+                        color: context.colors.mutedForeground,
+                      ),
+                    ),
+                    SizedBox(height: context.spacing.xl),
+                    BaseButton(
+                      label: context.l10n.orderCompleteBackToMenu,
+                      onPressed: () => context.go('/menu'),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          final order = state.order;
+          if (order == null) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          final orderNumber = order.id
+              .substring(order.id.length - 4)
+              .toUpperCase();
+          final isCancelled = order.status == OrderStatus.cancelled;
+
+          return Scaffold(
+            backgroundColor: context.colors.background,
+            body: SingleChildScrollView(
+              child: SafeArea(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: context.spacing.xxl),
+                    _CelebratoryHero(orderNumber: orderNumber),
+                    SizedBox(height: context.spacing.xxl),
+                    _StatusTracker(status: order.status),
+                    if (isCancelled) ...[
+                      SizedBox(height: context.spacing.md),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: context.spacing.xl,
+                        ),
+                        child: Text(
+                          context.l10n.orderCompleteCancelledLabel,
+                          textAlign: TextAlign.center,
+                          style: context.typography.body.copyWith(
+                            color: context.colors.destructive,
+                          ),
+                        ),
+                      ),
+                    ],
+                    SizedBox(height: context.spacing.xxl),
+                    _OrderDetails(order: order),
+                    SizedBox(height: context.spacing.xl),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: context.spacing.xl,
+                      ),
+                      child: BaseButton(
+                        label: context.l10n.orderCompleteBackToMenu,
+                        onPressed: () => context.go('/menu'),
+                      ),
+                    ),
+                    SizedBox(height: context.spacing.xxl),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _CelebratoryHero extends StatelessWidget {
+  const _CelebratoryHero({required this.orderNumber});
+
+  final String orderNumber;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: context.spacing.xl),
+      child: Column(
+        children: [
+          Icon(
+            Icons.check_circle,
+            size: 72,
+            color: context.colors.success,
+          ),
+          SizedBox(height: context.spacing.lg),
+          Text(
+            context.l10n.orderCompleteTitle,
+            style: context.typography.headline.copyWith(
+              color: context.colors.foreground,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: context.spacing.sm),
+          Text(
+            context.l10n.orderCompleteOrderNumber(orderNumber),
+            style: context.typography.subtitle.copyWith(
+              color: context.colors.mutedForeground,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatusTracker extends StatelessWidget {
+  const _StatusTracker({required this.status});
+
+  final OrderStatus status;
+
+  int get _activeStepIndex {
+    switch (status) {
+      case OrderStatus.pending:
+        return 0;
+      case OrderStatus.submitted:
+        return 1;
+      case OrderStatus.completed:
+        return 2;
+      case OrderStatus.cancelled:
+        return -1;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final labels = [
+      context.l10n.orderCompleteStep1,
+      context.l10n.orderCompleteStep2,
+      context.l10n.orderCompleteStep3,
+      context.l10n.orderCompleteStep4,
+    ];
+    final active = _activeStepIndex;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: context.spacing.xl),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: context.colors.card,
+          borderRadius: BorderRadius.circular(context.radius.large),
+          border: Border.all(color: context.colors.border),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(context.spacing.xl),
+          child: Row(
+            children: List.generate(labels.length * 2 - 1, (i) {
+              if (i.isOdd) {
+                final stepIndex = i ~/ 2;
+                final filled = active >= stepIndex;
+                return Expanded(
+                  child: Container(
+                    height: 2,
+                    color: filled
+                        ? context.colors.primary
+                        : context.colors.border,
+                  ),
+                );
+              }
+              final stepIndex = i ~/ 2;
+              final isActive = stepIndex == active;
+              final isCompleted = stepIndex < active;
+              return _StepNode(
+                label: labels[stepIndex],
+                isActive: isActive,
+                isCompleted: isCompleted,
+              );
+            }),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _StepNode extends StatelessWidget {
+  const _StepNode({
+    required this.label,
+    required this.isActive,
+    required this.isCompleted,
+  });
+
+  final String label;
+  final bool isActive;
+  final bool isCompleted;
+
+  @override
+  Widget build(BuildContext context) {
+    final filled = isActive || isCompleted;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          width: 28,
+          height: 28,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: filled ? context.colors.primary : context.colors.background,
+            border: Border.all(
+              color: filled ? context.colors.primary : context.colors.border,
+              width: 2,
+            ),
+          ),
+          child: filled
+              ? Icon(
+                  Icons.check,
+                  size: 14,
+                  color: context.colors.primaryForeground,
+                )
+              : null,
+        ),
+        SizedBox(height: context.spacing.xs),
+        Text(
+          label,
+          style: context.typography.small.copyWith(
+            color: filled
+                ? context.colors.primary
+                : context.colors.mutedForeground,
+            fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
+          ),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+  }
+}
+
+class _OrderDetails extends StatelessWidget {
+  const _OrderDetails({required this.order});
+
+  final Order order;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: context.spacing.xl),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: context.colors.card,
+          borderRadius: BorderRadius.circular(context.radius.large),
+          border: Border.all(color: context.colors.border),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(context.spacing.xl),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                context.l10n.orderCompleteOrderDetailsLabel,
+                style: context.typography.subtitle.copyWith(
+                  color: context.colors.foreground,
+                ),
+              ),
+              SizedBox(height: context.spacing.md),
+              ...order.items.map((item) {
+                final lineTotal = (item.price * item.quantity / 100)
+                    .toStringAsFixed(2);
+                return Padding(
+                  padding: EdgeInsets.only(bottom: context.spacing.sm),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${item.quantity}× ${item.name}',
+                          style: context.typography.body.copyWith(
+                            color: context.colors.foreground,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        '\$$lineTotal',
+                        style: context.typography.body.copyWith(
+                          color: context.colors.foreground,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+              Divider(color: context.colors.border),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    context.l10n.cartTotalLabel,
+                    style: context.typography.subtitle.copyWith(
+                      color: context.colors.foreground,
+                    ),
+                  ),
+                  Text(
+                    '\$${(order.grandTotal / 100).toStringAsFixed(2)}',
+                    style: context.typography.subtitle.copyWith(
+                      color: context.colors.foreground,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,0 +1,275 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:order_repository/order_repository.dart';
+import 'package:very_yummy_coffee_mobile_app/checkout/checkout.dart';
+import 'package:very_yummy_coffee_mobile_app/l10n/l10n.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
+
+class CheckoutView extends StatelessWidget {
+  const CheckoutView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<CheckoutBloc, CheckoutState>(
+      listener: (context, state) {
+        final orderId = state.order?.id;
+        if (state.status == CheckoutStatus.success && orderId != null) {
+          context.go('/menu/cart/checkout/confirmation/$orderId');
+        }
+      },
+      builder: (context, state) {
+        if (state.status == CheckoutStatus.loading) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
+
+        if (state.status == CheckoutStatus.failure && state.order == null) {
+          return Scaffold(
+            body: Center(
+              child: Text(context.l10n.errorSomethingWentWrong),
+            ),
+          );
+        }
+
+        final order = state.order;
+        return Scaffold(
+          backgroundColor: context.colors.background,
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const _CheckoutHeader(),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(height: context.spacing.xl),
+                      const _FakePaymentCard(),
+                      SizedBox(height: context.spacing.xl),
+                      if (order != null) _OrderSummarySection(order: order),
+                      SizedBox(height: context.spacing.xl),
+                    ],
+                  ),
+                ),
+              ),
+              if (order != null)
+                _PlaceOrderButton(
+                  order: order,
+                  isSubmitting: state.status == CheckoutStatus.submitting,
+                ),
+              if (state.status == CheckoutStatus.failure && state.order != null)
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: context.spacing.xl,
+                    vertical: context.spacing.sm,
+                  ),
+                  child: Text(
+                    context.l10n.checkoutErrorRetry,
+                    textAlign: TextAlign.center,
+                    style: context.typography.small.copyWith(
+                      color: context.colors.destructive,
+                    ),
+                  ),
+                ),
+              SizedBox(height: context.spacing.xl),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _CheckoutHeader extends StatelessWidget {
+  const _CheckoutHeader();
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(color: context.colors.primary),
+      child: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: context.spacing.xl,
+            right: context.spacing.xl,
+            top: context.spacing.xl,
+            bottom: context.spacing.lg,
+          ),
+          child: Row(
+            children: [
+              CustomBackButton(onPressed: () => context.go('/menu/cart')),
+              SizedBox(width: context.spacing.lg),
+              Text(
+                context.l10n.checkoutTitle,
+                style: context.typography.headline.copyWith(
+                  color: context.colors.primaryForeground,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _FakePaymentCard extends StatelessWidget {
+  const _FakePaymentCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: context.spacing.xl),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: context.colors.card,
+          borderRadius: BorderRadius.circular(context.radius.large),
+          border: Border.all(color: context.colors.border),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(context.spacing.xl),
+          child: Row(
+            children: [
+              Icon(
+                Icons.check_circle_outline,
+                color: context.colors.primary,
+                size: context.iconSize.medium,
+              ),
+              SizedBox(width: context.spacing.lg),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    context.l10n.checkoutFakePaymentLabel,
+                    style: context.typography.subtitle.copyWith(
+                      color: context.colors.foreground,
+                    ),
+                  ),
+                  Text(
+                    context.l10n.checkoutFakePaymentSubtitle,
+                    style: context.typography.small.copyWith(
+                      color: context.colors.mutedForeground,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _OrderSummarySection extends StatelessWidget {
+  const _OrderSummarySection({required this.order});
+
+  final Order order;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: context.spacing.xl),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: context.colors.card,
+          borderRadius: BorderRadius.circular(context.radius.large),
+          border: Border.all(color: context.colors.border),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(context.spacing.xl),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                context.l10n.cartOrderSummaryLabel,
+                style: context.typography.subtitle.copyWith(
+                  color: context.colors.foreground,
+                ),
+              ),
+              SizedBox(height: context.spacing.md),
+              _SummaryRow(
+                label: context.l10n.cartSubtotalLabel,
+                amount: order.total,
+                style: context.typography.body.copyWith(
+                  color: context.colors.mutedForeground,
+                ),
+              ),
+              SizedBox(height: context.spacing.sm),
+              _SummaryRow(
+                label: context.l10n.cartTaxLabel,
+                amount: order.tax,
+                style: context.typography.body.copyWith(
+                  color: context.colors.mutedForeground,
+                ),
+              ),
+              SizedBox(height: context.spacing.md),
+              Divider(color: context.colors.border),
+              SizedBox(height: context.spacing.md),
+              _SummaryRow(
+                label: context.l10n.cartTotalLabel,
+                amount: order.grandTotal,
+                style: context.typography.headline.copyWith(
+                  color: context.colors.foreground,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SummaryRow extends StatelessWidget {
+  const _SummaryRow({
+    required this.label,
+    required this.amount,
+    required this.style,
+  });
+
+  final String label;
+  final int amount;
+  final TextStyle style;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: style),
+        Text('\$${(amount / 100).toStringAsFixed(2)}', style: style),
+      ],
+    );
+  }
+}
+
+class _PlaceOrderButton extends StatelessWidget {
+  const _PlaceOrderButton({
+    required this.order,
+    required this.isSubmitting,
+  });
+
+  final Order order;
+  final bool isSubmitting;
+
+  @override
+  Widget build(BuildContext context) {
+    final total = '\$${(order.grandTotal / 100).toStringAsFixed(2)}';
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: context.spacing.xl),
+        child: BaseButton(
+          label: context.l10n.checkoutPlaceOrder(total),
+          onPressed: () =>
+              context.read<CheckoutBloc>().add(const CheckoutConfirmed()),
+          isLoading: isSubmitting,
+        ),
+      ),
+    );
+  }
+}

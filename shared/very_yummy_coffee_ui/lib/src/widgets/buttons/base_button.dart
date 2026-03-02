@@ -55,6 +55,7 @@ class BaseButton extends StatelessWidget {
     required this.onPressed,
     required this.label,
     this.variant = BaseButtonVariant.primary,
+    this.isLoading = false,
     super.key,
   });
 
@@ -66,6 +67,11 @@ class BaseButton extends StatelessWidget {
 
   /// The variant of the button.
   final BaseButtonVariant variant;
+
+  /// Whether to show a loading spinner instead of the label.
+  ///
+  /// When true, the button is also disabled (onPressed is ignored).
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +89,16 @@ class BaseButton extends StatelessWidget {
       borderRadius: BorderRadius.all(Radius.circular(radius.medium)),
     );
 
+    Widget loadingSpinner(Color color) => SizedBox(
+      width: 20,
+      height: 20,
+      child: CircularProgressIndicator(strokeWidth: 2, color: color),
+    );
+
     switch (variant) {
       case BaseButtonVariant.primary:
         return TextButton(
-          onPressed: onPressed,
+          onPressed: isLoading ? null : onPressed,
           style: TextButton.styleFrom(
             backgroundColor: colors.primary,
             foregroundColor: colors.primaryForeground,
@@ -94,11 +106,13 @@ class BaseButton extends StatelessWidget {
             padding: buttonPadding,
             textStyle: typography.button,
           ),
-          child: Text(label),
+          child: isLoading
+              ? loadingSpinner(colors.primaryForeground)
+              : Text(label),
         );
       case BaseButtonVariant.secondary:
         return TextButton(
-          onPressed: onPressed,
+          onPressed: isLoading ? null : onPressed,
           style: TextButton.styleFrom(
             backgroundColor: colors.secondary,
             foregroundColor: colors.foreground,
@@ -106,11 +120,11 @@ class BaseButton extends StatelessWidget {
             padding: buttonPadding,
             textStyle: typography.button,
           ),
-          child: Text(label),
+          child: isLoading ? loadingSpinner(colors.foreground) : Text(label),
         );
       case BaseButtonVariant.cancel:
         return OutlinedButton(
-          onPressed: onPressed,
+          onPressed: isLoading ? null : onPressed,
           style: OutlinedButton.styleFrom(
             backgroundColor: colors.background,
             foregroundColor: colors.foreground,
@@ -119,7 +133,7 @@ class BaseButton extends StatelessWidget {
             padding: buttonPadding,
             textStyle: typography.button,
           ),
-          child: Text(label),
+          child: isLoading ? loadingSpinner(colors.foreground) : Text(label),
         );
     }
   }

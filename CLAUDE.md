@@ -72,6 +72,15 @@ Prefer `Bloc` over `Cubit`. Always use `Bloc` with explicit event classes.
 
 Always use `context.go('/path')` with hardcoded path strings. Never use `context.pushNamed`, `context.goNamed`, `context.push`, or `extra`.
 
+### Shared UI Package (`very_yummy_coffee_ui`)
+
+Before building any custom widget, check `shared/very_yummy_coffee_ui/lib/src/widgets/` for an existing shared component. Current shared widgets include:
+
+- **`BaseButton`** — primary/secondary/cancel variants, supports `isLoading`. Use for all full-width and inline action buttons.
+- **`CustomBackButton`** — standard back arrow for colored headers. Use instead of raw `GestureDetector + Icon(arrow_back)`.
+
+When implementing a new widget that is used in more than one screen, or that is a general-purpose UI primitive (buttons, cards, inputs, chips, etc.), place it in `shared/very_yummy_coffee_ui/lib/src/widgets/` and export it from the package. Do not duplicate UI patterns across feature views.
+
 ### Widget Tests
 
 Use the `pumpApp` helper from `test/helpers/pump_app.dart` in all widget tests. It provides theme, localization, routing, and bloc scaffolding.

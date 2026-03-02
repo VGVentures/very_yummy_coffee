@@ -1,0 +1,32 @@
+<!-- Downloaded from: https://engineering.verygood.ventures/development/documentation/code_documentation/llms.txt -->
+<!-- Source: Code Documentation -->
+
+# Code Documentation
+
+## Explicitly document no operations
+
+On occasions, some code might simply do nothing at all, these scenarios are usually referred to as [no operations (no-op)](<https://en.wikipedia.org/wiki/NOP_(code)>).
+The reasons for the need to introduce a no-op may vary. For example, it could well be due to the need to align with an interface.
+
+Leaving the no-operation without an explanatory comment may cause engineers to doubt whether
+the code was left uncompleted intentionally or not. If there is a need for a no-op, document its existence.
+
+The same principle would apply if a comment left is not clear enough.
+
+Good ✅:
+```dart
+class BluetoothProcessor extends NetworkProcessor {
+  \@override
+  void abort() {
+      // Intentional no-op, an abort in Bluetooth has no resources to clean.
+  }
+}
+```
+
+Bad ❗️:
+```dart
+class BluetoothProcessor extends NetworkProcessor {
+  \@override
+  void abort() {}
+}
+```

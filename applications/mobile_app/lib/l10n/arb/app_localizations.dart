@@ -183,6 +183,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Total'**
   String get cartTotalLabel;
+
+  /// Sticky CTA button on the cart screen when items are present
+  ///
+  /// In en, this message translates to:
+  /// **'Proceed to Checkout — {total}'**
+  String cartProceedToCheckout(String total);
+
+  /// Title of the checkout screen
+  ///
+  /// In en, this message translates to:
+  /// **'Checkout'**
+  String get checkoutTitle;
+
+  /// Label on the cosmetic payment card in the checkout screen
+  ///
+  /// In en, this message translates to:
+  /// **'Fake Payment'**
+  String get checkoutFakePaymentLabel;
+
+  /// Subtitle on the cosmetic payment card in the checkout screen
+  ///
+  /// In en, this message translates to:
+  /// **'No real charge will be made'**
+  String get checkoutFakePaymentSubtitle;
+
+  /// Label for the place-order button on the checkout screen
+  ///
+  /// In en, this message translates to:
+  /// **'Place Order — {total}'**
+  String checkoutPlaceOrder(String total);
+
+  /// Inline error shown below the place-order button on failure
+  ///
+  /// In en, this message translates to:
+  /// **'Something went wrong. Please try again.'**
+  String get checkoutErrorRetry;
+
+  /// Heading on the order complete screen
+  ///
+  /// In en, this message translates to:
+  /// **'Order Confirmed!'**
+  String get orderCompleteTitle;
+
+  /// Order number display on the order complete screen
+  ///
+  /// In en, this message translates to:
+  /// **'Order #{number}'**
+  String orderCompleteOrderNumber(String number);
+
+  /// Step 1 label on the order status tracker
+  ///
+  /// In en, this message translates to:
+  /// **'Placed'**
+  String get orderCompleteStep1;
+
+  /// Step 2 label on the order status tracker
+  ///
+  /// In en, this message translates to:
+  /// **'In Progress'**
+  String get orderCompleteStep2;
+
+  /// Step 3 label on the order status tracker
+  ///
+  /// In en, this message translates to:
+  /// **'Ready'**
+  String get orderCompleteStep3;
+
+  /// Step 4 label on the order status tracker
+  ///
+  /// In en, this message translates to:
+  /// **'Picked Up'**
+  String get orderCompleteStep4;
+
+  /// Section heading for the order details on the order complete screen
+  ///
+  /// In en, this message translates to:
+  /// **'Your Order'**
+  String get orderCompleteOrderDetailsLabel;
+
+  /// Button label to navigate back to the menu from the order complete screen
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Menu'**
+  String get orderCompleteBackToMenu;
+
+  /// Label shown when the order has been cancelled on the order complete screen
+  ///
+  /// In en, this message translates to:
+  /// **'Order Cancelled'**
+  String get orderCompleteCancelledLabel;
 }
 
 class _AppLocalizationsDelegate

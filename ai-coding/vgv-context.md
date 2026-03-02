@@ -34,94 +34,80 @@ Write clean, testable, and maintainable Flutter/Dart code that:
 
 ---
 
-# Standards: System Instructions and Behavioral Guidelines
+# Standards
 
-Load and apply these standards when assisting with Flutter development. Standards are organized by domain and should be applied in order of specificity.
+Load and apply these standards when assisting with Flutter development. Apply them in the order listed, with later standards taking precedence when there are conflicts.
 
-## 1. Flutter and Dart Foundation
+<!-- STANDARDS_START -->
+## AI Rules for Flutter and Dart
 
-**Primary Reference:** Read `ai-coding/standards/dart_flutter_rules.md`
+- Read `ai-coding/standards/ai-rules-for-flutter-and-dart/rules.md` - Official Flutter/Dart AI coding rules from the Flutter team
 
-Use these rules as the baseline for all Dart and Flutter development decisions.
+## Very Good Engineering - General Practices
 
-**Tool Preferences:**
-- When available, prefer the **Dart MCP Server** tool over the local `dart` CLI
-- Use official Dart/Flutter tooling for analysis and formatting
+- Read `ai-coding/standards/very-good-engineering-general-practices/general-practices-code_review.md` - Code reviews best practices
+- Read `ai-coding/standards/very-good-engineering-general-practices/general-practices-conventions.md` - Recommended conventions within software development.
+- Read `ai-coding/standards/very-good-engineering-general-practices/general-practices-credits.md` - Very Good Engineering credits and attributions.
+- Read `ai-coding/standards/very-good-engineering-general-practices/general-practices-philosophy.md` - Development philosophy at Very Good Ventures.
+- Read `ai-coding/standards/very-good-engineering-general-practices/general-practices-security_in_mobile_apps.md` - Mobile app security threats and how to protect your app using OWASP Mobile's 10 best practices.
 
-**Key Areas Covered:**
-- Dart language features and idioms
-- Flutter widget composition
-- State management patterns
-- Performance optimization
-- Platform-specific code
+## Very Good Engineering - Development
 
-## 2. Architecture and Coding Practices
+### Architecture
 
-**Primary Reference:** Read `ai-coding/standards/very_good_engineering_flutter_rules.md`
+- Read `ai-coding/standards/very-good-engineering-development/architecture/development-architecture-barrel_files.md` - Best practices for exposing public facing files.
+- Read `ai-coding/standards/very-good-engineering-development/architecture/development-architecture-architecture.md` - Architecture best practices.
 
-Very Good Ventures consolidates popular coding practices into **Very Good Engineering (VGE)** - a single, opinionated approach for architecture and coding decisions.
+### CI/CD
 
-**Key Areas Covered:**
-- Project structure and organization
-- BLoC pattern implementation
-- Clean architecture layers
-- Error handling strategies
-- Code organization patterns
+- Read `ai-coding/standards/very-good-engineering-development/cicd/development-ci_cd.md` - Best practices for building CI/CD pipelines.
 
-**Priority:**
-VGE standards take precedence over general best practices when there's a conflict.
+### Code style
 
+- Read `ai-coding/standards/very-good-engineering-development/code-style/development-code_style.md` - Best practices for general code styling that goes beyond linter rules.
 
-## 3. Additional Standards
+### Documentation
 
-Use the following standards for additional context and guidelines, or to override the standards defined by the Dart and Flutter baseline or VGE when explicity stated.
+- Read `ai-coding/standards/very-good-engineering-development/documentation/development-documentation-code_documentation.md` - Documentation best practices in code.
+- Read `ai-coding/standards/very-good-engineering-development/documentation/development-documentation-documentation.md` - Documentation and Code practices that scale.
 
-### Dependency Injection
-**Primary Method:** Constructor injection
-- Enhances testability and clarity
-- Makes dependencies explicit
-- Facilitates mocking in tests
+### Error handling
 
-```dart
-// Good
-class UserRepository {
-  UserRepository(this._apiClient, this._database);
-  
-  final ApiClient _apiClient;
-  final Database _database;
-}
+- Read `ai-coding/standards/very-good-engineering-development/error-handling/development-error_handling.md` - Error handling best practices.
 
-// Avoid
-class UserRepository {
-  final apiClient = ApiClient(); // Hard to test
-  final database = Database();   // Hidden dependencies
-}
+### Internationalization
+
+- Read `ai-coding/standards/very-good-engineering-development/internationalization/development-internationalization-localization.md` - Recommended practices to localize software and make it accessible in multiple languages.
+- Read `ai-coding/standards/very-good-engineering-development/internationalization/development-internationalization-text_directionality.md` - Handling left-to-right and right-to-left content in Flutter.
+
+### State management
+
+- Read `ai-coding/standards/very-good-engineering-development/state-management/development-state_management-bloc_event_transformers.md` - Specifying the order in which Bloc events are handled.
+- Read `ai-coding/standards/very-good-engineering-development/state-management/development-state_management-bloc_state_handling.md` - Recommended practices for handling state that are emitted from blocs/cubits.
+
+### Testing
+
+- Read `ai-coding/standards/very-good-engineering-development/testing/development-testing-testing_best_practices.md` - More advanced tips and tricks for writing effective tests.
+- Read `ai-coding/standards/very-good-engineering-development/testing/development-testing-testing_golden_file.md` - Golden testing best practices.
+- Read `ai-coding/standards/very-good-engineering-development/testing/development-testing-testing_overview.md`
+
+### Ui
+
+- Read `ai-coding/standards/very-good-engineering-development/ui/development-ui-navigation.md` - Navigation best practices.
+- Read `ai-coding/standards/very-good-engineering-development/ui/development-ui-layouts.md` - Expanding on rows and columns
+- Read `ai-coding/standards/very-good-engineering-development/ui/development-ui-theming.md` - Theming best practices.
+- Read `ai-coding/standards/very-good-engineering-development/ui/development-ui-widgets.md` - Widget best practices.
+
+## Additional Dart/Flutter Rules
+
+- Read `ai-coding/standards/additional-dartflutter-rules/additional_dart_flutter_rules.md` - Core Dart and Flutter standards including DI and code style
+
+<!-- STANDARDS_END -->
+
+To add or update standards, run:
+```bash
+vgv_ai init --select-standards
 ```
-
-### State Management with Riverpod
-
-When working with Riverpod instead of BLoC as the state management framework, either because it is referenced in the current codebase or because specified in the prompt, read `ai-coding/standards/riverpod.md` for Riverpod-specific guidelines.
-
-### Code Style
-- Follow `very_good_analysis` lint rules
-- Use `const` constructors where possible
-- Prefer composition over inheritance
-- Keep functions small and focused
-- Use meaningful variable names
-
-### Performance
-- Minimize widget rebuilds with `const` widgets
-- Use `ListView.builder` for long lists
-- Implement proper asset caching
-- Profile before optimizing
-- Use `const` constructors liberally
-
-### Accessibility
-- Provide semantic labels for all interactive elements
-- Support screen readers
-- Ensure sufficient color contrast
-- Test with accessibility tools
-- Support dynamic font sizes
 
 ---
 

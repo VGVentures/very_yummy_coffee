@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app_router/go_router_refresh_stream.dart';
 import 'package:very_yummy_coffee_mobile_app/cart/cart.dart';
+import 'package:very_yummy_coffee_mobile_app/checkout/checkout.dart';
 import 'package:very_yummy_coffee_mobile_app/item_detail/item_detail.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_items/menu_items.dart';
+import 'package:very_yummy_coffee_mobile_app/order_complete/order_complete.dart';
 
 class AppRouter {
   AppRouter({
@@ -56,6 +58,32 @@ class AppRouter {
                     name: CartPage.routeName,
                     child: CartPage.pageBuilder(context, state),
                   ),
+              routes: [
+                GoRoute(
+                  name: CheckoutPage.routeName,
+                  path: CheckoutPage.routePath,
+                  pageBuilder: (BuildContext context, GoRouterState state) =>
+                      MaterialPage(
+                        name: CheckoutPage.routeName,
+                        child: CheckoutPage.pageBuilder(context, state),
+                      ),
+                  routes: [
+                    GoRoute(
+                      name: OrderCompletePage.routeName,
+                      path: OrderCompletePage.routePathTemplate,
+                      pageBuilder:
+                          (BuildContext context, GoRouterState state) =>
+                              MaterialPage(
+                                name: OrderCompletePage.routeName,
+                                child: OrderCompletePage.pageBuilder(
+                                  context,
+                                  state,
+                                ),
+                              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
             GoRoute(
               name: MenuItemsPage.routeName,

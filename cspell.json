@@ -49,6 +49,7 @@
     "**/*.excalidraw",
     "**/*.pen",
     "**/skills/**",
+    ".claude/agents/**",
     "ai-coding/**"
   ],
   "useGitignore": true,
