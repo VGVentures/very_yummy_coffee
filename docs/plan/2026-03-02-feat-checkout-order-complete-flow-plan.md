@@ -467,7 +467,7 @@ class _StatusTracker extends StatelessWidget {
 
 The brainstorm doc proposed a new `subscribeToOrder(String orderId)` method on `OrderRepository` that subscribes to the `order:<id>` WS topic directly. The existing `orderStream(orderId)` instead maps over the `orders` topic (which is already subscribed).
 
-**Decision**: Use `orderStream(orderId)`. No new repository method is needed, no additional WS subscription is opened, and the `CartBloc` has already started the `ordersStream` subscription by the time `OrderCompleteBloc` initialises. The `order:<id>` topic approach would be preferable in a high-volume production system where subscribing to all orders is expensive, but for this app's scale it is unnecessary.
+**Decision**: Use `orderStream(orderId)`. No new repository method is needed, no additional WS subscription is opened, and the `CartBloc` has already started the `ordersStream` subscription by the time `OrderCompleteBloc` initializes. The `order:<id>` topic approach would be preferable in a high-volume production system where subscribing to all orders is expensive, but for this app's scale it is unnecessary.
 
 ### CheckoutBloc: optimistic success vs. server acknowledgement
 
