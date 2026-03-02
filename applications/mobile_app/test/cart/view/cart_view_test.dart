@@ -162,6 +162,24 @@ void main() {
             ).called(1);
           },
         );
+
+        testWidgets('shows Proceed to Checkout button', (tester) async {
+          await tester.pumpApp(buildSubject());
+          expect(find.textContaining('Proceed to Checkout'), findsOneWidget);
+        });
+
+        testWidgets(
+          'tapping Proceed to Checkout navigates to /menu/cart/checkout',
+          (tester) async {
+            final goRouter = MockGoRouter();
+            await tester.pumpApp(buildSubject(), goRouter: goRouter);
+
+            await tester.tap(find.textContaining('Proceed to Checkout'));
+            await tester.pump();
+
+            verify(() => goRouter.go('/menu/cart/checkout')).called(1);
+          },
+        );
       });
 
       group('with null order', () {
@@ -220,6 +238,24 @@ void main() {
           await tester.pumpApp(buildSubject());
 
           expect(find.text('Your cart is empty'), findsOneWidget);
+        });
+
+        testWidgets('does not show Proceed to Checkout button', (tester) async {
+          const emptyOrder = Order(
+            id: 'order-1',
+            items: [],
+            status: OrderStatus.pending,
+          );
+          const state = CartState(
+            order: emptyOrder,
+            status: CartStatus.success,
+          );
+          when(() => bloc.state).thenReturn(state);
+          whenListen(bloc, Stream.value(state));
+
+          await tester.pumpApp(buildSubject());
+
+          expect(find.textContaining('Proceed to Checkout'), findsNothing);
         });
       });
     });

@@ -144,6 +144,15 @@ class ServerState {
           broadcast('order:$orderId', _orders[orderId]!);
         }
 
+      case 'submitOrder':
+        final orderId = payload['orderId'] as String;
+        final order = _orders[orderId];
+        if (order != null) {
+          _orders[orderId] = <String, dynamic>{...order, 'status': 'submitted'};
+          broadcast('orders', snapshotForTopic('orders'));
+          broadcast('order:$orderId', _orders[orderId]!);
+        }
+
       case 'completeOrder':
         final orderId = payload['orderId'] as String;
         final order = _orders[orderId];

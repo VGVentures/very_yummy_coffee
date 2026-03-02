@@ -61,4 +61,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cartTotalLabel => 'Total';
+
+  @override
+  String cartProceedToCheckout(String total) {
+    return 'Proceed to Checkout — $total';
+  }
+
+  @override
+  String get checkoutTitle => 'Checkout';
+
+  @override
+  String get checkoutFakePaymentLabel => 'Fake Payment';
+
+  @override
+  String get checkoutFakePaymentSubtitle => 'No real charge will be made';
+
+  @override
+  String checkoutPlaceOrder(String total) {
+    return 'Place Order — $total';
+  }
+
+  @override
+  String get checkoutErrorRetry => 'Something went wrong. Please try again.';
+
+  @override
+  String get orderCompleteTitle => 'Order Confirmed!';
+
+  @override
+  String orderCompleteOrderNumber(String number) {
+    return 'Order #$number';
+  }
+
+  @override
+  String get orderCompleteStep1 => 'Placed';
+
+  @override
+  String get orderCompleteStep2 => 'In Progress';
+
+  @override
+  String get orderCompleteStep3 => 'Ready';
+
+  @override
+  String get orderCompleteStep4 => 'Picked Up';
+
+  @override
+  String get orderCompleteOrderDetailsLabel => 'Your Order';
+
+  @override
+  String get orderCompleteBackToMenu => 'Back to Menu';
+
+  @override
+  String get orderCompleteCancelledLabel => 'Order Cancelled';
 }

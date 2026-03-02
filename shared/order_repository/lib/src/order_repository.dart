@@ -92,6 +92,17 @@ class OrderRepository {
     });
   }
 
+  /// Submits the current order on the server (pending → submitted).
+  ///
+  /// Sends a `submitOrder` WS action and clears [currentOrderId].
+  /// No-op if [currentOrderId] is null.
+  void submitCurrentOrder() {
+    final orderId = _currentOrderId;
+    if (orderId == null) return;
+    _wsRpcClient.sendAction('submitOrder', {'orderId': orderId});
+    _currentOrderId = null;
+  }
+
   /// Completes the current order on the server.
   void completeCurrentOrder() {
     if (currentOrderId == null) return;
