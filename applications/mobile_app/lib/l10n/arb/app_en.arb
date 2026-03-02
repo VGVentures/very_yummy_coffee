@@ -64,5 +64,80 @@
   "cartTotalLabel": "Total",
   "@cartTotalLabel": {
     "description": "Label for the total row in the order summary"
+  },
+  "cartProceedToCheckout": "Proceed to Checkout — {total}",
+  "@cartProceedToCheckout": {
+    "description": "Sticky CTA button on the cart screen when items are present",
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "checkoutTitle": "Checkout",
+  "@checkoutTitle": {
+    "description": "Title of the checkout screen"
+  },
+  "checkoutFakePaymentLabel": "Fake Payment",
+  "@checkoutFakePaymentLabel": {
+    "description": "Label on the cosmetic payment card in the checkout screen"
+  },
+  "checkoutFakePaymentSubtitle": "No real charge will be made",
+  "@checkoutFakePaymentSubtitle": {
+    "description": "Subtitle on the cosmetic payment card in the checkout screen"
+  },
+  "checkoutPlaceOrder": "Place Order — {total}",
+  "@checkoutPlaceOrder": {
+    "description": "Label for the place-order button on the checkout screen",
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "checkoutErrorRetry": "Something went wrong. Please try again.",
+  "@checkoutErrorRetry": {
+    "description": "Inline error shown below the place-order button on failure"
+  },
+  "orderCompleteTitle": "Order Confirmed!",
+  "@orderCompleteTitle": {
+    "description": "Heading on the order complete screen"
+  },
+  "orderCompleteOrderNumber": "Order #{number}",
+  "@orderCompleteOrderNumber": {
+    "description": "Order number display on the order complete screen",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "orderCompleteStep1": "Placed",
+  "@orderCompleteStep1": {
+    "description": "Step 1 label on the order status tracker"
+  },
+  "orderCompleteStep2": "In Progress",
+  "@orderCompleteStep2": {
+    "description": "Step 2 label on the order status tracker"
+  },
+  "orderCompleteStep3": "Ready",
+  "@orderCompleteStep3": {
+    "description": "Step 3 label on the order status tracker"
+  },
+  "orderCompleteStep4": "Picked Up",
+  "@orderCompleteStep4": {
+    "description": "Step 4 label on the order status tracker"
+  },
+  "orderCompleteOrderDetailsLabel": "Your Order",
+  "@orderCompleteOrderDetailsLabel": {
+    "description": "Section heading for the order details on the order complete screen"
+  },
+  "orderCompleteBackToMenu": "Back to Menu",
+  "@orderCompleteBackToMenu": {
+    "description": "Button label to navigate back to the menu from the order complete screen"
+  },
+  "orderCompleteCancelledLabel": "Order Cancelled",
+  "@orderCompleteCancelledLabel": {
+    "description": "Label shown when the order has been cancelled on the order complete screen"
   }
 }

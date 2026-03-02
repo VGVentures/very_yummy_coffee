@@ -65,6 +65,7 @@ class CartView extends StatelessWidget {
                   ),
                 ),
               ),
+              _CheckoutButton(order: order),
             ],
           ),
         );
@@ -362,6 +363,40 @@ class _SummaryRow extends StatelessWidget {
         Text(label, style: style),
         Text('\$${(amount / 100).toStringAsFixed(2)}', style: style),
       ],
+    );
+  }
+}
+
+class _CheckoutButton extends StatelessWidget {
+  const _CheckoutButton({required this.order});
+
+  final Order order;
+
+  @override
+  Widget build(BuildContext context) {
+    final total = '\$${(order.grandTotal / 100).toStringAsFixed(2)}';
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: EdgeInsets.all(context.spacing.xl),
+        child: GestureDetector(
+          onTap: () => context.go('/menu/cart/checkout'),
+          child: Container(
+            padding: EdgeInsets.symmetric(vertical: context.spacing.lg),
+            decoration: BoxDecoration(
+              color: context.colors.primary,
+              borderRadius: BorderRadius.circular(context.radius.large),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              context.l10n.cartProceedToCheckout(total),
+              style: context.typography.button.copyWith(
+                color: context.colors.primaryForeground,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
