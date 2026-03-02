@@ -165,7 +165,7 @@ Run `get_screenshot` with the same file key and node ID:
 get_screenshot(fileKey=":fileKey", nodeId="1-2")
 ```
 
-This screenshot is the source of truth for visual validation throughout implementation and will be compared against golden test output in Step 8.
+This screenshot is the source of truth for visual validation throughout implementation and will be compared against golden test output in Step 9.
 
 ### Step 4: Download and Register Assets
 
@@ -454,9 +454,65 @@ cd shared/ui_kit
 flutter test --tags golden
 ```
 
-**Widgetbook Cataloging (when project uses Widgetbook)**
+#### Behavioral Unit Tests
 
-If the project uses Widgetbook, create use cases for **all visual states** of the widget. Every `GoldenTestScenario` from the golden tests must have a corresponding Widgetbook `@UseCase`. This ensures the interactive catalog is comprehensive and matches the tested visual contract.
+In addition to golden tests, write unit tests for widget behavior:
+
+```dart
+testWidgets('calls onPressed when tapped', (tester) async {
+  var pressed = false;
+  await tester.pumpWidget(
+    MaterialApp(
+      theme: AppTheme.light,
+      home: Scaffold(
+        body: AppButton(
+          label: 'Click',
+          onPressed: () => pressed = true,
+        ),
+      ),
+    ),
+  );
+
+  await tester.tap(find.byType(AppButton));
+  await tester.pump();
+
+  expect(pressed, isTrue);
+});
+
+testWidgets('does not call onPressed when disabled', (tester) async {
+  var pressed = false;
+  await tester.pumpWidget(
+    MaterialApp(
+      theme: AppTheme.light,
+      home: const Scaffold(
+        body: AppButton(label: 'Click'),  // No onPressed = disabled
+      ),
+    ),
+  );
+
+  await tester.tap(find.byType(AppButton));
+  await tester.pump();
+
+  expect(pressed, isFalse);
+});
+```
+
+Cover: tap behavior, disabled state, loading state, keyboard navigation (if applicable).
+
+### Step 8: Create Widgetbook Use Cases
+
+**Detection (required):** Before proceeding, check if the project uses Widgetbook:
+
+1. Look for a `widgetbook/` directory in the project root or `packages/` folder
+2. Search for `widgetbook` or `widgetbook_annotation` in any `pubspec.yaml` file
+
+**If Widgetbook is detected, this step is REQUIRED. Do not skip it.**
+
+If Widgetbook is not present, proceed to Step 9.
+
+---
+
+Create use cases for **all visual states** of the widget. Every `GoldenTestScenario` from the golden tests must have a corresponding Widgetbook `@UseCase`. This ensures the interactive catalog is comprehensive and matches the tested visual contract.
 
 **Required use case coverage:**
 
@@ -545,59 +601,14 @@ This list mirrors the golden test requirements. If a golden test scenario exists
    cd widgetbook && dart run build_runner build --delete-conflicting-outputs
    ```
 
-4. Launch widgetbook (web is most reliable as desktop may not be configured):
+4. Launch widgetbook to verify (web is most reliable):
    ```bash
    cd widgetbook && flutter run -d chrome
    ```
 
-Widgetbook complements golden tests: golden tests validate visual correctness automatically, while Widgetbook provides a comprehensive interactive catalog for designers and developers. Both should cover the same set of visual states to ensure the catalog accurately represents the tested widget behavior.
+Widgetbook complements golden tests: golden tests validate visual correctness automatically, while Widgetbook provides a comprehensive interactive catalog for designers and developers.
 
-#### Behavioral Unit Tests
-
-In addition to golden tests, write unit tests for widget behavior:
-
-```dart
-testWidgets('calls onPressed when tapped', (tester) async {
-  var pressed = false;
-  await tester.pumpWidget(
-    MaterialApp(
-      theme: AppTheme.light,
-      home: Scaffold(
-        body: AppButton(
-          label: 'Click',
-          onPressed: () => pressed = true,
-        ),
-      ),
-    ),
-  );
-
-  await tester.tap(find.byType(AppButton));
-  await tester.pump();
-
-  expect(pressed, isTrue);
-});
-
-testWidgets('does not call onPressed when disabled', (tester) async {
-  var pressed = false;
-  await tester.pumpWidget(
-    MaterialApp(
-      theme: AppTheme.light,
-      home: const Scaffold(
-        body: AppButton(label: 'Click'),  // No onPressed = disabled
-      ),
-    ),
-  );
-
-  await tester.tap(find.byType(AppButton));
-  await tester.pump();
-
-  expect(pressed, isFalse);
-});
-```
-
-Cover: tap behavior, disabled state, loading state, keyboard navigation (if applicable).
-
-### Step 8: Validate Against Figma
+### Step 9: Validate Against Figma
 
 Before marking the implementation complete, validate the final output against the Figma screenshot from Step 3.
 
@@ -679,8 +690,8 @@ User provides: `https://figma.com/design/kL9xQn2VwM8pYrTb4ZcHjF/DesignSystem?nod
 7. Map Figma typography to `TextTheme` (e.g., `textTheme.labelLarge`)
 8. Create `AppButton` widget in `shared/ui_kit/lib/src/widgets/app_button.dart`
 9. Write Alchemist golden test in `shared/ui_kit/test/src/widgets/app_button_golden_test.dart`
-10. If project uses Widgetbook, create use cases for all visual states in `widgetbook/lib/use_cases/app_button.dart`
-11. Run `flutter test --tags golden --update-goldens` to generate golden files
+10. Run `flutter test --tags golden --update-goldens` to generate golden files
+11. **Check for Widgetbook** (look for `widgetbook/` directory or `widgetbook_annotation` dependency) — if present, create use cases for all visual states in `widgetbook/lib/use_cases/app_button.dart`
 12. Compare golden output against Figma screenshot
 13. Update barrel files and `pubspec.yaml`
 
@@ -703,7 +714,7 @@ User provides: `https://figma.com/design/pR8mNv5KqXzGwY2JtCfL4D/Components?node-
 6. Map spacing to `AppSpacing`, colors to `ColorScheme`, typography to `TextTheme`
 7. Use `const` constructors, composition of smaller widgets
 8. Write golden tests covering: default state, without image, with long text, dark theme
-9. If project uses Widgetbook, create use cases for: default, without image, with long text, dark theme
+9. **Check for Widgetbook** — if present, create use cases for: default, without image, with long text, dark theme
 10. Validate against Figma screenshot
 
 **Result:** Composable `AppCard` widget with sub-components, golden tests, and theme integration.
