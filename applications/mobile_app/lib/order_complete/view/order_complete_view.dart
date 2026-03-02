@@ -35,7 +35,10 @@ class OrderCompleteView extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: context.spacing.xl),
-                    const _BackToMenuButton(),
+                    BaseButton(
+                      label: context.l10n.orderCompleteBackToMenu,
+                      onPressed: () => context.go('/menu'),
+                    ),
                   ],
                 ),
               ),
@@ -87,7 +90,10 @@ class OrderCompleteView extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                         horizontal: context.spacing.xl,
                       ),
-                      child: const _BackToMenuButton(),
+                      child: BaseButton(
+                        label: context.l10n.orderCompleteBackToMenu,
+                        onPressed: () => context.go('/menu'),
+                      ),
                     ),
                     SizedBox(height: context.spacing.xxl),
                   ],
@@ -330,31 +336,6 @@ class _OrderDetails extends StatelessWidget {
                 ],
               ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _BackToMenuButton extends StatelessWidget {
-  const _BackToMenuButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.go('/menu'),
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: context.spacing.lg),
-        decoration: BoxDecoration(
-          color: context.colors.primary,
-          borderRadius: BorderRadius.circular(context.radius.large),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          context.l10n.orderCompleteBackToMenu,
-          style: context.typography.button.copyWith(
-            color: context.colors.primaryForeground,
           ),
         ),
       ),

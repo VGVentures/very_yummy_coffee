@@ -94,13 +94,7 @@ class _CartHeader extends StatelessWidget {
           ),
           child: Row(
             children: [
-              GestureDetector(
-                onTap: () => context.go('/menu'),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: context.colors.primaryForeground,
-                ),
-              ),
+              CustomBackButton(onPressed: () => context.go('/menu')),
               SizedBox(width: context.spacing.lg),
               Expanded(
                 child: Column(
@@ -379,22 +373,9 @@ class _CheckoutButton extends StatelessWidget {
       top: false,
       child: Padding(
         padding: EdgeInsets.all(context.spacing.xl),
-        child: GestureDetector(
-          onTap: () => context.go('/menu/cart/checkout'),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: context.spacing.lg),
-            decoration: BoxDecoration(
-              color: context.colors.primary,
-              borderRadius: BorderRadius.circular(context.radius.large),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              context.l10n.cartProceedToCheckout(total),
-              style: context.typography.button.copyWith(
-                color: context.colors.primaryForeground,
-              ),
-            ),
-          ),
+        child: BaseButton(
+          label: context.l10n.cartProceedToCheckout(total),
+          onPressed: () => context.go('/menu/cart/checkout'),
         ),
       ),
     );
@@ -433,24 +414,9 @@ class _EmptyCartView extends StatelessWidget {
               ),
             ),
             SizedBox(height: context.spacing.xl),
-            GestureDetector(
-              onTap: () => context.go('/menu'),
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  horizontal: context.spacing.xxl,
-                  vertical: context.spacing.lg,
-                ),
-                decoration: BoxDecoration(
-                  color: context.colors.primary,
-                  borderRadius: BorderRadius.circular(context.radius.large),
-                ),
-                child: Text(
-                  context.l10n.cartBrowseMenu,
-                  style: context.typography.button.copyWith(
-                    color: context.colors.primaryForeground,
-                  ),
-                ),
-              ),
+            BaseButton(
+              label: context.l10n.cartBrowseMenu,
+              onPressed: () => context.go('/menu'),
             ),
           ],
         ),

@@ -100,13 +100,7 @@ class _CheckoutHeader extends StatelessWidget {
           ),
           child: Row(
             children: [
-              GestureDetector(
-                onTap: () => context.go('/menu/cart'),
-                child: Icon(
-                  Icons.arrow_back,
-                  color: context.colors.primaryForeground,
-                ),
-              ),
+              CustomBackButton(onPressed: () => context.go('/menu/cart')),
               SizedBox(width: context.spacing.lg),
               Text(
                 context.l10n.checkoutTitle,
@@ -269,36 +263,11 @@ class _PlaceOrderButton extends StatelessWidget {
       top: false,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: context.spacing.xl),
-        child: GestureDetector(
-          onTap: isSubmitting
-              ? null
-              : () =>
-                    context.read<CheckoutBloc>().add(const CheckoutConfirmed()),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: context.spacing.lg),
-            decoration: BoxDecoration(
-              color: isSubmitting
-                  ? context.colors.primary.withValues(alpha: 0.6)
-                  : context.colors.primary,
-              borderRadius: BorderRadius.circular(context.radius.large),
-            ),
-            alignment: Alignment.center,
-            child: isSubmitting
-                ? SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: context.colors.primaryForeground,
-                    ),
-                  )
-                : Text(
-                    context.l10n.checkoutPlaceOrder(total),
-                    style: context.typography.button.copyWith(
-                      color: context.colors.primaryForeground,
-                    ),
-                  ),
-          ),
+        child: BaseButton(
+          label: context.l10n.checkoutPlaceOrder(total),
+          onPressed: () =>
+              context.read<CheckoutBloc>().add(const CheckoutConfirmed()),
+          isLoading: isSubmitting,
         ),
       ),
     );
