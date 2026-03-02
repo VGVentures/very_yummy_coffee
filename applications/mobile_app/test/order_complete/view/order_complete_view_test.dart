@@ -37,6 +37,12 @@ const _completedOrder = Order(
   status: OrderStatus.completed,
 );
 
+const _readyOrder = Order(
+  id: 'order-abc-1234',
+  items: [_testItem],
+  status: OrderStatus.ready,
+);
+
 const _cancelledOrder = Order(
   id: 'order-abc-1234',
   items: [_testItem],
@@ -162,7 +168,23 @@ void main() {
       );
 
       testWidgets(
-        'step 3 label is shown when order status is completed',
+        'step 3 (Ready) is the active step when order status is ready',
+        (tester) async {
+          const state = OrderCompleteState(
+            order: _readyOrder,
+            status: OrderCompleteStatus.success,
+          );
+          when(() => bloc.state).thenReturn(state);
+          whenListen(bloc, Stream.value(state));
+
+          await tester.pumpApp(buildSubject());
+
+          expect(find.text('Ready'), findsOneWidget);
+        },
+      );
+
+      testWidgets(
+        'step 4 (Picked Up) is the active step when order status is completed',
         (tester) async {
           const state = OrderCompleteState(
             order: _completedOrder,
@@ -173,7 +195,11 @@ void main() {
 
           await tester.pumpApp(buildSubject());
 
+          // All labels are rendered in the tracker row.
+          expect(find.text('Placed'), findsOneWidget);
+          expect(find.text('In Progress'), findsOneWidget);
           expect(find.text('Ready'), findsOneWidget);
+          expect(find.text('Picked Up'), findsOneWidget);
         },
       );
 

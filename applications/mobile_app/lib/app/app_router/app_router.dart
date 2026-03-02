@@ -5,6 +5,7 @@ import 'package:very_yummy_coffee_mobile_app/app/app.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app_router/go_router_refresh_stream.dart';
 import 'package:very_yummy_coffee_mobile_app/cart/cart.dart';
 import 'package:very_yummy_coffee_mobile_app/checkout/checkout.dart';
+import 'package:very_yummy_coffee_mobile_app/home/home.dart';
 import 'package:very_yummy_coffee_mobile_app/item_detail/item_detail.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_items/menu_items.dart';
@@ -26,7 +27,7 @@ class AppRouter {
           return ConnectingPage.routeName;
         }
         if (status == AppStatus.connected && onConnecting) {
-          return MenuGroupsPage.routeName;
+          return HomePage.routeName;
         }
         return null;
       },
@@ -38,6 +39,16 @@ class AppRouter {
               NoTransitionPage(
                 name: ConnectingPage.routeName,
                 child: ConnectingPage.pageBuilder(context, state),
+              ),
+        ),
+
+        GoRoute(
+          name: HomePage.routeName,
+          path: HomePage.routeName,
+          pageBuilder: (BuildContext context, GoRouterState state) =>
+              NoTransitionPage(
+                name: HomePage.routeName,
+                child: HomePage.pageBuilder(context, state),
               ),
         ),
 

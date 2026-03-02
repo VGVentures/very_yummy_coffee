@@ -139,5 +139,47 @@
   "orderCompleteCancelledLabel": "Order Cancelled",
   "@orderCompleteCancelledLabel": {
     "description": "Label shown when the order has been cancelled on the order complete screen"
+  },
+  "homeGreetingMorning": "Good morning",
+  "@homeGreetingMorning": {
+    "description": "Morning greeting on the home screen (hour < 12)"
+  },
+  "homeGreetingAfternoon": "Good afternoon",
+  "@homeGreetingAfternoon": {
+    "description": "Afternoon greeting on the home screen (12 <= hour < 18)"
+  },
+  "homeGreetingEvening": "Good evening",
+  "@homeGreetingEvening": {
+    "description": "Evening greeting on the home screen (hour >= 18)"
+  },
+"homeStartNewOrderButton": "Start New Order",
+  "@homeStartNewOrderButton": {
+    "description": "CTA button at the bottom of the home screen"
+  },
+  "homeEmptyStateTitle": "No active orders",
+  "@homeEmptyStateTitle": {
+    "description": "Heading shown when there are no active orders on the home screen"
+  },
+  "homeEmptyStateBody": "Tap below to start your first order",
+  "@homeEmptyStateBody": {
+    "description": "Body text shown when there are no active orders on the home screen"
+  },
+  "homeOrderNumber": "#{orderNumber}",
+  "@homeOrderNumber": {
+    "description": "Order number display on an order card on the home screen",
+    "placeholders": {
+      "orderNumber": {
+        "type": "String"
+      }
+    }
+  },
+  "homeOrderItemCount": "{count, plural, =1{1 item} other{{count} items}}",
+  "@homeOrderItemCount": {
+    "description": "Item count label on an order card on the home screen",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

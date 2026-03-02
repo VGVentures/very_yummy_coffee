@@ -10,6 +10,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  order_repository:
+    path: ../order_repository
 
 dev_dependencies:
   flutter_test:
