@@ -44,7 +44,12 @@ jobs:
         run: dart pub get
 
       - name: ✨ Check Formatting
-        run: dart format --set-exit-if-changed lib
+        run: dart format --set-exit-if-changed lib test
       
       - name: 🕵️ Analyze
-        run: dart analyze --fatal-infos --fatal-warnings lib
+        run: dart analyze --fatal-infos --fatal-warnings lib test
+
+      - name: 🧪 Run Tests
+        run: |
+          dart pub global activate coverage 1.15.0
+          dart test -j 4 --coverage=coverage --platform=vm && dart pub global run coverage:format_coverage --lcov --in=coverage --out=coverage/lcov.info --report-on=lib
