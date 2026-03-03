@@ -114,7 +114,7 @@ class _OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final orderNumber = order.id.substring(order.id.length - 4).toUpperCase();
+    final orderNumber = order.orderNumber.replaceFirst('#', '');
     final itemCount = order.items.fold(0, (sum, item) => sum + item.quantity);
     final total = '\$${(order.grandTotal / 100).toStringAsFixed(2)}';
 
@@ -152,7 +152,7 @@ class _OrderCard extends StatelessWidget {
             OrderStepTracker(
               activeStep: switch (order.status) {
                 OrderStatus.pending => 0,
-                OrderStatus.submitted => 1,
+                OrderStatus.submitted || OrderStatus.inProgress => 1,
                 OrderStatus.ready => 2,
                 OrderStatus.completed => 3,
                 OrderStatus.cancelled => -1,
@@ -183,7 +183,7 @@ class _StatusPill extends StatelessWidget {
         context.l10n.orderCompleteStep1,
         context.colors.warning,
       ),
-      OrderStatus.submitted => (
+      OrderStatus.submitted || OrderStatus.inProgress => (
         context.l10n.orderCompleteStep2,
         context.colors.primary,
       ),

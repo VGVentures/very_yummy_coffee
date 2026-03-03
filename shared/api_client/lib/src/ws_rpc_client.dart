@@ -33,9 +33,18 @@ class WsRpcClient {
     );
   }
 
+  /// Creates a [WsRpcClient] from an existing [LiveConnection].
+  ///
+  /// Prefer [WsRpcClient.fromApiClient] in production code. This constructor
+  /// is intended for use in tests where a pre-configured connection is needed.
+  WsRpcClient.fromConnection({
+    required LiveConnection<Map<String, dynamic>> connection,
+  }) : _connection = connection;
+
   final LiveConnection<Map<String, dynamic>> _connection;
   final Map<String, StreamController<Map<String, dynamic>>> _controllers = {};
   StreamSubscription<Map<String, dynamic>>? _inboundSub;
+  StreamSubscription<ConnectionState>? _connectionSub;
 
   /// Emits true when the WebSocket is connected or reconnected,
   /// and false when it disconnects.
@@ -72,6 +81,7 @@ class WsRpcClient {
   /// Closes the connection and all topic streams.
   void close() {
     _inboundSub?.cancel();
+    _connectionSub?.cancel();
     for (final controller in _controllers.values) {
       controller.close();
     }
@@ -80,12 +90,22 @@ class WsRpcClient {
   }
 
   void _ensureListening() {
-    _inboundSub ??= _connection.stream.listen((message) {
+    if (_inboundSub != null) return;
+
+    _inboundSub = _connection.stream.listen((message) {
       if (message['type'] == 'update') {
         final topic = message['topic'] as String?;
         final payload = message['payload'];
         if (topic != null && payload is Map<String, dynamic>) {
           _controllers[topic]?.add(payload);
+        }
+      }
+    });
+
+    _connectionSub = _connection.connection.listen((state) {
+      if (state is Reconnected) {
+        for (final topic in _controllers.keys) {
+          _connection.send({'type': 'subscribe', 'topic': topic});
         }
       }
     });

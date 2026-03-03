@@ -74,7 +74,7 @@ class OrderCompleteView extends StatelessWidget {
                       child: OrderStepTracker(
                         activeStep: switch (order.status) {
                           OrderStatus.pending => 0,
-                          OrderStatus.submitted => 1,
+                          OrderStatus.submitted || OrderStatus.inProgress => 1,
                           OrderStatus.ready => 2,
                           OrderStatus.completed => 3,
                           OrderStatus.cancelled => -1,
