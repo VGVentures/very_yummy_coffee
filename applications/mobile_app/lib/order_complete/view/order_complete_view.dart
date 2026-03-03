@@ -37,7 +37,7 @@ class OrderCompleteView extends StatelessWidget {
                     SizedBox(height: context.spacing.xl),
                     BaseButton(
                       label: context.l10n.orderCompleteBackToMenu,
-                      onPressed: () => context.go('/menu'),
+                      onPressed: () => context.go('/home'),
                     ),
                   ],
                 ),
@@ -105,7 +105,7 @@ class OrderCompleteView extends StatelessWidget {
                       ),
                       child: BaseButton(
                         label: context.l10n.orderCompleteBackToMenu,
-                        onPressed: () => context.go('/menu'),
+                        onPressed: () => context.go('/home'),
                       ),
                     ),
                     SizedBox(height: context.spacing.xxl),

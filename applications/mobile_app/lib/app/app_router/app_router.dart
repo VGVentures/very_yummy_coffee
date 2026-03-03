@@ -50,69 +50,75 @@ class AppRouter {
                 name: HomePage.routeName,
                 child: HomePage.pageBuilder(context, state),
               ),
-        ),
-
-        GoRoute(
-          name: MenuGroupsPage.routeName,
-          path: MenuGroupsPage.routeName,
-          pageBuilder: (BuildContext context, GoRouterState state) =>
-              NoTransitionPage(
-                name: MenuGroupsPage.routeName,
-                child: MenuGroupsPage.pageBuilder(context, state),
-              ),
           routes: [
             GoRoute(
-              name: CartPage.routeName,
-              path: CartPage.routePath,
+              name: MenuGroupsPage.routeName,
+              path: 'menu',
               pageBuilder: (BuildContext context, GoRouterState state) =>
                   MaterialPage(
-                    name: CartPage.routeName,
-                    child: CartPage.pageBuilder(context, state),
+                    name: MenuGroupsPage.routeName,
+                    child: MenuGroupsPage.pageBuilder(context, state),
                   ),
               routes: [
                 GoRoute(
-                  name: CheckoutPage.routeName,
-                  path: CheckoutPage.routePath,
+                  name: CartPage.routeName,
+                  path: CartPage.routePath,
                   pageBuilder: (BuildContext context, GoRouterState state) =>
                       MaterialPage(
-                        name: CheckoutPage.routeName,
-                        child: CheckoutPage.pageBuilder(context, state),
+                        name: CartPage.routeName,
+                        child: CartPage.pageBuilder(context, state),
                       ),
                   routes: [
                     GoRoute(
-                      name: OrderCompletePage.routeName,
-                      path: OrderCompletePage.routePathTemplate,
+                      name: CheckoutPage.routeName,
+                      path: CheckoutPage.routePath,
                       pageBuilder:
                           (BuildContext context, GoRouterState state) =>
                               MaterialPage(
-                                name: OrderCompletePage.routeName,
-                                child: OrderCompletePage.pageBuilder(
+                                name: CheckoutPage.routeName,
+                                child: CheckoutPage.pageBuilder(context, state),
+                              ),
+                      routes: [
+                        GoRoute(
+                          name: OrderCompletePage.routeName,
+                          path: OrderCompletePage.routePathTemplate,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) =>
+                                  MaterialPage(
+                                    name: OrderCompletePage.routeName,
+                                    child: OrderCompletePage.pageBuilder(
+                                      context,
+                                      state,
+                                    ),
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                GoRoute(
+                  name: MenuItemsPage.routeName,
+                  path: MenuItemsPage.routePathTemplate,
+                  pageBuilder: (BuildContext context, GoRouterState state) =>
+                      MaterialPage(
+                        name: MenuItemsPage.routeName,
+                        child: MenuItemsPage.pageBuilder(context, state),
+                      ),
+                  routes: [
+                    GoRoute(
+                      name: ItemDetailPage.routeName,
+                      path: ItemDetailPage.routePathTemplate,
+                      pageBuilder:
+                          (BuildContext context, GoRouterState state) =>
+                              MaterialPage(
+                                name: ItemDetailPage.routeName,
+                                child: ItemDetailPage.pageBuilder(
                                   context,
                                   state,
                                 ),
                               ),
                     ),
                   ],
-                ),
-              ],
-            ),
-            GoRoute(
-              name: MenuItemsPage.routeName,
-              path: MenuItemsPage.routePathTemplate,
-              pageBuilder: (BuildContext context, GoRouterState state) =>
-                  MaterialPage(
-                    name: MenuItemsPage.routeName,
-                    child: MenuItemsPage.pageBuilder(context, state),
-                  ),
-              routes: [
-                GoRoute(
-                  name: ItemDetailPage.routeName,
-                  path: ItemDetailPage.routePathTemplate,
-                  pageBuilder: (BuildContext context, GoRouterState state) =>
-                      MaterialPage(
-                        name: ItemDetailPage.routeName,
-                        child: ItemDetailPage.pageBuilder(context, state),
-                      ),
                 ),
               ],
             ),

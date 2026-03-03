@@ -94,7 +94,7 @@ class _CartHeader extends StatelessWidget {
           ),
           child: Row(
             children: [
-              CustomBackButton(onPressed: () => context.go('/menu')),
+              CustomBackButton(onPressed: () => context.go('/home/menu')),
               SizedBox(width: context.spacing.lg),
               Expanded(
                 child: Column(
@@ -375,7 +375,7 @@ class _CheckoutButton extends StatelessWidget {
         padding: EdgeInsets.all(context.spacing.xl),
         child: BaseButton(
           label: context.l10n.cartProceedToCheckout(total),
-          onPressed: () => context.go('/menu/cart/checkout'),
+          onPressed: () => context.go('/home/menu/cart/checkout'),
         ),
       ),
     );
@@ -416,7 +416,7 @@ class _EmptyCartView extends StatelessWidget {
             SizedBox(height: context.spacing.xl),
             BaseButton(
               label: context.l10n.cartBrowseMenu,
-              onPressed: () => context.go('/menu'),
+              onPressed: () => context.go('/home/menu'),
             ),
           ],
         ),

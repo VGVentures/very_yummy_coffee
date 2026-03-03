@@ -108,7 +108,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderCompleteOrderDetailsLabel => 'Your Order';
 
   @override
-  String get orderCompleteBackToMenu => 'Back to Menu';
+  String get orderCompleteBackToMenu => 'Back to Home';
 
   @override
   String get orderCompleteCancelledLabel => 'Order Cancelled';
@@ -124,6 +124,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeStartNewOrderButton => 'Start New Order';
+
+  @override
+  String get homeContinueOrderButton => 'Continue Order';
 
   @override
   String get homeEmptyStateTitle => 'No active orders';

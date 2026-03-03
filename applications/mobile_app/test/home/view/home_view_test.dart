@@ -141,7 +141,7 @@ void main() {
         await tester.tap(find.text('Start New Order'));
         await tester.pump();
 
-        verify(() => goRouter.go('/menu')).called(1);
+        verify(() => goRouter.go('/home/menu')).called(1);
       });
     });
   });

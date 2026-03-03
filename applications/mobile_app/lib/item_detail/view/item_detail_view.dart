@@ -14,7 +14,7 @@ class ItemDetailView extends StatelessWidget {
     return BlocConsumer<ItemDetailBloc, ItemDetailState>(
       listener: (context, state) {
         if (state.status == .added) {
-          context.go('/menu/cart');
+          context.go('/home/menu/cart');
         }
       },
       builder: (context, state) {

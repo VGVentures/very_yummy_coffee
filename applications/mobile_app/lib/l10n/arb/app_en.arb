@@ -132,7 +132,7 @@
   "@orderCompleteOrderDetailsLabel": {
     "description": "Section heading for the order details on the order complete screen"
   },
-  "orderCompleteBackToMenu": "Back to Menu",
+  "orderCompleteBackToMenu": "Back to Home",
   "@orderCompleteBackToMenu": {
     "description": "Button label to navigate back to the menu from the order complete screen"
   },
@@ -154,7 +154,11 @@
   },
 "homeStartNewOrderButton": "Start New Order",
   "@homeStartNewOrderButton": {
-    "description": "CTA button at the bottom of the home screen"
+    "description": "CTA button at the bottom of the home screen when there are no active orders"
+  },
+  "homeContinueOrderButton": "Continue Order",
+  "@homeContinueOrderButton": {
+    "description": "CTA button at the bottom of the home screen when there is at least one active order"
   },
   "homeEmptyStateTitle": "No active orders",
   "@homeEmptyStateTitle": {

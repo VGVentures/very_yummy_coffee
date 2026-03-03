@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -54,6 +55,16 @@ void main() {
         whenListen(bloc, Stream.value(state));
       });
 
+      testWidgets('tapping back button navigates to /home', (tester) async {
+        final goRouter = MockGoRouter();
+        await tester.pumpApp(buildSubject(), goRouter: goRouter);
+
+        await tester.tap(find.byType(CustomBackButton));
+        await tester.pump();
+
+        verify(() => goRouter.go('/home')).called(1);
+      });
+
       testWidgets('shows cart icon button', (tester) async {
         await tester.pumpApp(buildSubject());
 
@@ -67,7 +78,7 @@ void main() {
         await tester.tap(find.byIcon(Icons.shopping_bag_outlined));
         await tester.pump();
 
-        verify(() => goRouter.go('/menu/cart')).called(1);
+        verify(() => goRouter.go('/home/menu/cart')).called(1);
       });
     });
   });

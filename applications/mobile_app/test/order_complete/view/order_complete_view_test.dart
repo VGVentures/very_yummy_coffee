@@ -86,7 +86,7 @@ void main() {
         await tester.pumpApp(buildSubject());
 
         expect(find.text('Something went wrong'), findsOneWidget);
-        expect(find.text('Back to Menu'), findsOneWidget);
+        expect(find.text('Back to Home'), findsOneWidget);
       });
 
       testWidgets('tapping Back to Menu navigates to /menu', (tester) async {
@@ -98,10 +98,10 @@ void main() {
         whenListen(bloc, Stream.value(state));
 
         await tester.pumpApp(buildSubject(), goRouter: goRouter);
-        await tester.tap(find.text('Back to Menu'));
+        await tester.tap(find.text('Back to Home'));
         await tester.pump();
 
-        verify(() => goRouter.go('/menu')).called(1);
+        verify(() => goRouter.go('/home')).called(1);
       });
     });
 
@@ -233,10 +233,10 @@ void main() {
         whenListen(bloc, Stream.value(state));
 
         await tester.pumpApp(buildSubject(), goRouter: goRouter);
-        await tester.tap(find.text('Back to Menu'));
+        await tester.tap(find.text('Back to Home'));
         await tester.pump();
 
-        verify(() => goRouter.go('/menu')).called(1);
+        verify(() => goRouter.go('/home')).called(1);
       });
 
       testWidgets('OS back is blocked by PopScope', (tester) async {

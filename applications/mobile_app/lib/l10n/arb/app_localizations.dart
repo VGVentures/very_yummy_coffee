@@ -265,7 +265,7 @@ abstract class AppLocalizations {
   /// Button label to navigate back to the menu from the order complete screen
   ///
   /// In en, this message translates to:
-  /// **'Back to Menu'**
+  /// **'Back to Home'**
   String get orderCompleteBackToMenu;
 
   /// Label shown when the order has been cancelled on the order complete screen
@@ -292,11 +292,17 @@ abstract class AppLocalizations {
   /// **'Good evening'**
   String get homeGreetingEvening;
 
-  /// CTA button at the bottom of the home screen
+  /// CTA button at the bottom of the home screen when there are no active orders
   ///
   /// In en, this message translates to:
   /// **'Start New Order'**
   String get homeStartNewOrderButton;
+
+  /// CTA button at the bottom of the home screen when there is at least one active order
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Order'**
+  String get homeContinueOrderButton;
 
   /// Heading shown when there are no active orders on the home screen
   ///
