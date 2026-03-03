@@ -17,7 +17,7 @@ Build a landscape Flutter app (`kds_app`) that displays active orders in three c
 
 **1. `@MappableClass()` on KDS event classes (Section 2.4, `kds_event.dart`)**
 
-Every event class in the plan is annotated with `@MappableClass()`. Looking at the existing `mobile_app` code, event classes (`AppEvent`, `AppStarted`, `HomeSubscriptionRequested`, etc.) use plain Dart sealed/final classes with no `dart_mappable` annotations — see `/Users/marcustwichel/Developer/Playing_Around/very-yummy-coffee/applications/mobile_app/lib/app/bloc/app_event.dart` and `home_event.dart`. Events are never serialized; they are created, dispatched, and discarded in memory. Generating mapper code for events adds generated files and build-time noise with no benefit.
+Every event class in the plan is annotated with `@MappableClass()`. Looking at the existing `mobile_app` code, event classes (`AppEvent`, `AppStarted`, `HomeSubscriptionRequested`, etc.) use plain Dart sealed/final classes with no `dart_mappable` annotations — see `applications/mobile_app/lib/app/bloc/app_event.dart` and `home_event.dart`. Events are never serialized; they are created, dispatched, and discarded in memory. Generating mapper code for events adds generated files and build-time noise with no benefit.
 
 Suggested simplification: remove `@MappableClass()` from all event classes. Follow the existing pattern: sealed class with no annotation, final subclasses with no annotation. This also eliminates `kds_bloc.mapper.dart` (the mapper file is only needed for the state, not events).
 
