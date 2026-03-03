@@ -148,25 +148,23 @@ class ServerState {
         final orderId = payload['orderId'] as String;
         final order = _orders[orderId];
         if (order != null) {
-          _orders[orderId] = <String, dynamic>{...order, 'status': 'submitted'};
+          _orders[orderId] = <String, dynamic>{
+            ...order,
+            'status': 'submitted',
+            'submittedAt': DateTime.now().toUtc().toIso8601String(),
+          };
           broadcast('orders', snapshotForTopic('orders'));
           broadcast('order:$orderId', _orders[orderId]!);
         }
 
-      case 'completeOrder':
+      case 'startOrder':
         final orderId = payload['orderId'] as String;
         final order = _orders[orderId];
-        if (order != null) {
-          _orders[orderId] = <String, dynamic>{...order, 'status': 'completed'};
-          broadcast('orders', snapshotForTopic('orders'));
-          broadcast('order:$orderId', _orders[orderId]!);
-        }
-
-      case 'cancelOrder':
-        final orderId = payload['orderId'] as String;
-        final order = _orders[orderId];
-        if (order != null) {
-          _orders[orderId] = <String, dynamic>{...order, 'status': 'cancelled'};
+        if (order != null && order['status'] == 'submitted') {
+          _orders[orderId] = <String, dynamic>{
+            ...order,
+            'status': 'inProgress',
+          };
           broadcast('orders', snapshotForTopic('orders'));
           broadcast('order:$orderId', _orders[orderId]!);
         }
@@ -174,8 +172,34 @@ class ServerState {
       case 'markOrderReady':
         final orderId = payload['orderId'] as String;
         final order = _orders[orderId];
-        if (order != null) {
+        if (order != null && order['status'] == 'inProgress') {
           _orders[orderId] = <String, dynamic>{...order, 'status': 'ready'};
+          broadcast('orders', snapshotForTopic('orders'));
+          broadcast('order:$orderId', _orders[orderId]!);
+        }
+
+      case 'completeOrder':
+        final orderId = payload['orderId'] as String;
+        final order = _orders[orderId];
+        if (order != null && order['status'] == 'ready') {
+          _orders[orderId] = <String, dynamic>{
+            ...order,
+            'status': 'completed',
+          };
+          broadcast('orders', snapshotForTopic('orders'));
+          broadcast('order:$orderId', _orders[orderId]!);
+        }
+
+      case 'cancelOrder':
+        final orderId = payload['orderId'] as String;
+        final order = _orders[orderId];
+        if (order != null &&
+            order['status'] != 'completed' &&
+            order['status'] != 'cancelled') {
+          _orders[orderId] = <String, dynamic>{
+            ...order,
+            'status': 'cancelled',
+          };
           broadcast('orders', snapshotForTopic('orders'));
           broadcast('order:$orderId', _orders[orderId]!);
         }

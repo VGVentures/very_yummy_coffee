@@ -10,5 +10,11 @@
       "request": "launch",
       "type": "dart"
     },
+    {
+      "name": "KDS App",
+      "cwd": "applications/kds_app",
+      "request": "launch",
+      "type": "dart"
+    },
   ]
 }

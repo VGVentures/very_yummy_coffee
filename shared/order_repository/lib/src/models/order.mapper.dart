@@ -31,6 +31,8 @@ class OrderStatusMapper extends EnumMapper<OrderStatus> {
         return OrderStatus.pending;
       case r'submitted':
         return OrderStatus.submitted;
+      case r'inProgress':
+        return OrderStatus.inProgress;
       case r'ready':
         return OrderStatus.ready;
       case r'completed':
@@ -49,6 +51,8 @@ class OrderStatusMapper extends EnumMapper<OrderStatus> {
         return r'pending';
       case OrderStatus.submitted:
         return r'submitted';
+      case OrderStatus.inProgress:
+        return r'inProgress';
       case OrderStatus.ready:
         return r'ready';
       case OrderStatus.completed:
@@ -88,12 +92,19 @@ class OrderMapper extends ClassMapperBase<Order> {
   static const Field<Order, List<LineItem>> _f$items = Field('items', _$items);
   static OrderStatus _$status(Order v) => v.status;
   static const Field<Order, OrderStatus> _f$status = Field('status', _$status);
+  static DateTime? _$submittedAt(Order v) => v.submittedAt;
+  static const Field<Order, DateTime> _f$submittedAt = Field(
+    'submittedAt',
+    _$submittedAt,
+    opt: true,
+  );
 
   @override
   final MappableFields<Order> fields = const {
     #id: _f$id,
     #items: _f$items,
     #status: _f$status,
+    #submittedAt: _f$submittedAt,
   };
 
   static Order _instantiate(DecodingData data) {
@@ -101,6 +112,7 @@ class OrderMapper extends ClassMapperBase<Order> {
       id: data.dec(_f$id),
       items: data.dec(_f$items),
       status: data.dec(_f$status),
+      submittedAt: data.dec(_f$submittedAt),
     );
   }
 
@@ -152,7 +164,12 @@ abstract class OrderCopyWith<$R, $In extends Order, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, LineItem, LineItemCopyWith<$R, LineItem, LineItem>>
   get items;
-  $R call({String? id, List<LineItem>? items, OrderStatus? status});
+  $R call({
+    String? id,
+    List<LineItem>? items,
+    OrderStatus? status,
+    DateTime? submittedAt,
+  });
   OrderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -170,11 +187,17 @@ class _OrderCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Order, $Out>
     (v) => call(items: v),
   );
   @override
-  $R call({String? id, List<LineItem>? items, OrderStatus? status}) => $apply(
+  $R call({
+    String? id,
+    List<LineItem>? items,
+    OrderStatus? status,
+    Object? submittedAt = $none,
+  }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (items != null) #items: items,
       if (status != null) #status: status,
+      if (submittedAt != $none) #submittedAt: submittedAt,
     }),
   );
   @override
@@ -182,6 +205,7 @@ class _OrderCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Order, $Out>
     id: data.get(#id, or: $value.id),
     items: data.get(#items, or: $value.items),
     status: data.get(#status, or: $value.status),
+    submittedAt: data.get(#submittedAt, or: $value.submittedAt),
   );
 
   @override

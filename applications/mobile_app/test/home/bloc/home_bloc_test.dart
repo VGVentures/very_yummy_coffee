@@ -37,6 +37,12 @@ const _completedOrder = Order(
   status: OrderStatus.completed,
 );
 
+const _inProgressOrder = Order(
+  id: 'order-abc-0006',
+  items: [_testItem],
+  status: OrderStatus.inProgress,
+);
+
 const _cancelledOrder = Order(
   id: 'order-abc-0005',
   items: [_testItem],
@@ -76,6 +82,25 @@ void main() {
           const HomeState(
             status: HomeStatus.success,
             orders: [_pendingOrder, _submittedOrder],
+          ),
+        ],
+      );
+
+      blocTest<HomeBloc, HomeState>(
+        'includes inProgress orders in active list',
+        build: () {
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => Stream.value(
+              const Orders(orders: [_inProgressOrder]),
+            ),
+          );
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(const HomeSubscriptionRequested()),
+        expect: () => [
+          const HomeState(
+            status: HomeStatus.success,
+            orders: [_inProgressOrder],
           ),
         ],
       );

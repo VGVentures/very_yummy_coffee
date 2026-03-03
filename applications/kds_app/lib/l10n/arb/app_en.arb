@@ -1,0 +1,73 @@
+{
+  "@@locale": "en",
+  "appTitle": "Very Yummy Coffee — Kitchen Display",
+  "@appTitle": {
+    "description": "The title of the KDS application"
+  },
+  "connecting": "Connecting to kitchen…",
+  "@connecting": {
+    "description": "Message shown on the connecting screen"
+  },
+  "columnNew": "NEW",
+  "@columnNew": {
+    "description": "Header label for the NEW orders column"
+  },
+  "columnInProgress": "IN PROGRESS",
+  "@columnInProgress": {
+    "description": "Header label for the IN PROGRESS orders column"
+  },
+  "columnReady": "READY",
+  "@columnReady": {
+    "description": "Header label for the READY orders column"
+  },
+  "actionStart": "Start →",
+  "@actionStart": {
+    "description": "Action button label to start an order"
+  },
+  "actionMarkReady": "Mark Ready →",
+  "@actionMarkReady": {
+    "description": "Action button label to mark an order ready"
+  },
+  "actionComplete": "Complete ✓",
+  "@actionComplete": {
+    "description": "Action button label to complete an order"
+  },
+  "actionCancel": "Cancel",
+  "@actionCancel": {
+    "description": "Cancel button label on an order card"
+  },
+  "ageJustNow": "just now",
+  "@ageJustNow": {
+    "description": "Age display for orders submitted less than 60 seconds ago"
+  },
+  "ageMinutesAgo": "{minutes} min ago",
+  "@ageMinutesAgo": {
+    "description": "Age display for orders submitted 1-59 minutes ago",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "ageHoursMinutesAgo": "{hours}h {minutes}m ago",
+  "@ageHoursMinutesAgo": {
+    "description": "Age display for orders submitted 60+ minutes ago",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      },
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "orderQueue": "{count, plural, =1{1 in queue} other{{count} in queue}}",
+  "@orderQueue": {
+    "description": "Total active order count shown in the top bar",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
+}

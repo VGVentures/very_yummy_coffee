@@ -5,4 +5,5 @@ export 'src/colors/colors.dart';
 export 'src/spacing/spacing.dart';
 export 'src/theme/theme.dart';
 export 'src/typography/typography.dart';
+export 'src/utils/go_router_refresh_stream.dart';
 export 'src/widgets/widgets.dart';
