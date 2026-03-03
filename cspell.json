@@ -24,7 +24,10 @@
     "xcodeproj",
     "xcscheme",
     "xcworkspace",
-    "listview"
+    "listview",
+    "formalises",
+    "footgun",
+    "uppercased"
   ],
   "ignorePaths": [
     "build/**",

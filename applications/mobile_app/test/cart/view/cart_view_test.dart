@@ -86,7 +86,7 @@ void main() {
             await tester.tap(find.byIcon(Icons.arrow_back));
             await tester.pump();
 
-            verify(() => goRouter.go('/menu')).called(1);
+            verify(() => goRouter.go('/home/menu')).called(1);
           },
         );
 
@@ -177,7 +177,7 @@ void main() {
             await tester.tap(find.textContaining('Proceed to Checkout'));
             await tester.pump();
 
-            verify(() => goRouter.go('/menu/cart/checkout')).called(1);
+            verify(() => goRouter.go('/home/menu/cart/checkout')).called(1);
           },
         );
       });
@@ -216,7 +216,7 @@ void main() {
             await tester.tap(find.text('Browse Menu'));
             await tester.pump();
 
-            verify(() => goRouter.go('/menu')).called(1);
+            verify(() => goRouter.go('/home/menu')).called(1);
           },
         );
       });

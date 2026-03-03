@@ -15,7 +15,7 @@ class CheckoutView extends StatelessWidget {
       listener: (context, state) {
         final orderId = state.order?.id;
         if (state.status == CheckoutStatus.success && orderId != null) {
-          context.go('/menu/cart/checkout/confirmation/$orderId');
+          context.go('/home/menu/cart/checkout/confirmation/$orderId');
         }
       },
       builder: (context, state) {
@@ -100,7 +100,7 @@ class _CheckoutHeader extends StatelessWidget {
           ),
           child: Row(
             children: [
-              CustomBackButton(onPressed: () => context.go('/menu/cart')),
+              CustomBackButton(onPressed: () => context.go('/home/menu/cart')),
               SizedBox(width: context.spacing.lg),
               Text(
                 context.l10n.checkoutTitle,

@@ -37,7 +37,7 @@ class OrderCompleteView extends StatelessWidget {
                     SizedBox(height: context.spacing.xl),
                     BaseButton(
                       label: context.l10n.orderCompleteBackToMenu,
-                      onPressed: () => context.go('/menu'),
+                      onPressed: () => context.go('/home'),
                     ),
                   ],
                 ),
@@ -67,7 +67,26 @@ class OrderCompleteView extends StatelessWidget {
                     SizedBox(height: context.spacing.xxl),
                     _CelebratoryHero(orderNumber: orderNumber),
                     SizedBox(height: context.spacing.xxl),
-                    _StatusTracker(status: order.status),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: context.spacing.xl,
+                      ),
+                      child: OrderStepTracker(
+                        activeStep: switch (order.status) {
+                          OrderStatus.pending => 0,
+                          OrderStatus.submitted => 1,
+                          OrderStatus.ready => 2,
+                          OrderStatus.completed => 3,
+                          OrderStatus.cancelled => -1,
+                        },
+                        labels: [
+                          context.l10n.orderCompleteStep1,
+                          context.l10n.orderCompleteStep2,
+                          context.l10n.orderCompleteStep3,
+                          context.l10n.orderCompleteStep4,
+                        ],
+                      ),
+                    ),
                     if (isCancelled) ...[
                       SizedBox(height: context.spacing.md),
                       Padding(
@@ -92,7 +111,7 @@ class OrderCompleteView extends StatelessWidget {
                       ),
                       child: BaseButton(
                         label: context.l10n.orderCompleteBackToMenu,
-                        onPressed: () => context.go('/menu'),
+                        onPressed: () => context.go('/home'),
                       ),
                     ),
                     SizedBox(height: context.spacing.xxl),
@@ -140,126 +159,6 @@ class _CelebratoryHero extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class _StatusTracker extends StatelessWidget {
-  const _StatusTracker({required this.status});
-
-  final OrderStatus status;
-
-  int get _activeStepIndex {
-    switch (status) {
-      case OrderStatus.pending:
-        return 0;
-      case OrderStatus.submitted:
-        return 1;
-      case OrderStatus.completed:
-        return 2;
-      case OrderStatus.cancelled:
-        return -1;
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final labels = [
-      context.l10n.orderCompleteStep1,
-      context.l10n.orderCompleteStep2,
-      context.l10n.orderCompleteStep3,
-      context.l10n.orderCompleteStep4,
-    ];
-    final active = _activeStepIndex;
-
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: context.spacing.xl),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: context.colors.card,
-          borderRadius: BorderRadius.circular(context.radius.large),
-          border: Border.all(color: context.colors.border),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(context.spacing.xl),
-          child: Row(
-            children: List.generate(labels.length * 2 - 1, (i) {
-              if (i.isOdd) {
-                final stepIndex = i ~/ 2;
-                final filled = active >= stepIndex;
-                return Expanded(
-                  child: Container(
-                    height: 2,
-                    color: filled
-                        ? context.colors.primary
-                        : context.colors.border,
-                  ),
-                );
-              }
-              final stepIndex = i ~/ 2;
-              final isActive = stepIndex == active;
-              final isCompleted = stepIndex < active;
-              return _StepNode(
-                label: labels[stepIndex],
-                isActive: isActive,
-                isCompleted: isCompleted,
-              );
-            }),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _StepNode extends StatelessWidget {
-  const _StepNode({
-    required this.label,
-    required this.isActive,
-    required this.isCompleted,
-  });
-
-  final String label;
-  final bool isActive;
-  final bool isCompleted;
-
-  @override
-  Widget build(BuildContext context) {
-    final filled = isActive || isCompleted;
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 28,
-          height: 28,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: filled ? context.colors.primary : context.colors.background,
-            border: Border.all(
-              color: filled ? context.colors.primary : context.colors.border,
-              width: 2,
-            ),
-          ),
-          child: filled
-              ? Icon(
-                  Icons.check,
-                  size: 14,
-                  color: context.colors.primaryForeground,
-                )
-              : null,
-        ),
-        SizedBox(height: context.spacing.xs),
-        Text(
-          label,
-          style: context.typography.small.copyWith(
-            color: filled
-                ? context.colors.primary
-                : context.colors.mutedForeground,
-            fontWeight: isActive ? FontWeight.w600 : FontWeight.normal,
-          ),
-          textAlign: TextAlign.center,
-        ),
-      ],
     );
   }
 }

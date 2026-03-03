@@ -58,6 +58,8 @@ class _Header extends StatelessWidget {
           padding: EdgeInsets.all(context.spacing.xl),
           child: Row(
             children: [
+              CustomBackButton(onPressed: () => context.go('/home')),
+              SizedBox(width: context.spacing.sm),
               Expanded(
                 child: Text(
                   context.l10n.appTitle,
@@ -67,7 +69,7 @@ class _Header extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () => context.go('/menu/cart'),
+                onTap: () => context.go('/home/menu/cart'),
                 child: Icon(
                   Icons.shopping_bag_outlined,
                   color: context.colors.primaryForeground,
@@ -95,7 +97,7 @@ class _MenuGroupList extends StatelessWidget {
       itemBuilder: (context, index) {
         final group = menuGroups[index];
         return GestureDetector(
-          onTap: () => context.go('/menu/${group.id}'),
+          onTap: () => context.go('/home/menu/${group.id}'),
           child: _MenuGroupCard(group: group),
         );
       },

@@ -215,7 +215,7 @@ void main() {
           goRouter: goRouter,
         );
 
-        verify(() => goRouter.go('/menu/cart')).called(1);
+        verify(() => goRouter.go('/home/menu/cart')).called(1);
       });
     });
   });

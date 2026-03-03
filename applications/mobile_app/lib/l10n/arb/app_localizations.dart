@@ -265,7 +265,7 @@ abstract class AppLocalizations {
   /// Button label to navigate back to the menu from the order complete screen
   ///
   /// In en, this message translates to:
-  /// **'Back to Menu'**
+  /// **'Back to Home'**
   String get orderCompleteBackToMenu;
 
   /// Label shown when the order has been cancelled on the order complete screen
@@ -273,6 +273,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Order Cancelled'**
   String get orderCompleteCancelledLabel;
+
+  /// Morning greeting on the home screen (hour < 12)
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get homeGreetingMorning;
+
+  /// Afternoon greeting on the home screen (12 <= hour < 18)
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get homeGreetingAfternoon;
+
+  /// Evening greeting on the home screen (hour >= 18)
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get homeGreetingEvening;
+
+  /// CTA button at the bottom of the home screen when there are no active orders
+  ///
+  /// In en, this message translates to:
+  /// **'Start New Order'**
+  String get homeStartNewOrderButton;
+
+  /// CTA button at the bottom of the home screen when there is at least one active order
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Order'**
+  String get homeContinueOrderButton;
+
+  /// Heading shown when there are no active orders on the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'No active orders'**
+  String get homeEmptyStateTitle;
+
+  /// Body text shown when there are no active orders on the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'Tap below to start your first order'**
+  String get homeEmptyStateBody;
+
+  /// Order number display on an order card on the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'#{orderNumber}'**
+  String homeOrderNumber(String orderNumber);
+
+  /// Item count label on an order card on the home screen
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 item} other{{count} items}}'**
+  String homeOrderItemCount(int count);
 }
 
 class _AppLocalizationsDelegate

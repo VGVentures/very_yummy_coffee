@@ -107,7 +107,7 @@ void main() {
         await tester.tap(find.byIcon(Icons.arrow_back));
         await tester.pump();
 
-        verify(() => goRouter.go('/menu/cart')).called(1);
+        verify(() => goRouter.go('/home/menu/cart')).called(1);
       });
     });
 
@@ -167,7 +167,7 @@ void main() {
 
         verify(
           () => goRouter.go(
-            '/menu/cart/checkout/confirmation/order-abc-1234',
+            '/home/menu/cart/checkout/confirmation/order-abc-1234',
           ),
         ).called(1);
       });

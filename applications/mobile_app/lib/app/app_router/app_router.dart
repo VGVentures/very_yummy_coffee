@@ -5,6 +5,7 @@ import 'package:very_yummy_coffee_mobile_app/app/app.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app_router/go_router_refresh_stream.dart';
 import 'package:very_yummy_coffee_mobile_app/cart/cart.dart';
 import 'package:very_yummy_coffee_mobile_app/checkout/checkout.dart';
+import 'package:very_yummy_coffee_mobile_app/home/home.dart';
 import 'package:very_yummy_coffee_mobile_app/item_detail/item_detail.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_items/menu_items.dart';
@@ -26,7 +27,7 @@ class AppRouter {
           return ConnectingPage.routeName;
         }
         if (status == AppStatus.connected && onConnecting) {
-          return MenuGroupsPage.routeName;
+          return HomePage.routeName;
         }
         return null;
       },
@@ -42,66 +43,82 @@ class AppRouter {
         ),
 
         GoRoute(
-          name: MenuGroupsPage.routeName,
-          path: MenuGroupsPage.routeName,
+          name: HomePage.routeName,
+          path: HomePage.routeName,
           pageBuilder: (BuildContext context, GoRouterState state) =>
               NoTransitionPage(
-                name: MenuGroupsPage.routeName,
-                child: MenuGroupsPage.pageBuilder(context, state),
+                name: HomePage.routeName,
+                child: HomePage.pageBuilder(context, state),
               ),
           routes: [
             GoRoute(
-              name: CartPage.routeName,
-              path: CartPage.routePath,
+              name: MenuGroupsPage.routeName,
+              path: 'menu',
               pageBuilder: (BuildContext context, GoRouterState state) =>
                   MaterialPage(
-                    name: CartPage.routeName,
-                    child: CartPage.pageBuilder(context, state),
+                    name: MenuGroupsPage.routeName,
+                    child: MenuGroupsPage.pageBuilder(context, state),
                   ),
               routes: [
                 GoRoute(
-                  name: CheckoutPage.routeName,
-                  path: CheckoutPage.routePath,
+                  name: CartPage.routeName,
+                  path: CartPage.routePath,
                   pageBuilder: (BuildContext context, GoRouterState state) =>
                       MaterialPage(
-                        name: CheckoutPage.routeName,
-                        child: CheckoutPage.pageBuilder(context, state),
+                        name: CartPage.routeName,
+                        child: CartPage.pageBuilder(context, state),
                       ),
                   routes: [
                     GoRoute(
-                      name: OrderCompletePage.routeName,
-                      path: OrderCompletePage.routePathTemplate,
+                      name: CheckoutPage.routeName,
+                      path: CheckoutPage.routePath,
                       pageBuilder:
                           (BuildContext context, GoRouterState state) =>
                               MaterialPage(
-                                name: OrderCompletePage.routeName,
-                                child: OrderCompletePage.pageBuilder(
+                                name: CheckoutPage.routeName,
+                                child: CheckoutPage.pageBuilder(context, state),
+                              ),
+                      routes: [
+                        GoRoute(
+                          name: OrderCompletePage.routeName,
+                          path: OrderCompletePage.routePathTemplate,
+                          pageBuilder:
+                              (BuildContext context, GoRouterState state) =>
+                                  MaterialPage(
+                                    name: OrderCompletePage.routeName,
+                                    child: OrderCompletePage.pageBuilder(
+                                      context,
+                                      state,
+                                    ),
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                GoRoute(
+                  name: MenuItemsPage.routeName,
+                  path: MenuItemsPage.routePathTemplate,
+                  pageBuilder: (BuildContext context, GoRouterState state) =>
+                      MaterialPage(
+                        name: MenuItemsPage.routeName,
+                        child: MenuItemsPage.pageBuilder(context, state),
+                      ),
+                  routes: [
+                    GoRoute(
+                      name: ItemDetailPage.routeName,
+                      path: ItemDetailPage.routePathTemplate,
+                      pageBuilder:
+                          (BuildContext context, GoRouterState state) =>
+                              MaterialPage(
+                                name: ItemDetailPage.routeName,
+                                child: ItemDetailPage.pageBuilder(
                                   context,
                                   state,
                                 ),
                               ),
                     ),
                   ],
-                ),
-              ],
-            ),
-            GoRoute(
-              name: MenuItemsPage.routeName,
-              path: MenuItemsPage.routePathTemplate,
-              pageBuilder: (BuildContext context, GoRouterState state) =>
-                  MaterialPage(
-                    name: MenuItemsPage.routeName,
-                    child: MenuItemsPage.pageBuilder(context, state),
-                  ),
-              routes: [
-                GoRoute(
-                  name: ItemDetailPage.routeName,
-                  path: ItemDetailPage.routePathTemplate,
-                  pageBuilder: (BuildContext context, GoRouterState state) =>
-                      MaterialPage(
-                        name: ItemDetailPage.routeName,
-                        child: ItemDetailPage.pageBuilder(context, state),
-                      ),
                 ),
               ],
             ),
