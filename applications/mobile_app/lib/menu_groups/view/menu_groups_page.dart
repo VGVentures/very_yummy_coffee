@@ -12,7 +12,7 @@ class MenuGroupsPage extends StatelessWidget {
     GoRouterState _,
   ) => const MenuGroupsPage(key: Key('menu_groups_page'));
 
-  static const routeName = '/menu';
+  static const routeName = '/home/menu';
 
   @override
   Widget build(BuildContext context) {

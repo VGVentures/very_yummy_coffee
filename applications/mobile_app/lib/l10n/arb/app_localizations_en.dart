@@ -108,8 +108,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get orderCompleteOrderDetailsLabel => 'Your Order';
 
   @override
-  String get orderCompleteBackToMenu => 'Back to Menu';
+  String get orderCompleteBackToMenu => 'Back to Home';
 
   @override
   String get orderCompleteCancelledLabel => 'Order Cancelled';
+
+  @override
+  String get homeGreetingMorning => 'Good morning';
+
+  @override
+  String get homeGreetingAfternoon => 'Good afternoon';
+
+  @override
+  String get homeGreetingEvening => 'Good evening';
+
+  @override
+  String get homeStartNewOrderButton => 'Start New Order';
+
+  @override
+  String get homeContinueOrderButton => 'Continue Order';
+
+  @override
+  String get homeEmptyStateTitle => 'No active orders';
+
+  @override
+  String get homeEmptyStateBody => 'Tap below to start your first order';
+
+  @override
+  String homeOrderNumber(String orderNumber) {
+    return '#$orderNumber';
+  }
+
+  @override
+  String homeOrderItemCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count items',
+      one: '1 item',
+    );
+    return '$_temp0';
+  }
 }

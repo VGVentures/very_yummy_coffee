@@ -28,12 +28,28 @@ class LineItemMapper extends ClassMapperBase<LineItem> {
   static const Field<LineItem, String> _f$name = Field('name', _$name);
   static int _$price(LineItem v) => v.price;
   static const Field<LineItem, int> _f$price = Field('price', _$price);
+  static String _$options(LineItem v) => v.options;
+  static const Field<LineItem, String> _f$options = Field(
+    'options',
+    _$options,
+    opt: true,
+    def: '',
+  );
+  static int _$quantity(LineItem v) => v.quantity;
+  static const Field<LineItem, int> _f$quantity = Field(
+    'quantity',
+    _$quantity,
+    opt: true,
+    def: 1,
+  );
 
   @override
   final MappableFields<LineItem> fields = const {
     #id: _f$id,
     #name: _f$name,
     #price: _f$price,
+    #options: _f$options,
+    #quantity: _f$quantity,
   };
 
   static LineItem _instantiate(DecodingData data) {
@@ -41,6 +57,8 @@ class LineItemMapper extends ClassMapperBase<LineItem> {
       id: data.dec(_f$id),
       name: data.dec(_f$name),
       price: data.dec(_f$price),
+      options: data.dec(_f$options),
+      quantity: data.dec(_f$quantity),
     );
   }
 
@@ -101,7 +119,13 @@ extension LineItemValueCopy<$R, $Out> on ObjectCopyWith<$R, LineItem, $Out> {
 
 abstract class LineItemCopyWith<$R, $In extends LineItem, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? name, int? price});
+  $R call({
+    String? id,
+    String? name,
+    int? price,
+    String? options,
+    int? quantity,
+  });
   LineItemCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -114,11 +138,19 @@ class _LineItemCopyWithImpl<$R, $Out>
   late final ClassMapperBase<LineItem> $mapper =
       LineItemMapper.ensureInitialized();
   @override
-  $R call({String? id, String? name, int? price}) => $apply(
+  $R call({
+    String? id,
+    String? name,
+    int? price,
+    String? options,
+    int? quantity,
+  }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (name != null) #name: name,
       if (price != null) #price: price,
+      if (options != null) #options: options,
+      if (quantity != null) #quantity: quantity,
     }),
   );
   @override
@@ -126,6 +158,8 @@ class _LineItemCopyWithImpl<$R, $Out>
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
     price: data.get(#price, or: $value.price),
+    options: data.get(#options, or: $value.options),
+    quantity: data.get(#quantity, or: $value.quantity),
   );
 
   @override

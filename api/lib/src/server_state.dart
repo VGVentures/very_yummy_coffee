@@ -170,6 +170,15 @@ class ServerState {
           broadcast('orders', snapshotForTopic('orders'));
           broadcast('order:$orderId', _orders[orderId]!);
         }
+
+      case 'markOrderReady':
+        final orderId = payload['orderId'] as String;
+        final order = _orders[orderId];
+        if (order != null) {
+          _orders[orderId] = <String, dynamic>{...order, 'status': 'ready'};
+          broadcast('orders', snapshotForTopic('orders'));
+          broadcast('order:$orderId', _orders[orderId]!);
+        }
     }
   }
 }

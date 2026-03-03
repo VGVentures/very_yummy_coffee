@@ -7,6 +7,7 @@ part 'order.mapper.dart';
 enum OrderStatus {
   pending,
   submitted,
+  ready,
   completed,
   cancelled,
 }

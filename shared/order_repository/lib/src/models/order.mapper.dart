@@ -31,6 +31,8 @@ class OrderStatusMapper extends EnumMapper<OrderStatus> {
         return OrderStatus.pending;
       case r'submitted':
         return OrderStatus.submitted;
+      case r'ready':
+        return OrderStatus.ready;
       case r'completed':
         return OrderStatus.completed;
       case r'cancelled':
@@ -47,6 +49,8 @@ class OrderStatusMapper extends EnumMapper<OrderStatus> {
         return r'pending';
       case OrderStatus.submitted:
         return r'submitted';
+      case OrderStatus.ready:
+        return r'ready';
       case OrderStatus.completed:
         return r'completed';
       case OrderStatus.cancelled:
