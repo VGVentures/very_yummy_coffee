@@ -110,6 +110,29 @@ class OrderRepository {
     _currentOrderId = null;
   }
 
+  /// Transitions order from submitted → inProgress on the server.
+  void startOrder(String orderId) {
+    _wsRpcClient.sendAction('startOrder', {'orderId': orderId});
+  }
+
+  /// Transitions order from inProgress → ready on the server.
+  void markOrderReady(String orderId) {
+    _wsRpcClient.sendAction('markOrderReady', {'orderId': orderId});
+  }
+
+  /// Transitions a specific order to completed (KDS-facing, orderId-based).
+  ///
+  /// Distinct from [completeCurrentOrder] which clears the customer's tracked
+  /// order ID. Use this when completing orders by explicit ID (e.g., KDS).
+  void markOrderCompleted(String orderId) {
+    _wsRpcClient.sendAction('completeOrder', {'orderId': orderId});
+  }
+
+  /// Cancels a specific order by orderId.
+  void cancelOrder(String orderId) {
+    _wsRpcClient.sendAction('cancelOrder', {'orderId': orderId});
+  }
+
   /// Cancels the WebSocket subscription and closes the orders stream.
   ///
   /// Call this when the repository is no longer needed.

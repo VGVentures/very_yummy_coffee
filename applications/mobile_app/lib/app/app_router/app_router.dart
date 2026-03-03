@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app.dart';
-import 'package:very_yummy_coffee_mobile_app/app/app_router/go_router_refresh_stream.dart';
 import 'package:very_yummy_coffee_mobile_app/cart/cart.dart';
 import 'package:very_yummy_coffee_mobile_app/checkout/checkout.dart';
 import 'package:very_yummy_coffee_mobile_app/home/home.dart';
@@ -10,6 +9,7 @@ import 'package:very_yummy_coffee_mobile_app/item_detail/item_detail.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
 import 'package:very_yummy_coffee_mobile_app/menu_items/menu_items.dart';
 import 'package:very_yummy_coffee_mobile_app/order_complete/order_complete.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class AppRouter {
   AppRouter({
