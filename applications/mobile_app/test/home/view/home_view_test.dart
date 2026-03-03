@@ -119,7 +119,9 @@ void main() {
         expect(find.text('Ready'), findsWidgets);
       });
 
-      testWidgets('shows Start New Order button', (tester) async {
+      testWidgets('shows Start New Order button when no orders', (
+        tester,
+      ) async {
         const state = HomeState(status: HomeStatus.success);
         when(() => bloc.state).thenReturn(state);
         whenListen(bloc, Stream.value(state));
@@ -127,6 +129,37 @@ void main() {
         await tester.pumpApp(buildSubject());
 
         expect(find.text('Start New Order'), findsOneWidget);
+      });
+
+      testWidgets(
+        'shows Start New Order button when only submitted/ready orders',
+        (tester) async {
+          const state = HomeState(
+            status: HomeStatus.success,
+            orders: [_submittedOrder, _readyOrder],
+          );
+          when(() => bloc.state).thenReturn(state);
+          whenListen(bloc, Stream.value(state));
+
+          await tester.pumpApp(buildSubject());
+
+          expect(find.text('Start New Order'), findsOneWidget);
+        },
+      );
+
+      testWidgets('shows Continue Order button when there is a pending order', (
+        tester,
+      ) async {
+        const state = HomeState(
+          status: HomeStatus.success,
+          orders: [_pendingOrder],
+        );
+        when(() => bloc.state).thenReturn(state);
+        whenListen(bloc, Stream.value(state));
+
+        await tester.pumpApp(buildSubject());
+
+        expect(find.text('Continue Order'), findsOneWidget);
       });
 
       testWidgets('tapping Start New Order navigates to /menu', (

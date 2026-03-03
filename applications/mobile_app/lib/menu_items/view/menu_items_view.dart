@@ -114,10 +114,7 @@ class _MenuItemList extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = menuItems[index];
         return GestureDetector(
-          onTap: () => context.go(
-            '/menu/${item.groupId}/${item.id}',
-            extra: item,
-          ),
+          onTap: () => context.go('/home/menu/${item.groupId}/${item.id}'),
           child: _MenuItemCard(item: item),
         );
       },

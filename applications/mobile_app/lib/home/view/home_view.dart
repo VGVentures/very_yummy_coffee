@@ -44,8 +44,10 @@ class HomeView extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: BlocSelector<HomeBloc, HomeState, bool>(
-        selector: (state) => state.orders.isNotEmpty,
-        builder: (context, hasOrders) => _StartNewOrderBar(hasOrders: hasOrders),
+        selector: (state) =>
+            state.orders.any((o) => o.status == OrderStatus.pending),
+        builder: (context, hasOrders) =>
+            _StartNewOrderBar(hasOrders: hasOrders),
       ),
     );
   }
