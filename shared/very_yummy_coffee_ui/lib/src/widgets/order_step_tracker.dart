@@ -1,45 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_ui/src/theme/theme.dart';
 
 /// {@template order_step_tracker}
 /// A horizontal step tracker that visually represents the progress of an order.
 ///
-/// Accepts an [OrderStatus] and a list of [labels] (exactly 4) and highlights
-/// the active step and all completed steps.
+/// Accepts an [activeStep] (0-based index, or -1 for no active step) and a
+/// list of [labels] and highlights the active step and all completed steps.
 /// {@endtemplate}
 class OrderStepTracker extends StatelessWidget {
   /// {@macro order_step_tracker}
   const OrderStepTracker({
-    required this.status,
+    required this.activeStep,
     required this.labels,
     super.key,
   });
 
-  /// The current status of the order.
-  final OrderStatus status;
+  /// The index of the currently active step (0-based).
+  ///
+  /// Pass -1 to indicate no active step (e.g. for a cancelled order).
+  final int activeStep;
 
   /// The step labels. Must have exactly 4 elements, one per step.
   final List<String> labels;
 
-  int get _activeStepIndex {
-    switch (status) {
-      case OrderStatus.pending:
-        return 0;
-      case OrderStatus.submitted:
-        return 1;
-      case OrderStatus.ready:
-        return 2;
-      case OrderStatus.completed:
-        return 3;
-      case OrderStatus.cancelled:
-        return -1;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final active = _activeStepIndex;
+    final active = activeStep;
 
     return DecoratedBox(
       decoration: BoxDecoration(

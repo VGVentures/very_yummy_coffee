@@ -72,7 +72,13 @@ class OrderCompleteView extends StatelessWidget {
                         horizontal: context.spacing.xl,
                       ),
                       child: OrderStepTracker(
-                        status: order.status,
+                        activeStep: switch (order.status) {
+                          OrderStatus.pending => 0,
+                          OrderStatus.submitted => 1,
+                          OrderStatus.ready => 2,
+                          OrderStatus.completed => 3,
+                          OrderStatus.cancelled => -1,
+                        },
                         labels: [
                           context.l10n.orderCompleteStep1,
                           context.l10n.orderCompleteStep2,

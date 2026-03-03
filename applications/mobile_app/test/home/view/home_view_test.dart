@@ -25,13 +25,13 @@ const _pendingOrder = Order(
 );
 
 const _submittedOrder = Order(
-  id: 'order-test-efgh',
+  id: 'order-test-5678',
   items: [_testItem, _testItem],
   status: OrderStatus.submitted,
 );
 
 const _readyOrder = Order(
-  id: 'order-test-ijkl',
+  id: 'order-test-9012',
   items: [_testItem],
   status: OrderStatus.ready,
 );
@@ -101,8 +101,8 @@ void main() {
 
         // Last 4 chars of 'order-test-abcd' → 'ABCD'
         expect(find.textContaining('ABCD'), findsOneWidget);
-        // Last 4 chars of 'order-test-efgh' → 'EFGH'
-        expect(find.textContaining('EFGH'), findsOneWidget);
+        // Last 4 chars of 'order-test-5678' → '5678'
+        expect(find.textContaining('5678'), findsOneWidget);
       });
 
       testWidgets('shows Ready status pill for a ready order', (tester) async {
