@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:menu_repository/menu_repository.dart';
+import 'package:very_yummy_coffee_menu_board_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_menu_board_app/menu_display/view/widgets/price_formatter.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
@@ -72,7 +73,7 @@ class FeaturedItemPanel extends StatelessWidget {
             ),
           ] else
             Text(
-              'Not available',
+              context.l10n.notAvailable,
               style: typography.body.copyWith(color: colors.mutedForeground),
               textAlign: TextAlign.center,
             ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_yummy_coffee_menu_board_app/app/app.dart';
+import 'package:very_yummy_coffee_menu_board_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_menu_board_app/menu_display/bloc/menu_display_bloc.dart';
 import 'package:very_yummy_coffee_menu_board_app/menu_display/view/widgets/featured_item_panel.dart';
 import 'package:very_yummy_coffee_menu_board_app/menu_display/view/widgets/menu_column.dart';
@@ -18,7 +19,7 @@ class MenuDisplayView extends StatelessWidget {
         children: [
           BlocBuilder<AppBloc, AppState>(
             builder: (context, appState) => AppTopBar(
-              title: 'Very Yummy Coffee',
+              title: context.l10n.appTitle,
               isConnected: appState.status == AppStatus.connected,
             ),
           ),
@@ -33,7 +34,7 @@ class MenuDisplayView extends StatelessWidget {
                 if (state.status == MenuDisplayStatus.failure) {
                   return Center(
                     child: Text(
-                      'Failed to load menu.',
+                      context.l10n.failedToLoadMenu,
                       style: context.typography.body.copyWith(
                         color: context.colors.mutedForeground,
                       ),

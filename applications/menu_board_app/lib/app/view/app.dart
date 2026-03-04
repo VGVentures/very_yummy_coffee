@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_yummy_coffee_menu_board_app/app/app.dart';
 import 'package:very_yummy_coffee_menu_board_app/app/app_router/app_router.dart';
+import 'package:very_yummy_coffee_menu_board_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class App extends StatelessWidget {
@@ -44,6 +45,8 @@ class _AppViewState extends State<_AppView> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: CoffeeTheme.light,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: _appRouter.routes,
     );
   }

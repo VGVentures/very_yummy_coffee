@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "appTitle": "Very Yummy Coffee",
+  "@appTitle": {
+    "description": "The title of the menu board application"
+  },
+  "connecting": "Connecting...",
+  "@connecting": {
+    "description": "Message shown on the connecting screen"
+  },
+  "notAvailable": "Not available",
+  "@notAvailable": {
+    "description": "Placeholder shown in the featured item panel when no item is available"
+  },
+  "failedToLoadMenu": "Failed to load menu.",
+  "@failedToLoadMenu": {
+    "description": "Error message shown when the menu fails to load"
+  }
+}

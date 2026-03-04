@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:very_yummy_coffee_menu_board_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class ConnectingPage extends StatelessWidget {
@@ -22,7 +23,7 @@ class ConnectingPage extends StatelessWidget {
             const CircularProgressIndicator(),
             SizedBox(height: context.spacing.lg),
             Text(
-              'Connecting...',
+              context.l10n.connecting,
               style: context.typography.body.copyWith(
                 color: context.colors.mutedForeground,
               ),

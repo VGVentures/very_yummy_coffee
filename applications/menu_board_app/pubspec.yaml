@@ -17,7 +17,10 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
+  flutter_localizations:
+    sdk: flutter
   go_router: ^14.6.2
+  intl: ^0.20.2
   menu_repository:
     path: ../../shared/menu_repository
   very_yummy_coffee_ui:
@@ -36,3 +39,4 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
