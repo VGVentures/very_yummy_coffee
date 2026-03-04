@@ -13,51 +13,98 @@ class MenuItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final primary = theme.colorScheme.primary;
+    final onPrimary = theme.colorScheme.onPrimary;
 
-    return GestureDetector(
-      onTap: () => context.read<MenuBloc>().add(MenuItemAdded(item)),
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.name,
-                    style: theme.textTheme.titleSmall,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const Spacer(),
-                  Text(
-                    '\$${(item.price / 100).toStringAsFixed(2)}',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            if (!item.available)
-              Positioned.fill(
-                child: ColoredBox(
-                  color: Colors.black.withValues(alpha: 0.5),
-                  child: Center(
-                    child: Text(
-                      l10n.menuItemUnavailable,
-                      style: theme.textTheme.labelLarge?.copyWith(
-                        color: Colors.white,
+    return Card(
+      clipBehavior: Clip.antiAlias,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        item.name,
+                        style: theme.textTheme.titleSmall,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      '\$${(item.price / 100).toStringAsFixed(2)}',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Spacer(),
+              GestureDetector(
+                onTap: item.available
+                    ? () => context.read<MenuBloc>().add(MenuItemAdded(item))
+                    : null,
+                child: ColoredBox(
+                  color: item.available
+                      ? primary
+                      : theme.colorScheme.surfaceContainerHighest,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.add,
+                          size: 14,
+                          color: item.available
+                              ? onPrimary
+                              : theme.colorScheme.onSurfaceVariant,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          l10n.menuItemAdd,
+                          style: theme.textTheme.labelMedium?.copyWith(
+                            color: item.available
+                                ? onPrimary
+                                : theme.colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
-          ],
-        ),
+            ],
+          ),
+          if (!item.available)
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 44,
+              child: ColoredBox(
+                color: Colors.black.withValues(alpha: 0.35),
+                child: Center(
+                  child: Text(
+                    l10n.menuItemUnavailable,
+                    style: theme.textTheme.labelMedium?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

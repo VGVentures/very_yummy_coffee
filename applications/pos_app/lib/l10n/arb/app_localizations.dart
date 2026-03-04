@@ -118,6 +118,12 @@ abstract class AppLocalizations {
   /// **'All'**
   String get menuCategoryAll;
 
+  /// Add button label on menu item cards
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get menuItemAdd;
+
   /// Label shown on unavailable menu items
   ///
   /// In en, this message translates to:
@@ -135,6 +141,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unable to load menu'**
   String get menuError;
+
+  /// Title for the current order panel
+  ///
+  /// In en, this message translates to:
+  /// **'Current Order'**
+  String get orderTicketCurrentOrder;
 
   /// Title for the order ticket panel
   ///
@@ -166,6 +178,18 @@ abstract class AppLocalizations {
   /// **'Charge {amount}'**
   String orderTicketCharge(String amount);
 
+  /// Subtotal label in order ticket footer
+  ///
+  /// In en, this message translates to:
+  /// **'Subtotal'**
+  String get orderTicketSubtotal;
+
+  /// Tax label in order ticket footer
+  ///
+  /// In en, this message translates to:
+  /// **'Tax'**
+  String get orderTicketTax;
+
   /// Label for total price in order ticket
   ///
   /// In en, this message translates to:
@@ -184,11 +208,23 @@ abstract class AppLocalizations {
   /// **'Back'**
   String get back;
 
-  /// Title for the order complete screen
+  /// Success heading on the order complete screen
   ///
   /// In en, this message translates to:
-  /// **'Order Submitted'**
+  /// **'Order Charged!'**
   String get orderCompleteTitle;
+
+  /// Success body text on the order complete screen
+  ///
+  /// In en, this message translates to:
+  /// **'The order has been placed and sent to the kitchen.'**
+  String get orderCompleteDetails;
+
+  /// Receipt panel title on the order complete screen
+  ///
+  /// In en, this message translates to:
+  /// **'Receipt'**
+  String get orderCompleteReceipt;
 
   /// Button to start a new order from the receipt screen
   ///

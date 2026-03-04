@@ -11,100 +11,175 @@ class OrderTicket extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final theme = Theme.of(context);
+
     return BlocBuilder<OrderTicketBloc, OrderTicketState>(
       builder: (context, state) {
         final order = state.order;
         final items = order?.items ?? [];
-        final total = order?.total ?? 0;
+        final subtotal = order?.total ?? 0;
+        final tax = order?.tax ?? 0;
+        final grandTotal = order?.grandTotal ?? 0;
         final isCharging = state.status == OrderTicketStatus.charging;
         final isIdle = state.status == OrderTicketStatus.idle;
 
-        if (order == null) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(l10n.orderTicketEmpty),
-                const SizedBox(height: 24),
-                BaseButton(
-                  label: l10n.orderTicketNewOrder,
-                  onPressed: () => context.read<OrderTicketBloc>().add(
-                    const OrderTicketCreateOrderRequested(),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-
         return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      l10n.orderTicketCurrentOrder,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  if (order != null && items.isNotEmpty)
+                    TextButton(
+                      onPressed: isIdle
+                          ? () => context.read<OrderTicketBloc>().add(
+                              const OrderTicketClearRequested(),
+                            )
+                          : null,
+                      style: TextButton.styleFrom(
+                        foregroundColor: theme.colorScheme.error,
+                      ),
+                      child: Text(l10n.orderTicketClear),
+                    ),
+                ],
+              ),
+            ),
+            const Divider(height: 1),
+            // Items or empty state
             Expanded(
-              child: items.isEmpty
+              child: order == null
+                  ? _EmptyState(l10n: l10n)
+                  : items.isEmpty
                   ? Center(child: Text(l10n.orderTicketEmpty))
-                  : ListView.builder(
+                  : ListView.separated(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
                       itemCount: items.length,
+                      separatorBuilder: (_, _) => const Divider(
+                        height: 1,
+                        indent: 16,
+                        endIndent: 16,
+                      ),
                       itemBuilder: (context, index) =>
                           OrderTicketLineItem(lineItem: items[index]),
                     ),
             ),
-            const Divider(height: 1),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        l10n.orderTicketTotal,
-                        style: Theme.of(context).textTheme.titleMedium,
+            // Footer
+            if (order != null) ...[
+              const Divider(height: 1),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _PriceLine(
+                      label: l10n.orderTicketSubtotal,
+                      amount: subtotal,
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 4),
+                    _PriceLine(
+                      label: l10n.orderTicketTax,
+                      amount: tax,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
-                      Text(
-                        '\$${(total / 100).toStringAsFixed(2)}',
-                        style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 8),
+                      child: Divider(height: 1),
+                    ),
+                    _PriceLine(
+                      label: l10n.orderTicketTotal,
+                      amount: grandTotal,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w700,
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      if (items.isNotEmpty)
-                        Expanded(
-                          child: BaseButton(
-                            label: l10n.orderTicketClear,
-                            variant: BaseButtonVariant.secondary,
-                            onPressed: isIdle
-                                ? () => context.read<OrderTicketBloc>().add(
-                                    const OrderTicketClearRequested(),
-                                  )
-                                : null,
-                          ),
-                        ),
-                      if (items.isNotEmpty) const SizedBox(width: 8),
-                      Expanded(
-                        child: BaseButton(
-                          label: l10n.orderTicketCharge(
-                            '\$${(total / 100).toStringAsFixed(2)}',
-                          ),
-                          isLoading: isCharging,
-                          onPressed: items.isEmpty
-                              ? null
-                              : () => context.read<OrderTicketBloc>().add(
-                                  const OrderTicketChargeRequested(),
-                                ),
-                        ),
+                    ),
+                    const SizedBox(height: 12),
+                    BaseButton(
+                      label: l10n.orderTicketCharge(
+                        '\$${(grandTotal / 100).toStringAsFixed(2)}',
                       ),
-                    ],
-                  ),
-                ],
+                      isLoading: isCharging,
+                      onPressed: items.isEmpty
+                          ? null
+                          : () => context.read<OrderTicketBloc>().add(
+                              const OrderTicketChargeRequested(),
+                            ),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+                ),
               ),
-            ),
+            ],
           ],
         );
       },
+    );
+  }
+}
+
+class _EmptyState extends StatelessWidget {
+  const _EmptyState({required this.l10n});
+
+  final AppLocalizations l10n;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            l10n.orderTicketEmpty,
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 24),
+          BaseButton(
+            label: l10n.orderTicketNewOrder,
+            onPressed: () => context.read<OrderTicketBloc>().add(
+              const OrderTicketCreateOrderRequested(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PriceLine extends StatelessWidget {
+  const _PriceLine({
+    required this.label,
+    required this.amount,
+    this.style,
+  });
+
+  final String label;
+  final int amount;
+  final TextStyle? style;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: style),
+        Text(
+          '\$${(amount / 100).toStringAsFixed(2)}',
+          style: style,
+        ),
+      ],
     );
   }
 }

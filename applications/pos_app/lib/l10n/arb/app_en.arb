@@ -16,6 +16,10 @@
   "@menuCategoryAll": {
     "description": "Label for the 'All' category tab"
   },
+  "menuItemAdd": "Add",
+  "@menuItemAdd": {
+    "description": "Add button label on menu item cards"
+  },
   "menuItemUnavailable": "Unavailable",
   "@menuItemUnavailable": {
     "description": "Label shown on unavailable menu items"
@@ -27,6 +31,10 @@
   "menuError": "Unable to load menu",
   "@menuError": {
     "description": "Error state for menu item grid"
+  },
+  "orderTicketCurrentOrder": "Current Order",
+  "@orderTicketCurrentOrder": {
+    "description": "Title for the current order panel"
   },
   "orderTicketTitle": "Order",
   "@orderTicketTitle": {
@@ -53,6 +61,14 @@
       }
     }
   },
+  "orderTicketSubtotal": "Subtotal",
+  "@orderTicketSubtotal": {
+    "description": "Subtotal label in order ticket footer"
+  },
+  "orderTicketTax": "Tax",
+  "@orderTicketTax": {
+    "description": "Tax label in order ticket footer"
+  },
   "orderTicketTotal": "Total",
   "@orderTicketTotal": {
     "description": "Label for total price in order ticket"
@@ -65,9 +81,17 @@
   "@back": {
     "description": "Back button label"
   },
-  "orderCompleteTitle": "Order Submitted",
+  "orderCompleteTitle": "Order Charged!",
   "@orderCompleteTitle": {
-    "description": "Title for the order complete screen"
+    "description": "Success heading on the order complete screen"
+  },
+  "orderCompleteDetails": "The order has been placed and sent to the kitchen.",
+  "@orderCompleteDetails": {
+    "description": "Success body text on the order complete screen"
+  },
+  "orderCompleteReceipt": "Receipt",
+  "@orderCompleteReceipt": {
+    "description": "Receipt panel title on the order complete screen"
   },
   "orderCompleteNewOrder": "New Order",
   "@orderCompleteNewOrder": {

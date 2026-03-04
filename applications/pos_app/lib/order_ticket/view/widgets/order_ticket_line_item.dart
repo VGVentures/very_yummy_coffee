@@ -11,28 +11,54 @@ class OrderTicketLineItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            lineItem.name,
-            style: theme.textTheme.bodyMedium,
-            overflow: TextOverflow.ellipsis,
+    final total = lineItem.price * lineItem.quantity;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  lineItem.name,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                if (lineItem.quantity > 1)
+                  Text(
+                    'Qty: ${lineItem.quantity}',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-        Text(
-          '\$${(lineItem.price / 100).toStringAsFixed(2)}',
-          style: theme.textTheme.bodyMedium,
-        ),
-        const SizedBox(width: 8),
-        IconButton(
-          icon: const Icon(Icons.remove_circle_outline, size: 20),
-          onPressed: () => context.read<OrderTicketBloc>().add(
-            OrderTicketItemRemoved(lineItem.id),
+          const SizedBox(width: 8),
+          Text(
+            '\$${(total / 100).toStringAsFixed(2)}',
+            style: theme.textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+            ),
           ),
-          visualDensity: VisualDensity.compact,
-        ),
-      ],
+          const SizedBox(width: 4),
+          GestureDetector(
+            onTap: () => context.read<OrderTicketBloc>().add(
+              OrderTicketItemRemoved(lineItem.id),
+            ),
+            child: Icon(
+              Icons.close,
+              size: 18,
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

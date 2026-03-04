@@ -21,6 +21,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get menuCategoryAll => 'All';
 
   @override
+  String get menuItemAdd => 'Add';
+
+  @override
   String get menuItemUnavailable => 'Unavailable';
 
   @override
@@ -28,6 +31,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get menuError => 'Unable to load menu';
+
+  @override
+  String get orderTicketCurrentOrder => 'Current Order';
 
   @override
   String get orderTicketTitle => 'Order';
@@ -47,6 +53,12 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get orderTicketSubtotal => 'Subtotal';
+
+  @override
+  String get orderTicketTax => 'Tax';
+
+  @override
   String get orderTicketTotal => 'Total';
 
   @override
@@ -56,7 +68,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get back => 'Back';
 
   @override
-  String get orderCompleteTitle => 'Order Submitted';
+  String get orderCompleteTitle => 'Order Charged!';
+
+  @override
+  String get orderCompleteDetails =>
+      'The order has been placed and sent to the kitchen.';
+
+  @override
+  String get orderCompleteReceipt => 'Receipt';
 
   @override
   String get orderCompleteNewOrder => 'New Order';
