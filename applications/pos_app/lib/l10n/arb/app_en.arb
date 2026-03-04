@@ -1,0 +1,116 @@
+{
+  "@@locale": "en",
+  "appTitle": "Very Yummy Coffee — POS",
+  "@appTitle": {
+    "description": "The title of the POS application"
+  },
+  "connecting": "Connecting…",
+  "@connecting": {
+    "description": "Message shown on the connecting screen"
+  },
+  "menuTitle": "Menu",
+  "@menuTitle": {
+    "description": "Title for the menu panel"
+  },
+  "menuCategoryAll": "All",
+  "@menuCategoryAll": {
+    "description": "Label for the 'All' category tab"
+  },
+  "menuItemUnavailable": "Unavailable",
+  "@menuItemUnavailable": {
+    "description": "Label shown on unavailable menu items"
+  },
+  "menuEmpty": "No items in this category",
+  "@menuEmpty": {
+    "description": "Empty state for menu item grid"
+  },
+  "menuError": "Unable to load menu",
+  "@menuError": {
+    "description": "Error state for menu item grid"
+  },
+  "orderTicketTitle": "Order",
+  "@orderTicketTitle": {
+    "description": "Title for the order ticket panel"
+  },
+  "orderTicketEmpty": "No items — tap menu to add",
+  "@orderTicketEmpty": {
+    "description": "Empty state for order ticket"
+  },
+  "orderTicketNewOrder": "New Order",
+  "@orderTicketNewOrder": {
+    "description": "Button to start a new order"
+  },
+  "orderTicketClear": "Clear",
+  "@orderTicketClear": {
+    "description": "Button to clear/cancel the current order"
+  },
+  "orderTicketCharge": "Charge {amount}",
+  "@orderTicketCharge": {
+    "description": "Button to charge and submit the order",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "orderTicketTotal": "Total",
+  "@orderTicketTotal": {
+    "description": "Label for total price in order ticket"
+  },
+  "viewOrders": "View Orders",
+  "@viewOrders": {
+    "description": "Button to navigate to the orders list screen"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button label"
+  },
+  "orderCompleteTitle": "Order Submitted",
+  "@orderCompleteTitle": {
+    "description": "Title for the order complete screen"
+  },
+  "orderCompleteNewOrder": "New Order",
+  "@orderCompleteNewOrder": {
+    "description": "Button to start a new order from the receipt screen"
+  },
+  "ordersTitle": "Orders",
+  "@ordersTitle": {
+    "description": "Title for the orders list screen"
+  },
+  "ordersActiveTitle": "Active Orders",
+  "@ordersActiveTitle": {
+    "description": "Section title for active orders"
+  },
+  "ordersHistoryTitle": "Order History",
+  "@ordersHistoryTitle": {
+    "description": "Section title for order history"
+  },
+  "ordersEmpty": "No orders yet",
+  "@ordersEmpty": {
+    "description": "Empty state for orders list"
+  },
+  "orderStatus": "Status",
+  "@orderStatus": {
+    "description": "Column header for order status"
+  },
+  "orderStatusSubmitted": "Submitted",
+  "@orderStatusSubmitted": {
+    "description": "Order status: submitted"
+  },
+  "orderStatusInProgress": "In Progress",
+  "@orderStatusInProgress": {
+    "description": "Order status: in progress"
+  },
+  "orderStatusReady": "Ready",
+  "@orderStatusReady": {
+    "description": "Order status: ready"
+  },
+  "orderStatusCompleted": "Completed",
+  "@orderStatusCompleted": {
+    "description": "Order status: completed"
+  },
+  "orderStatusCancelled": "Cancelled",
+  "@orderStatusCancelled": {
+    "description": "Order status: cancelled"
+  }
+}
