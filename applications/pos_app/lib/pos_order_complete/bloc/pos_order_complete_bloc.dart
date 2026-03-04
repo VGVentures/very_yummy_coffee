@@ -36,8 +36,7 @@ class PosOrderCompleteBloc
           order: order,
         );
       },
-      onError: (_, _) =>
-          state.copyWith(status: PosOrderCompleteStatus.failure),
+      onError: (_, _) => state.copyWith(status: PosOrderCompleteStatus.failure),
     );
   }
 

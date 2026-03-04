@@ -85,6 +85,5 @@ class PosOrderCompleteView extends StatelessWidget {
 }
 
 extension on int {
-  String get asDollarString =>
-      '\$${(this / 100).toStringAsFixed(2)}';
+  String get asDollarString => '\$${(this / 100).toStringAsFixed(2)}';
 }
