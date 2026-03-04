@@ -19,6 +19,17 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.navBarBackground,
     required this.navBarInactive,
     required this.imagePlaceholder,
+    required this.topBarBackground,
+    required this.connected,
+    required this.unavailableOverlay,
+    required this.statusWarningBackground,
+    required this.statusWarningForeground,
+    required this.statusSuccessBackground,
+    required this.statusSuccessForeground,
+    required this.statusDestructiveBackground,
+    required this.statusDestructiveForeground,
+    required this.statusNeutralBackground,
+    required this.statusNeutralForeground,
   });
 
   /// Primary brand color.
@@ -66,6 +77,39 @@ class AppColors extends ThemeExtension<AppColors> {
   /// Background color for image placeholder areas.
   final Color imagePlaceholder;
 
+  /// Background color for the app top bar (espresso dark brown).
+  final Color topBarBackground;
+
+  /// Color for the "connected" status indicator dot.
+  final Color connected;
+
+  /// Semi-transparent overlay for unavailable menu items.
+  final Color unavailableOverlay;
+
+  /// Background for warning/in-progress status chips.
+  final Color statusWarningBackground;
+
+  /// Foreground for warning/in-progress status chips.
+  final Color statusWarningForeground;
+
+  /// Background for success/completed status chips.
+  final Color statusSuccessBackground;
+
+  /// Foreground for success/completed status chips.
+  final Color statusSuccessForeground;
+
+  /// Background for destructive/cancelled status chips.
+  final Color statusDestructiveBackground;
+
+  /// Foreground for destructive/cancelled status chips.
+  final Color statusDestructiveForeground;
+
+  /// Background for neutral/pending status chips.
+  final Color statusNeutralBackground;
+
+  /// Foreground for neutral/pending status chips.
+  final Color statusNeutralForeground;
+
   @override
   AppColors copyWith({
     Color? primary,
@@ -83,6 +127,17 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? navBarBackground,
     Color? navBarInactive,
     Color? imagePlaceholder,
+    Color? topBarBackground,
+    Color? connected,
+    Color? unavailableOverlay,
+    Color? statusWarningBackground,
+    Color? statusWarningForeground,
+    Color? statusSuccessBackground,
+    Color? statusSuccessForeground,
+    Color? statusDestructiveBackground,
+    Color? statusDestructiveForeground,
+    Color? statusNeutralBackground,
+    Color? statusNeutralForeground,
   }) {
     return AppColors(
       primary: primary ?? this.primary,
@@ -100,6 +155,25 @@ class AppColors extends ThemeExtension<AppColors> {
       navBarBackground: navBarBackground ?? this.navBarBackground,
       navBarInactive: navBarInactive ?? this.navBarInactive,
       imagePlaceholder: imagePlaceholder ?? this.imagePlaceholder,
+      topBarBackground: topBarBackground ?? this.topBarBackground,
+      connected: connected ?? this.connected,
+      unavailableOverlay: unavailableOverlay ?? this.unavailableOverlay,
+      statusWarningBackground:
+          statusWarningBackground ?? this.statusWarningBackground,
+      statusWarningForeground:
+          statusWarningForeground ?? this.statusWarningForeground,
+      statusSuccessBackground:
+          statusSuccessBackground ?? this.statusSuccessBackground,
+      statusSuccessForeground:
+          statusSuccessForeground ?? this.statusSuccessForeground,
+      statusDestructiveBackground:
+          statusDestructiveBackground ?? this.statusDestructiveBackground,
+      statusDestructiveForeground:
+          statusDestructiveForeground ?? this.statusDestructiveForeground,
+      statusNeutralBackground:
+          statusNeutralBackground ?? this.statusNeutralBackground,
+      statusNeutralForeground:
+          statusNeutralForeground ?? this.statusNeutralForeground,
     );
   }
 
@@ -133,6 +207,69 @@ class AppColors extends ThemeExtension<AppColors> {
       imagePlaceholder:
           Color.lerp(imagePlaceholder, other.imagePlaceholder, t) ??
           imagePlaceholder,
+      topBarBackground:
+          Color.lerp(topBarBackground, other.topBarBackground, t) ??
+          topBarBackground,
+      connected: Color.lerp(connected, other.connected, t) ?? connected,
+      unavailableOverlay:
+          Color.lerp(unavailableOverlay, other.unavailableOverlay, t) ??
+          unavailableOverlay,
+      statusWarningBackground:
+          Color.lerp(
+            statusWarningBackground,
+            other.statusWarningBackground,
+            t,
+          ) ??
+          statusWarningBackground,
+      statusWarningForeground:
+          Color.lerp(
+            statusWarningForeground,
+            other.statusWarningForeground,
+            t,
+          ) ??
+          statusWarningForeground,
+      statusSuccessBackground:
+          Color.lerp(
+            statusSuccessBackground,
+            other.statusSuccessBackground,
+            t,
+          ) ??
+          statusSuccessBackground,
+      statusSuccessForeground:
+          Color.lerp(
+            statusSuccessForeground,
+            other.statusSuccessForeground,
+            t,
+          ) ??
+          statusSuccessForeground,
+      statusDestructiveBackground:
+          Color.lerp(
+            statusDestructiveBackground,
+            other.statusDestructiveBackground,
+            t,
+          ) ??
+          statusDestructiveBackground,
+      statusDestructiveForeground:
+          Color.lerp(
+            statusDestructiveForeground,
+            other.statusDestructiveForeground,
+            t,
+          ) ??
+          statusDestructiveForeground,
+      statusNeutralBackground:
+          Color.lerp(
+            statusNeutralBackground,
+            other.statusNeutralBackground,
+            t,
+          ) ??
+          statusNeutralBackground,
+      statusNeutralForeground:
+          Color.lerp(
+            statusNeutralForeground,
+            other.statusNeutralForeground,
+            t,
+          ) ??
+          statusNeutralForeground,
     );
   }
 }

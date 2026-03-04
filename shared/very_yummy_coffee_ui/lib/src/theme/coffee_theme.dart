@@ -25,6 +25,17 @@ abstract class CoffeeTheme {
       navBarBackground: Color(0xFF4A2A22),
       navBarInactive: Color(0xFFB8A99A),
       imagePlaceholder: Color(0xFFE8DDD6),
+      topBarBackground: Color(0xFF2D1B14),
+      connected: Color(0xFF22C55E),
+      unavailableOverlay: Color(0x59000000),
+      statusWarningBackground: Color(0xFFFEF9C3),
+      statusWarningForeground: Color(0xFF854D0E),
+      statusSuccessBackground: Color(0xFFDCFCE7),
+      statusSuccessForeground: Color(0xFF166534),
+      statusDestructiveBackground: Color(0xFFFEE2E2),
+      statusDestructiveForeground: Color(0xFF991B1B),
+      statusNeutralBackground: Color(0xFFF1F5F9),
+      statusNeutralForeground: Color(0xFF475569),
     );
 
     const typography = AppTypography(
@@ -55,6 +66,13 @@ abstract class CoffeeTheme {
         fontWeight: FontWeight.w600,
         color: Color(0xFF4A2A22),
         height: 1.4,
+      ),
+      label: TextStyle(
+        fontFamily: 'IBM Plex Sans',
+        fontSize: 20,
+        fontWeight: FontWeight.w700,
+        color: Color(0xFF4A2A22),
+        height: 1.3,
       ),
       body: TextStyle(
         fontFamily: 'IBM Plex Sans',
@@ -117,6 +135,7 @@ abstract class CoffeeTheme {
     );
 
     const radius = AppRadius(
+      small: 12,
       medium: 14,
       large: 18,
       card: 20,

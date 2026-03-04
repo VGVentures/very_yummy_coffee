@@ -27,7 +27,10 @@
     "listview",
     "formalises",
     "footgun",
-    "uppercased"
+    "uppercased",
+    "lifecycles",
+    "teardowns",
+    "Fxxxxxx"
   ],
   "ignorePaths": [
     "build/**",

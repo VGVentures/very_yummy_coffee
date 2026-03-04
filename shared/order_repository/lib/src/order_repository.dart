@@ -133,6 +133,17 @@ class OrderRepository {
     _wsRpcClient.sendAction('cancelOrder', {'orderId': orderId});
   }
 
+  /// Cancels the current order and clears the tracked order ID.
+  ///
+  /// Use on the POS "Clear" action. Unlike [cancelOrder], this also
+  /// sets [currentOrderId] to null so [currentOrderStream] stops emitting.
+  void clearCurrentOrder() {
+    final orderId = _currentOrderId;
+    if (orderId == null) return;
+    _wsRpcClient.sendAction('cancelOrder', {'orderId': orderId});
+    _currentOrderId = null;
+  }
+
   /// Cancels the WebSocket subscription and closes the orders stream.
   ///
   /// Call this when the repository is no longer needed.

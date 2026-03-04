@@ -76,10 +76,37 @@ Always use `context.go('/path')` with hardcoded path strings. Never use `context
 
 Before building any custom widget, check `shared/very_yummy_coffee_ui/lib/src/widgets/` for an existing shared component. Current shared widgets include:
 
+- **`AppTopBar`** — shared dark top bar with connection dot, title, live clock, and optional `middleWidgets`/`actionWidgets` slots. Used by both KDS and POS apps.
 - **`BaseButton`** — primary/secondary/cancel variants, supports `isLoading`. Use for all full-width and inline action buttons.
 - **`CustomBackButton`** — standard back arrow for colored headers. Use instead of raw `GestureDetector + Icon(arrow_back)`.
 
 When implementing a new widget that is used in more than one screen, or that is a general-purpose UI primitive (buttons, cards, inputs, chips, etc.), place it in `shared/very_yummy_coffee_ui/lib/src/widgets/` and export it from the package. Do not duplicate UI patterns across feature views.
+
+### UI Coding Standards
+
+**Colors — always use design tokens:**
+- Never use `Color(0xFFxxxxxx)` raw hex literals in view code.
+- Never use `Colors.green`, `Colors.white`, `Colors.black`, etc. from Material.
+- Always use `context.colors.xxx` from `AppColors`. Add new named tokens to `AppColors` + `CoffeeTheme` if a color is needed that doesn't exist yet.
+
+**EdgeInsets — never use `EdgeInsets.fromLTRB`:**
+- Use `EdgeInsets.symmetric` when horizontal and vertical values match.
+- Use `EdgeInsets.only` when values differ on individual sides.
+- `EdgeInsets.fromLTRB` is never acceptable.
+
+**Spacing and radius — use design tokens:**
+- Use `context.spacing.xxx` (xxs=2, xs=4, sm=8, md=12, lg=16, xl=20, xxl=24, huge=32) for padding, gaps, and margins.
+- Use `context.radius.xxx` (small=12, medium=14, large=18, card=20, pill=9999) for `BorderRadius`.
+- Avoid raw numeric literals for layout values when a spacing/radius token matches.
+
+**Typography — use design tokens:**
+- Never construct `TextStyle(fontFamily: 'IBM Plex Sans', fontSize: ...)` directly in view code.
+- Always use `context.typography.xxx.copyWith(...)` (pageTitle, subtitle, label, body, muted, caption, etc.).
+- Add new named styles to `AppTypography` + `CoffeeTheme` if the scale is missing a needed size.
+
+**Bloc scoping:**
+- Provide each Bloc at its feature level, not at a parent page that merely hosts multiple features.
+- E.g., `MenuBloc` is provided by `MenuView`, not by the parent `PosOrderPage`.
 
 ### Widget Tests
 

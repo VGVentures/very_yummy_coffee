@@ -1,0 +1,160 @@
+{
+  "@@locale": "en",
+  "appTitle": "Very Yummy Coffee — POS",
+  "@appTitle": {
+    "description": "The title of the POS application"
+  },
+  "connecting": "Connecting…",
+  "@connecting": {
+    "description": "Message shown on the connecting screen"
+  },
+  "menuTitle": "Menu",
+  "@menuTitle": {
+    "description": "Title for the menu panel"
+  },
+  "menuCategoryAll": "All",
+  "@menuCategoryAll": {
+    "description": "Label for the 'All' category tab"
+  },
+  "menuItemAdd": "Add",
+  "@menuItemAdd": {
+    "description": "Add button label on menu item cards"
+  },
+  "menuItemUnavailable": "Unavailable",
+  "@menuItemUnavailable": {
+    "description": "Label shown on unavailable menu items"
+  },
+  "menuEmpty": "No items in this category",
+  "@menuEmpty": {
+    "description": "Empty state for menu item grid"
+  },
+  "menuError": "Unable to load menu",
+  "@menuError": {
+    "description": "Error state for menu item grid"
+  },
+  "orderTicketCurrentOrder": "Current Order",
+  "@orderTicketCurrentOrder": {
+    "description": "Title for the current order panel"
+  },
+  "orderTicketTitle": "Order",
+  "@orderTicketTitle": {
+    "description": "Title for the order ticket panel"
+  },
+  "orderTicketEmpty": "No items — tap menu to add",
+  "@orderTicketEmpty": {
+    "description": "Empty state for order ticket"
+  },
+  "orderTicketNewOrder": "New Order",
+  "@orderTicketNewOrder": {
+    "description": "Button to start a new order"
+  },
+  "orderTicketClear": "Clear",
+  "@orderTicketClear": {
+    "description": "Button to clear/cancel the current order"
+  },
+  "orderTicketCharge": "Charge {amount}",
+  "@orderTicketCharge": {
+    "description": "Button to charge and submit the order",
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "orderTicketSubtotal": "Subtotal",
+  "@orderTicketSubtotal": {
+    "description": "Subtotal label in order ticket footer"
+  },
+  "orderTicketTax": "Tax",
+  "@orderTicketTax": {
+    "description": "Tax label in order ticket footer"
+  },
+  "orderTicketTotal": "Total",
+  "@orderTicketTotal": {
+    "description": "Label for total price in order ticket"
+  },
+  "viewOrders": "View Orders",
+  "@viewOrders": {
+    "description": "Button to navigate to the orders list screen"
+  },
+  "back": "Back",
+  "@back": {
+    "description": "Back button label"
+  },
+  "orderCompleteTitle": "Order Charged!",
+  "@orderCompleteTitle": {
+    "description": "Success heading on the order complete screen"
+  },
+  "orderCompleteDetails": "The order has been placed and sent to the kitchen.",
+  "@orderCompleteDetails": {
+    "description": "Success body text on the order complete screen"
+  },
+  "orderCompleteReceipt": "Receipt",
+  "@orderCompleteReceipt": {
+    "description": "Receipt panel title on the order complete screen"
+  },
+  "orderCompleteNewOrder": "New Order",
+  "@orderCompleteNewOrder": {
+    "description": "Button to start a new order from the receipt screen"
+  },
+  "ordersTitle": "Orders",
+  "@ordersTitle": {
+    "description": "Title for the orders list screen"
+  },
+  "ordersActiveTitle": "In Progress",
+  "@ordersActiveTitle": {
+    "description": "Section title for active/in-flight orders"
+  },
+  "ordersHistoryTitle": "Order History",
+  "@ordersHistoryTitle": {
+    "description": "Section title for order history"
+  },
+  "ordersEmpty": "No orders yet",
+  "@ordersEmpty": {
+    "description": "Empty state for orders list"
+  },
+  "ordersBack": "Order",
+  "@ordersBack": {
+    "description": "Back button label on the orders page (breadcrumb to the ordering screen)"
+  },
+  "ordersColumnOrder": "Order",
+  "@ordersColumnOrder": {
+    "description": "Column header for order number in the history table"
+  },
+  "ordersColumnItems": "Items",
+  "@ordersColumnItems": {
+    "description": "Column header for items in the history table"
+  },
+  "ordersColumnCompleted": "Completed",
+  "@ordersColumnCompleted": {
+    "description": "Column header for completion time in the history table"
+  },
+  "orderStatus": "Status",
+  "@orderStatus": {
+    "description": "Column header for order status"
+  },
+  "orderStatusSubmitted": "Submitted",
+  "@orderStatusSubmitted": {
+    "description": "Order status: submitted"
+  },
+  "orderStatusInProgress": "In Progress",
+  "@orderStatusInProgress": {
+    "description": "Order status: in progress"
+  },
+  "orderStatusReady": "Ready",
+  "@orderStatusReady": {
+    "description": "Order status: ready"
+  },
+  "orderStatusCompleted": "Completed",
+  "@orderStatusCompleted": {
+    "description": "Order status: completed"
+  },
+  "orderStatusCancelled": "Cancelled",
+  "@orderStatusCancelled": {
+    "description": "Order status: cancelled"
+  },
+  "orderStatusPending": "Pending",
+  "@orderStatusPending": {
+    "description": "Order status: pending (not yet submitted)"
+  }
+}

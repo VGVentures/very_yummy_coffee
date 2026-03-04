@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_yummy_coffee_kds_app/kds/bloc/kds_bloc.dart';
-import 'package:very_yummy_coffee_kds_app/kds/view/kds_colors.dart';
 import 'package:very_yummy_coffee_kds_app/kds/view/widgets/kds_column.dart';
 import 'package:very_yummy_coffee_kds_app/kds/view/widgets/kds_top_bar.dart';
 import 'package:very_yummy_coffee_kds_app/l10n/l10n.dart';
@@ -52,7 +51,7 @@ class KdsView extends StatelessWidget {
                     Expanded(
                       child: KdsColumn(
                         orders: state.readyOrders,
-                        accentColor: kdsReadyGreen,
+                        accentColor: colors.connected,
                         label: l10n.columnReady,
                         actionLabel: l10n.actionComplete,
                         onAction: (id) => bloc.add(KdsOrderCompleted(id)),
