@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:very_yummy_coffee_pos_app/app/app.dart';
-import 'package:very_yummy_coffee_pos_app/pos_order/pos_order.dart';
-import 'package:very_yummy_coffee_pos_app/pos_order_complete/pos_order_complete.dart';
-import 'package:very_yummy_coffee_pos_app/pos_orders/pos_orders.dart';
+import 'package:very_yummy_coffee_pos_app/order_complete/order_complete.dart';
+import 'package:very_yummy_coffee_pos_app/order_history/order_history.dart';
+import 'package:very_yummy_coffee_pos_app/ordering/ordering.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class AppRouter {
@@ -20,14 +20,14 @@ class AppRouter {
         final status = context.read<AppBloc>().state.status;
         final path = state.uri.path;
         final onConnecting = path == ConnectingPage.routeName;
-        final onComplete = path.startsWith('/pos-order-complete/');
+        final onComplete = path.startsWith('/order-complete/');
 
         if (status != AppStatus.connected && !onConnecting) {
           if (onComplete) return null;
           return ConnectingPage.routeName;
         }
         if (status == AppStatus.connected && onConnecting) {
-          return PosOrderPage.routeName;
+          return OrderingPage.routeName;
         }
         return null;
       },
@@ -39,20 +39,20 @@ class AppRouter {
           ),
         ),
         GoRoute(
-          path: PosOrderPage.routeName,
+          path: OrderingPage.routeName,
           pageBuilder: (context, state) =>
-              NoTransitionPage(child: PosOrderPage.pageBuilder(context, state)),
+              NoTransitionPage(child: OrderingPage.pageBuilder(context, state)),
         ),
         GoRoute(
-          path: PosOrderCompletePage.routeName,
+          path: OrderCompletePage.routeName,
           pageBuilder: (context, state) => NoTransitionPage(
-            child: PosOrderCompletePage.pageBuilder(context, state),
+            child: OrderCompletePage.pageBuilder(context, state),
           ),
         ),
         GoRoute(
-          path: PosOrdersPage.routeName,
+          path: OrderHistoryPage.routeName,
           pageBuilder: (context, state) => NoTransitionPage(
-            child: PosOrdersPage.pageBuilder(context, state),
+            child: OrderHistoryPage.pageBuilder(context, state),
           ),
         ),
       ],

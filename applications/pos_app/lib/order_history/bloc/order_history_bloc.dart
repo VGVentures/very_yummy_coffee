@@ -1,0 +1,50 @@
+import 'package:bloc/bloc.dart';
+import 'package:dart_mappable/dart_mappable.dart';
+import 'package:meta/meta.dart';
+import 'package:order_repository/order_repository.dart';
+
+part 'order_history_bloc.mapper.dart';
+part 'order_history_event.dart';
+part 'order_history_state.dart';
+
+class OrderHistoryBloc extends Bloc<OrderHistoryEvent, OrderHistoryState> {
+  OrderHistoryBloc({required OrderRepository orderRepository})
+    : _orderRepository = orderRepository,
+      super(const OrderHistoryState()) {
+    on<OrderHistorySubscriptionRequested>(_onSubscriptionRequested);
+  }
+
+  final OrderRepository _orderRepository;
+
+  Future<void> _onSubscriptionRequested(
+    OrderHistorySubscriptionRequested event,
+    Emitter<OrderHistoryState> emit,
+  ) async {
+    await emit.forEach(
+      _orderRepository.ordersStream,
+      onData: (orders) {
+        final active = orders.orders
+            .where(
+              (o) =>
+                  o.status == OrderStatus.submitted ||
+                  o.status == OrderStatus.inProgress ||
+                  o.status == OrderStatus.ready,
+            )
+            .toList();
+        final history = orders.orders
+            .where(
+              (o) =>
+                  o.status == OrderStatus.completed ||
+                  o.status == OrderStatus.cancelled,
+            )
+            .toList();
+        return state.copyWith(
+          status: OrderHistoryStatus.success,
+          activeOrders: active,
+          historyOrders: history,
+        );
+      },
+      onError: (_, _) => state.copyWith(status: OrderHistoryStatus.failure),
+    );
+  }
+}

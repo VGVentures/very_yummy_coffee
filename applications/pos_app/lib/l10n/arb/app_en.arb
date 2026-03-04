@@ -113,6 +113,10 @@
   "@ordersEmpty": {
     "description": "Empty state for orders list"
   },
+  "ordersBack": "Order",
+  "@ordersBack": {
+    "description": "Back button label on the orders page (breadcrumb to the ordering screen)"
+  },
   "ordersColumnOrder": "Order",
   "@ordersColumnOrder": {
     "description": "Column header for order number in the history table"
@@ -148,5 +152,9 @@
   "orderStatusCancelled": "Cancelled",
   "@orderStatusCancelled": {
     "description": "Order status: cancelled"
+  },
+  "orderStatusPending": "Pending",
+  "@orderStatusPending": {
+    "description": "Order status: pending (not yet submitted)"
   }
 }

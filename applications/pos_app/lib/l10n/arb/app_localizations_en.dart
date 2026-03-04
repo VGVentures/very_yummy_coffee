@@ -93,6 +93,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ordersEmpty => 'No orders yet';
 
   @override
+  String get ordersBack => 'Order';
+
+  @override
   String get ordersColumnOrder => 'Order';
 
   @override
@@ -118,4 +121,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderStatusCancelled => 'Cancelled';
+
+  @override
+  String get orderStatusPending => 'Pending';
 }

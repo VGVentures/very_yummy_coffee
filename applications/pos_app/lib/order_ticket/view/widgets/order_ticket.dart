@@ -28,7 +28,12 @@ class OrderTicket extends StatelessWidget {
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
+              padding: const EdgeInsets.only(
+                left: 16,
+                top: 12,
+                right: 8,
+                bottom: 12,
+              ),
               child: Row(
                 children: [
                   Expanded(
@@ -77,7 +82,12 @@ class OrderTicket extends StatelessWidget {
             if (order != null) ...[
               const Divider(height: 1),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+                padding: const EdgeInsets.only(
+                  left: 16,
+                  top: 12,
+                  right: 16,
+                  bottom: 4,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [

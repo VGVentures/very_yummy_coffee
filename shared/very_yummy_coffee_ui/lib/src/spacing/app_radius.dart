@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 class AppRadius extends ThemeExtension<AppRadius> {
   /// {@macro app_radius}
   const AppRadius({
+    required this.small,
     required this.medium,
     required this.large,
     required this.card,
     required this.pill,
   });
+
+  /// Small border radius (12).
+  final double small;
 
   /// Medium border radius.
   final double medium;
@@ -25,12 +29,14 @@ class AppRadius extends ThemeExtension<AppRadius> {
 
   @override
   AppRadius copyWith({
+    double? small,
     double? medium,
     double? large,
     double? card,
     double? pill,
   }) {
     return AppRadius(
+      small: small ?? this.small,
       medium: medium ?? this.medium,
       large: large ?? this.large,
       card: card ?? this.card,
@@ -44,6 +50,7 @@ class AppRadius extends ThemeExtension<AppRadius> {
       return this;
     }
     return AppRadius(
+      small: lerpDouble(small, other.small, t) ?? small,
       medium: lerpDouble(medium, other.medium, t) ?? medium,
       large: lerpDouble(large, other.large, t) ?? large,
       card: lerpDouble(card, other.card, t) ?? card,

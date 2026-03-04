@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:menu_repository/menu_repository.dart';
 import 'package:very_yummy_coffee_pos_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_pos_app/menu/bloc/menu_bloc.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class MenuItemCard extends StatelessWidget {
   const MenuItemCard({required this.item, super.key});
@@ -25,7 +26,12 @@ class MenuItemCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 4),
+                padding: const EdgeInsets.only(
+                  left: 10,
+                  top: 10,
+                  right: 10,
+                  bottom: 4,
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -92,12 +98,12 @@ class MenuItemCard extends StatelessWidget {
               right: 0,
               bottom: 44,
               child: ColoredBox(
-                color: Colors.black.withValues(alpha: 0.35),
+                color: context.colors.unavailableOverlay,
                 child: Center(
                   child: Text(
                     l10n.menuItemUnavailable,
                     style: theme.textTheme.labelMedium?.copyWith(
-                      color: Colors.white,
+                      color: context.colors.primaryForeground,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

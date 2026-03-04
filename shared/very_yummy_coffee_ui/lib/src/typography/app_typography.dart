@@ -8,6 +8,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     required this.pageTitle,
     required this.headline,
     required this.subtitle,
+    required this.label,
     required this.body,
     required this.muted,
     required this.caption,
@@ -28,6 +29,9 @@ class AppTypography extends ThemeExtension<AppTypography> {
 
   /// Subtitle style.
   final TextStyle subtitle;
+
+  /// Label style (20px w700, used for section headings within screens).
+  final TextStyle label;
 
   /// Body text style.
   final TextStyle body;
@@ -56,6 +60,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
     TextStyle? pageTitle,
     TextStyle? headline,
     TextStyle? subtitle,
+    TextStyle? label,
     TextStyle? body,
     TextStyle? muted,
     TextStyle? caption,
@@ -69,6 +74,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       pageTitle: pageTitle ?? this.pageTitle,
       headline: headline ?? this.headline,
       subtitle: subtitle ?? this.subtitle,
+      label: label ?? this.label,
       body: body ?? this.body,
       muted: muted ?? this.muted,
       caption: caption ?? this.caption,
@@ -91,6 +97,7 @@ class AppTypography extends ThemeExtension<AppTypography> {
       pageTitle: TextStyle.lerp(pageTitle, other.pageTitle, t) ?? pageTitle,
       headline: TextStyle.lerp(headline, other.headline, t) ?? headline,
       subtitle: TextStyle.lerp(subtitle, other.subtitle, t) ?? subtitle,
+      label: TextStyle.lerp(label, other.label, t) ?? label,
       body: TextStyle.lerp(body, other.body, t) ?? body,
       muted: TextStyle.lerp(muted, other.muted, t) ?? muted,
       caption: TextStyle.lerp(caption, other.caption, t) ?? caption,

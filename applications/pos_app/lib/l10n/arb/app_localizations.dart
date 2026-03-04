@@ -256,6 +256,12 @@ abstract class AppLocalizations {
   /// **'No orders yet'**
   String get ordersEmpty;
 
+  /// Back button label on the orders page (breadcrumb to the ordering screen)
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get ordersBack;
+
   /// Column header for order number in the history table
   ///
   /// In en, this message translates to:
@@ -309,6 +315,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Cancelled'**
   String get orderStatusCancelled;
+
+  /// Order status: pending (not yet submitted)
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get orderStatusPending;
 }
 
 class _AppLocalizationsDelegate

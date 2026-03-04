@@ -1,3 +1,4 @@
+export 'app_top_bar.dart';
 export 'bottom_tab_bar.dart';
 export 'buttons/buttons.dart';
 export 'coffee_card.dart';

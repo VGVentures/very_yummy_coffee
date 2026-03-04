@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_yummy_coffee_pos_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_pos_app/menu/bloc/menu_bloc.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class MenuCategoryTabs extends StatelessWidget {
   const MenuCategoryTabs({super.key});
@@ -58,8 +59,9 @@ class _CategoryTab extends StatelessWidget {
     final bgColor = isSelected
         ? theme.colorScheme.primary
         : theme.colorScheme.surface;
+    final colors = context.colors;
     final textColor = isSelected
-        ? Colors.white
+        ? colors.primaryForeground
         : theme.colorScheme.onSurfaceVariant;
     return GestureDetector(
       onTap: onTap,
