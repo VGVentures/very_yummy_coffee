@@ -1,0 +1,38 @@
+name: very_yummy_coffee_menu_board_app
+description: "Very Yummy Coffee Menu Board App"
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.11.0
+  flutter: ^3.41.2
+
+dependencies:
+  api_client:
+    path: ../../shared/api_client
+  bloc: ^9.0.0
+  connection_repository:
+    path: ../../shared/connection_repository
+  dart_mappable: ^4.6.1
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  go_router: ^14.6.2
+  menu_repository:
+    path: ../../shared/menu_repository
+  very_yummy_coffee_ui:
+    path: ../../shared/very_yummy_coffee_ui
+
+dev_dependencies:
+  bloc_lint: ^0.3.6
+  bloc_test: ^10.0.0
+  build_runner: ^2.11.1
+  dart_mappable_builder: ^4.6.4
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  nested: ^1.0.0
+  very_good_analysis: ^10.0.0
+
+flutter:
+  uses-material-design: true
