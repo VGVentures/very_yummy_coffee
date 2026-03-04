@@ -101,9 +101,9 @@
   "@ordersTitle": {
     "description": "Title for the orders list screen"
   },
-  "ordersActiveTitle": "Active Orders",
+  "ordersActiveTitle": "In Progress",
   "@ordersActiveTitle": {
-    "description": "Section title for active orders"
+    "description": "Section title for active/in-flight orders"
   },
   "ordersHistoryTitle": "Order History",
   "@ordersHistoryTitle": {
@@ -112,6 +112,18 @@
   "ordersEmpty": "No orders yet",
   "@ordersEmpty": {
     "description": "Empty state for orders list"
+  },
+  "ordersColumnOrder": "Order",
+  "@ordersColumnOrder": {
+    "description": "Column header for order number in the history table"
+  },
+  "ordersColumnItems": "Items",
+  "@ordersColumnItems": {
+    "description": "Column header for items in the history table"
+  },
+  "ordersColumnCompleted": "Completed",
+  "@ordersColumnCompleted": {
+    "description": "Column header for completion time in the history table"
   },
   "orderStatus": "Status",
   "@orderStatus": {

@@ -238,10 +238,10 @@ abstract class AppLocalizations {
   /// **'Orders'**
   String get ordersTitle;
 
-  /// Section title for active orders
+  /// Section title for active/in-flight orders
   ///
   /// In en, this message translates to:
-  /// **'Active Orders'**
+  /// **'In Progress'**
   String get ordersActiveTitle;
 
   /// Section title for order history
@@ -255,6 +255,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No orders yet'**
   String get ordersEmpty;
+
+  /// Column header for order number in the history table
+  ///
+  /// In en, this message translates to:
+  /// **'Order'**
+  String get ordersColumnOrder;
+
+  /// Column header for items in the history table
+  ///
+  /// In en, this message translates to:
+  /// **'Items'**
+  String get ordersColumnItems;
+
+  /// Column header for completion time in the history table
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get ordersColumnCompleted;
 
   /// Column header for order status
   ///
