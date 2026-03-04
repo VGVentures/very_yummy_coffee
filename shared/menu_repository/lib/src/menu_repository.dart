@@ -67,6 +67,20 @@ class MenuRepository {
         .doOnCancel(_decrementMenuCount);
   });
 
+  /// Returns a live stream of all menu groups and items together.
+  ///
+  /// Uses the same underlying WebSocket subscription as [getMenuGroups].
+  /// Preferred for screens that need both groups and items simultaneously,
+  /// as it avoids creating two separate ref-counted subscriptions.
+  Stream<({List<MenuGroup> groups, List<MenuItem> items})>
+  getMenuGroupsAndItems() => Rx.defer(() {
+    _initMenuIfNeeded();
+    _menuListenerCount += 1;
+    return _menuSubject!.stream
+        .map((cache) => (groups: cache.groups, items: cache.items))
+        .doOnCancel(_decrementMenuCount);
+  });
+
   void _initMenuIfNeeded() {
     if (_menuSubject != null) return;
 

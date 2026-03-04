@@ -16,5 +16,11 @@
       "request": "launch",
       "type": "dart"
     },
+    {
+      "name": "POS App",
+      "cwd": "applications/pos_app",
+      "request": "launch",
+      "type": "dart"
+    },
   ]
 }
