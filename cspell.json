@@ -29,7 +29,8 @@
     "footgun",
     "uppercased",
     "lifecycles",
-    "teardowns"
+    "teardowns",
+    "Fxxxxxx"
   ],
   "ignorePaths": [
     "build/**",
