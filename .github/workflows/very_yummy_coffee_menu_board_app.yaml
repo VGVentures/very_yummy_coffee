@@ -10,7 +10,7 @@ on:
       - master
       - main
     paths:
-      - ".github/workflows/very_yummy_coffee_menu_board_app.yaml"
+      - ".github/workflows/very_yummy_coffee_menu_board_app_verify_and_test.yaml"
       - "applications/menu_board_app/**"
       - "shared/api_client/**"
       - "shared/connection_repository/**"
@@ -58,7 +58,7 @@ jobs:
 
       - name: ✨ Check Formatting
         run: dart format --set-exit-if-changed lib test
-
+      
       - name: 🕵️ Analyze
         run: flutter analyze lib test
 
