@@ -28,6 +28,7 @@ abstract class CoffeeTheme {
       topBarBackground: Color(0xFF2D1B14),
       connected: Color(0xFF22C55E),
       unavailableOverlay: Color(0x59000000),
+      homeBackgroundOverlay: Color(0x30000000),
       statusWarningBackground: Color(0xFFFEF9C3),
       statusWarningForeground: Color(0xFF854D0E),
       statusSuccessBackground: Color(0xFFDCFCE7),

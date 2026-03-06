@@ -7328,7 +7328,7 @@
             {
               "type": "frame",
               "id": "cRgYE",
-              "name": "tocHomeBtn",
+              "name": "tocDoneBtn",
               "height": 72,
               "fill": "#FFFFFF22",
               "cornerRadius": 36,
@@ -7346,7 +7346,7 @@
                   "name": "tocHomeBtnIcon",
                   "width": 24,
                   "height": 24,
-                  "iconFontName": "house",
+                  "iconFontName": "circle-check-big",
                   "iconFontFamily": "lucide",
                   "fill": "#FFFFFF"
                 },
@@ -7355,7 +7355,7 @@
                   "id": "4tGI2",
                   "name": "tocHomeBtnText",
                   "fill": "#FFFFFF",
-                  "content": "Back to Menu",
+                  "content": "Done",
                   "fontFamily": "IBM Plex Sans",
                   "fontSize": 20,
                   "fontWeight": "600"

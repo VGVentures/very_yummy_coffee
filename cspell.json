@@ -30,7 +30,8 @@
     "uppercased",
     "lifecycles",
     "teardowns",
-    "Fxxxxxx"
+    "Fxxxxxx",
+    "exitable"
   ],
   "ignorePaths": [
     "build/**",

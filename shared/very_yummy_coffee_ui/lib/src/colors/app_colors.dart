@@ -22,6 +22,7 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.topBarBackground,
     required this.connected,
     required this.unavailableOverlay,
+    required this.homeBackgroundOverlay,
     required this.statusWarningBackground,
     required this.statusWarningForeground,
     required this.statusSuccessBackground,
@@ -86,6 +87,9 @@ class AppColors extends ThemeExtension<AppColors> {
   /// Semi-transparent overlay for unavailable menu items.
   final Color unavailableOverlay;
 
+  /// Semi-transparent black overlay for the kiosk home screen background.
+  final Color homeBackgroundOverlay;
+
   /// Background for warning/in-progress status chips.
   final Color statusWarningBackground;
 
@@ -130,6 +134,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? topBarBackground,
     Color? connected,
     Color? unavailableOverlay,
+    Color? homeBackgroundOverlay,
     Color? statusWarningBackground,
     Color? statusWarningForeground,
     Color? statusSuccessBackground,
@@ -158,6 +163,8 @@ class AppColors extends ThemeExtension<AppColors> {
       topBarBackground: topBarBackground ?? this.topBarBackground,
       connected: connected ?? this.connected,
       unavailableOverlay: unavailableOverlay ?? this.unavailableOverlay,
+      homeBackgroundOverlay:
+          homeBackgroundOverlay ?? this.homeBackgroundOverlay,
       statusWarningBackground:
           statusWarningBackground ?? this.statusWarningBackground,
       statusWarningForeground:
@@ -214,6 +221,13 @@ class AppColors extends ThemeExtension<AppColors> {
       unavailableOverlay:
           Color.lerp(unavailableOverlay, other.unavailableOverlay, t) ??
           unavailableOverlay,
+      homeBackgroundOverlay:
+          Color.lerp(
+            homeBackgroundOverlay,
+            other.homeBackgroundOverlay,
+            t,
+          ) ??
+          homeBackgroundOverlay,
       statusWarningBackground:
           Color.lerp(
             statusWarningBackground,
