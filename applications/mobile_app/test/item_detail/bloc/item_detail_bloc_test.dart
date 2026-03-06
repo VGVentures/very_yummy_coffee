@@ -197,15 +197,19 @@ void main() {
 
     group('ItemDetailAddToCartRequested', () {
       blocTest<ItemDetailBloc, ItemDetailState>(
-        'creates order then adds item and emits added',
+        'adds item and emits added',
         seed: () => const ItemDetailState(
           item: testItem,
           status: ItemDetailStatus.idle,
         ),
         build: () {
-          when(() => orderRepository.currentOrderId).thenReturn(null);
           when(
-            () => orderRepository.createOrder(),
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              options: any(named: 'options'),
+              quantity: any(named: 'quantity'),
+            ),
           ).thenAnswer((_) async {});
           return buildBloc();
         },
@@ -221,7 +225,6 @@ void main() {
           ),
         ],
         verify: (_) {
-          verify(() => orderRepository.createOrder()).called(1);
           verify(
             () => orderRepository.addItemToCurrentOrder(
               itemName: testItem.name,
@@ -234,34 +237,6 @@ void main() {
       );
 
       blocTest<ItemDetailBloc, ItemDetailState>(
-        'skips createOrder when order already exists',
-        seed: () => const ItemDetailState(
-          item: testItem,
-          status: ItemDetailStatus.idle,
-        ),
-        build: () {
-          when(
-            () => orderRepository.currentOrderId,
-          ).thenReturn('existing-order');
-          return buildBloc();
-        },
-        act: (bloc) => bloc.add(const ItemDetailAddToCartRequested()),
-        expect: () => [
-          const ItemDetailState(
-            item: testItem,
-            status: ItemDetailStatus.adding,
-          ),
-          const ItemDetailState(
-            item: testItem,
-            status: ItemDetailStatus.added,
-          ),
-        ],
-        verify: (_) {
-          verifyNever(() => orderRepository.createOrder());
-        },
-      );
-
-      blocTest<ItemDetailBloc, ItemDetailState>(
         'calls addItemToCurrentOrder once with quantity: 3',
         seed: () => const ItemDetailState(
           item: testItem,
@@ -270,8 +245,13 @@ void main() {
         ),
         build: () {
           when(
-            () => orderRepository.currentOrderId,
-          ).thenReturn('existing-order');
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              options: any(named: 'options'),
+              quantity: any(named: 'quantity'),
+            ),
+          ).thenAnswer((_) async {});
           return buildBloc();
         },
         act: (bloc) => bloc.add(const ItemDetailAddToCartRequested()),
@@ -296,8 +276,13 @@ void main() {
         ),
         build: () {
           when(
-            () => orderRepository.currentOrderId,
-          ).thenReturn('existing-order');
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              options: any(named: 'options'),
+              quantity: any(named: 'quantity'),
+            ),
+          ).thenAnswer((_) async {});
           return buildBloc();
         },
         act: (bloc) => bloc.add(const ItemDetailAddToCartRequested()),
@@ -320,9 +305,13 @@ void main() {
           status: ItemDetailStatus.idle,
         ),
         build: () {
-          when(() => orderRepository.currentOrderId).thenReturn(null);
           when(
-            () => orderRepository.createOrder(),
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              options: any(named: 'options'),
+              quantity: any(named: 'quantity'),
+            ),
           ).thenThrow(Exception('network error'));
           return buildBloc();
         },

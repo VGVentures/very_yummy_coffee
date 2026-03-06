@@ -145,7 +145,7 @@ void main() {
               options: any(named: 'options'),
               quantity: any(named: 'quantity'),
             ),
-          ).thenReturn(null);
+          ).thenAnswer((_) async {});
           return MenuBloc(
             menuRepository: menuRepository,
             orderRepository: orderRepository,
@@ -163,6 +163,31 @@ void main() {
             ),
           ).called(1);
         },
+      );
+
+      blocTest<MenuBloc, MenuState>(
+        'emits [failure] when addItemToCurrentOrder throws',
+        build: () {
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          when(
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              options: any(named: 'options'),
+              quantity: any(named: 'quantity'),
+            ),
+          ).thenThrow(Exception('network error'));
+          return MenuBloc(
+            menuRepository: menuRepository,
+            orderRepository: orderRepository,
+          );
+        },
+        act: (bloc) => bloc.add(const MenuItemAdded(tItem)),
+        expect: () => [
+          const MenuState(status: MenuStatus.failure),
+        ],
       );
 
       blocTest<MenuBloc, MenuState>(
