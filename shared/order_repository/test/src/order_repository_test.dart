@@ -160,6 +160,95 @@ void main() {
       });
     });
 
+    group('addItemToCurrentOrder', () {
+      test('auto-creates order when currentOrderId is null', () async {
+        orderRepository = OrderRepository(wsRpcClient: wsRpcClient);
+
+        await orderRepository.addItemToCurrentOrder(
+          itemName: 'Latte',
+          itemPrice: 500,
+          options: 'Medium',
+          quantity: 1,
+        );
+
+        verify(
+          () => wsRpcClient.sendAction('createOrder', any()),
+        ).called(1);
+        verify(
+          () => wsRpcClient.sendAction('addItemToOrder', any()),
+        ).called(1);
+      });
+
+      test('does not create order when currentOrderId is non-null', () async {
+        orderRepository = OrderRepository(
+          wsRpcClient: wsRpcClient,
+          currentOrderId: 'existing-order',
+        );
+
+        await orderRepository.addItemToCurrentOrder(
+          itemName: 'Latte',
+          itemPrice: 500,
+          options: 'Medium',
+          quantity: 1,
+        );
+
+        verifyNever(
+          () => wsRpcClient.sendAction('createOrder', any()),
+        );
+        verify(
+          () => wsRpcClient.sendAction('addItemToOrder', any()),
+        ).called(1);
+      });
+
+      test('sends correct payload', () async {
+        orderRepository = OrderRepository(
+          wsRpcClient: wsRpcClient,
+          currentOrderId: 'order-abc',
+        );
+
+        await orderRepository.addItemToCurrentOrder(
+          itemName: 'Espresso',
+          itemPrice: 300,
+          options: 'Small · Oat Milk',
+          quantity: 2,
+        );
+
+        final captured =
+            verify(
+                  () => wsRpcClient.sendAction('addItemToOrder', captureAny()),
+                ).captured.single
+                as Map<String, dynamic>;
+
+        expect(captured['orderId'], 'order-abc');
+        expect(captured['itemName'], 'Espresso');
+        expect(captured['itemPrice'], 300);
+        expect(captured['options'], 'Small · Oat Milk');
+        expect(captured['quantity'], 2);
+        expect(captured['lineItemId'], isA<String>());
+      });
+
+      test('propagates exception when auto-create fails', () async {
+        when(
+          () => wsRpcClient.sendAction('createOrder', any()),
+        ).thenThrow(Exception('network error'));
+        orderRepository = OrderRepository(wsRpcClient: wsRpcClient);
+
+        expect(
+          () => orderRepository.addItemToCurrentOrder(
+            itemName: 'Latte',
+            itemPrice: 500,
+            options: 'Medium',
+            quantity: 1,
+          ),
+          throwsA(isA<Exception>()),
+        );
+
+        verifyNever(
+          () => wsRpcClient.sendAction('addItemToOrder', any()),
+        );
+      });
+    });
+
     group('submitCurrentOrder', () {
       test(
         'sends submitOrder action with currentOrderId and clears it',

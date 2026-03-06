@@ -95,15 +95,12 @@ class ItemDetailBloc extends Bloc<ItemDetailEvent, ItemDetailState> {
     }
     emit(state.copyWith(status: ItemDetailStatus.adding));
     try {
-      if (_orderRepository.currentOrderId == null) {
-        await _orderRepository.createOrder();
-      }
       final optionsParts = [
         state.selectedSize.label,
         state.selectedMilk.label,
         ...state.selectedExtras.map((e) => e.label),
       ];
-      _orderRepository.addItemToCurrentOrder(
+      await _orderRepository.addItemToCurrentOrder(
         itemName: item.name,
         itemPrice: item.price,
         options: optionsParts.join(' · '),
