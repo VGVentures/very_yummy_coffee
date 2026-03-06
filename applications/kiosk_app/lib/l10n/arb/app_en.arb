@@ -1,0 +1,167 @@
+{
+  "@@locale": "en",
+  "kioskBrandName": "Very Yummy Coffee",
+  "@kioskBrandName": {
+    "description": "Brand name displayed on the kiosk home screen"
+  },
+  "kioskTagline": "Freshly brewed, just for you.",
+  "@kioskTagline": {
+    "description": "Tagline displayed below the brand name on the kiosk home screen"
+  },
+  "kioskStartOrder": "Start Order",
+  "@kioskStartOrder": {
+    "description": "Label for the start order button on the kiosk home screen"
+  },
+  "kioskCartBadge": "Cart ({count})",
+  "@kioskCartBadge": {
+    "description": "Cart badge label showing item count in the kiosk header",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "kioskDone": "Done",
+  "@kioskDone": {
+    "description": "Label for the done button on the order complete screen"
+  },
+  "kioskWhatWouldYouLike": "What would you like?",
+  "@kioskWhatWouldYouLike": {
+    "description": "Subtitle on the menu groups screen"
+  },
+  "kioskOrderPlacedTitle": "Order Placed!",
+  "@kioskOrderPlacedTitle": {
+    "description": "Title on the order complete success hero panel"
+  },
+  "kioskOrderPlacedSubtitle": "We're brewing your order now.\nSee you in a few minutes!",
+  "@kioskOrderPlacedSubtitle": {
+    "description": "Subtitle on the order complete success hero panel"
+  },
+  "kioskProceedToCheckout": "Proceed to Checkout",
+  "@kioskProceedToCheckout": {
+    "description": "Label for the checkout button on the cart screen"
+  },
+  "errorSomethingWentWrong": "Something went wrong",
+  "@errorSomethingWentWrong": {
+    "description": "Generic error message shown when an unexpected failure occurs"
+  },
+  "itemDetailSizeLabel": "Size",
+  "@itemDetailSizeLabel": {
+    "description": "Label for the size customization section on the item detail page"
+  },
+  "itemDetailMilkLabel": "Milk",
+  "@itemDetailMilkLabel": {
+    "description": "Label for the milk customization section on the item detail page"
+  },
+  "itemDetailExtrasLabel": "Extras",
+  "@itemDetailExtrasLabel": {
+    "description": "Label for the extras customization section on the item detail page"
+  },
+  "itemDetailAddToCart": "Add to Cart",
+  "@itemDetailAddToCart": {
+    "description": "Label for the add-to-cart button on the item detail page"
+  },
+  "itemDetailUnavailable": "This item is no longer available",
+  "@itemDetailUnavailable": {
+    "description": "Message shown when an item becomes unavailable on the item detail page"
+  },
+  "cartTitle": "My Cart",
+  "@cartTitle": {
+    "description": "Title of the cart page"
+  },
+  "cartItemCount": "{count, plural, =1{1 item} other{{count} items}}",
+  "@cartItemCount": {
+    "description": "Number of items shown in the cart header",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "cartEmptyTitle": "Your cart is empty",
+  "@cartEmptyTitle": {
+    "description": "Heading shown when the cart has no items"
+  },
+  "cartEmptySubtitle": "Add some items from the menu to get started.",
+  "@cartEmptySubtitle": {
+    "description": "Subtitle shown when the cart has no items"
+  },
+  "cartBrowseMenu": "Browse Menu",
+  "@cartBrowseMenu": {
+    "description": "Button label that navigates to the menu from an empty cart"
+  },
+  "cartOrderSummaryLabel": "Order Summary",
+  "@cartOrderSummaryLabel": {
+    "description": "Heading for the order summary section"
+  },
+  "cartSubtotalLabel": "Subtotal",
+  "@cartSubtotalLabel": {
+    "description": "Label for the subtotal row in the order summary"
+  },
+  "cartTaxLabel": "Tax (8%)",
+  "@cartTaxLabel": {
+    "description": "Label for the tax row in the order summary"
+  },
+  "cartTotalLabel": "Total",
+  "@cartTotalLabel": {
+    "description": "Label for the total row in the order summary"
+  },
+  "checkoutTitle": "Checkout",
+  "@checkoutTitle": {
+    "description": "Title of the checkout screen"
+  },
+  "checkoutFakePaymentLabel": "Fake Payment",
+  "@checkoutFakePaymentLabel": {
+    "description": "Label on the cosmetic payment card in the checkout screen"
+  },
+  "checkoutFakePaymentSubtitle": "No real charge will be made",
+  "@checkoutFakePaymentSubtitle": {
+    "description": "Subtitle on the cosmetic payment card in the checkout screen"
+  },
+  "checkoutPlaceOrder": "Place Order — {total}",
+  "@checkoutPlaceOrder": {
+    "description": "Label for the place-order button on the checkout screen",
+    "placeholders": {
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "checkoutErrorRetry": "Something went wrong. Please try again.",
+  "@checkoutErrorRetry": {
+    "description": "Inline error shown below the place-order button on failure"
+  },
+  "orderCompleteOrderNumber": "Order #{number}",
+  "@orderCompleteOrderNumber": {
+    "description": "Order number display on the order complete screen",
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "orderCompleteStep1": "Placed",
+  "@orderCompleteStep1": {
+    "description": "Step 1 label on the order status tracker"
+  },
+  "orderCompleteStep2": "In Progress",
+  "@orderCompleteStep2": {
+    "description": "Step 2 label on the order status tracker"
+  },
+  "orderCompleteStep3": "Ready",
+  "@orderCompleteStep3": {
+    "description": "Step 3 label on the order status tracker"
+  },
+  "orderCompleteStep4": "Picked Up",
+  "@orderCompleteStep4": {
+    "description": "Step 4 label on the order status tracker"
+  },
+  "orderCompleteOrderDetailsLabel": "Your Order",
+  "@orderCompleteOrderDetailsLabel": {
+    "description": "Section heading for the order details on the order complete screen"
+  },
+  "orderCompleteCancelledLabel": "Order Cancelled",
+  "@orderCompleteCancelledLabel": {
+    "description": "Label shown when the order has been cancelled"
+  }
+}
