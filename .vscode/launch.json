@@ -28,5 +28,11 @@
       "request": "launch",
       "type": "dart"
     },
+    {
+      "name": "Kiosk App",
+      "cwd": "applications/kiosk_app",
+      "request": "launch",
+      "type": "dart"
+    },
   ]
 }

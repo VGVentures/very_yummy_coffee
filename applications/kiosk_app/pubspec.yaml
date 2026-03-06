@@ -1,0 +1,46 @@
+name: very_yummy_coffee_kiosk_app
+description: "Very Yummy Coffee Kiosk App"
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.11.0
+  flutter: ^3.41.2
+
+dependencies:
+  api_client:
+    path: ../../shared/api_client
+  bloc: ^9.0.0
+  connection_repository:
+    path: ../../shared/connection_repository
+  dart_mappable: ^4.6.1
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  flutter_localizations:
+    sdk: flutter
+  go_router: ^14.6.2
+  intl: ^0.20.2
+  menu_repository:
+    path: ../../shared/menu_repository
+  order_repository:
+    path: ../../shared/order_repository
+  rxdart: ^0.28.0
+  very_yummy_coffee_ui:
+    path: ../../shared/very_yummy_coffee_ui
+
+dev_dependencies:
+  bloc_lint: ^0.3.6
+  bloc_test: ^10.0.0
+  build_runner: ^2.11.1
+  dart_mappable_builder: ^4.6.4
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  very_good_analysis: ^10.0.0
+
+flutter:
+  generate: true
+  uses-material-design: true
+  assets:
+    - assets/images/
