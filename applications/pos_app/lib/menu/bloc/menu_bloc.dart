@@ -46,13 +46,20 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
     emit(state.copyWith(selectedGroupId: event.groupId));
   }
 
-  void _onItemAdded(MenuItemAdded event, Emitter<MenuState> emit) {
+  Future<void> _onItemAdded(
+    MenuItemAdded event,
+    Emitter<MenuState> emit,
+  ) async {
     if (!event.item.available) return;
-    _orderRepository.addItemToCurrentOrder(
-      itemName: event.item.name,
-      itemPrice: event.item.price,
-      options: '',
-      quantity: 1,
-    );
+    try {
+      await _orderRepository.addItemToCurrentOrder(
+        itemName: event.item.name,
+        itemPrice: event.item.price,
+        options: '',
+        quantity: 1,
+      );
+    } on Exception catch (_) {
+      emit(state.copyWith(status: MenuStatus.failure));
+    }
   }
 }

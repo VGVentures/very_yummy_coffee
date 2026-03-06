@@ -243,8 +243,6 @@ void main() {
           when(
             () => menuRepository.getMenuItem(any(), any()),
           ).thenAnswer((_) => const Stream.empty());
-          when(() => orderRepository.currentOrderId).thenReturn(null);
-          when(() => orderRepository.createOrder()).thenAnswer((_) async {});
           when(
             () => orderRepository.addItemToCurrentOrder(
               itemName: any(named: 'itemName'),
@@ -252,7 +250,7 @@ void main() {
               quantity: any(named: 'quantity'),
               options: any(named: 'options'),
             ),
-          ).thenReturn(null);
+          ).thenAnswer((_) async {});
           return ItemDetailBloc(
             menuRepository: menuRepository,
             orderRepository: orderRepository,
@@ -298,9 +296,13 @@ void main() {
           when(
             () => menuRepository.getMenuItem(any(), any()),
           ).thenAnswer((_) => const Stream.empty());
-          when(() => orderRepository.currentOrderId).thenReturn(null);
           when(
-            () => orderRepository.createOrder(),
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              quantity: any(named: 'quantity'),
+              options: any(named: 'options'),
+            ),
           ).thenThrow(Exception('error'));
           return ItemDetailBloc(
             menuRepository: menuRepository,

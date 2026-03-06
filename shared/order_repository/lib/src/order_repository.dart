@@ -54,8 +54,10 @@ class OrderRepository {
 
   /// Creates a new order on the server.
   ///
-  /// Sets [currentOrderId] immediately so derived streams reflect the new
-  /// order once the server broadcasts the update.
+  /// Sets [currentOrderId] synchronously before yielding to the event loop,
+  /// so even if multiple async callers race, only the first sees `null`.
+  /// Derived streams reflect the new order once the server broadcasts the
+  /// update.
   Future<void> createOrder() async {
     final id = _uuid.v4();
     _currentOrderId = id;
@@ -63,13 +65,19 @@ class OrderRepository {
   }
 
   /// Adds an item to the current order on the server.
-  void addItemToCurrentOrder({
+  ///
+  /// Auto-creates an order if [currentOrderId] is null, so callers never
+  /// need to check or call [createOrder] themselves.
+  Future<void> addItemToCurrentOrder({
     required String itemName,
     required int itemPrice,
     required String options,
     required int quantity,
-  }) {
-    if (currentOrderId == null) return;
+  }) async {
+    if (_currentOrderId == null) {
+      await createOrder();
+    }
+    assert(_currentOrderId != null, 'createOrder must set _currentOrderId');
     _wsRpcClient.sendAction('addItemToOrder', {
       'orderId': currentOrderId,
       'lineItemId': _uuid.v4(),
