@@ -42,15 +42,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorSomethingWentWrong => 'Something went wrong';
 
   @override
-  String get itemDetailSizeLabel => 'Size';
-
-  @override
-  String get itemDetailMilkLabel => 'Milk';
-
-  @override
-  String get itemDetailExtrasLabel => 'Extras';
-
-  @override
   String get itemDetailAddToCart => 'Add to Cart';
 
   @override

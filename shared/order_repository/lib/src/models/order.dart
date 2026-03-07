@@ -37,8 +37,10 @@ class Order with OrderMappable {
   /// Null for orders that were created before this field was introduced.
   final DateTime? submittedAt;
 
-  int get total =>
-      items.fold(0, (sum, item) => sum + item.price * item.quantity);
+  int get total => items.fold(
+    0,
+    (sum, item) => sum + item.unitPriceWithModifiers * item.quantity,
+  );
   int get tax => (total * 8 + 50) ~/ 100;
   int get grandTotal => total + tax;
 }

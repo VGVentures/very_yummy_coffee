@@ -8,8 +8,7 @@
 
 part of 'order_complete_bloc.dart';
 
-class OrderCompleteStateMapper
-    extends ClassMapperBase<OrderCompleteState> {
+class OrderCompleteStateMapper extends ClassMapperBase<OrderCompleteState> {
   OrderCompleteStateMapper._();
 
   static OrderCompleteStateMapper? _instance;
@@ -25,8 +24,12 @@ class OrderCompleteStateMapper
   final String id = 'OrderCompleteState';
 
   static OrderCompleteStatus _$status(OrderCompleteState v) => v.status;
-  static const Field<OrderCompleteState, OrderCompleteStatus> _f$status =
-      Field('status', _$status, opt: true, def: OrderCompleteStatus.loading);
+  static const Field<OrderCompleteState, OrderCompleteStatus> _f$status = Field(
+    'status',
+    _$status,
+    opt: true,
+    def: OrderCompleteStatus.loading,
+  );
   static Order? _$order(OrderCompleteState v) => v.order;
   static const Field<OrderCompleteState, Order> _f$order = Field(
     'order',
@@ -76,10 +79,11 @@ mixin OrderCompleteStateMappable {
     OrderCompleteState
   >
   get copyWith =>
-      _OrderCompleteStateCopyWithImpl<
-        OrderCompleteState,
-        OrderCompleteState
-      >(this as OrderCompleteState, $identity, $identity);
+      _OrderCompleteStateCopyWithImpl<OrderCompleteState, OrderCompleteState>(
+        this as OrderCompleteState,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return OrderCompleteStateMapper.ensureInitialized().stringifyValue(
@@ -149,8 +153,8 @@ class _OrderCompleteStateCopyWithImpl<$R, $Out>
   );
 
   @override
-  OrderCompleteStateCopyWith<$R2, OrderCompleteState, $Out2>
-  $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _OrderCompleteStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
+  OrderCompleteStateCopyWith<$R2, OrderCompleteState, $Out2> $chain<$R2, $Out2>(
+    Then<$Out2, $R2> t,
+  ) => _OrderCompleteStateCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 

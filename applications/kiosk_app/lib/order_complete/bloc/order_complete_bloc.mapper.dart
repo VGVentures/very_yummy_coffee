@@ -309,9 +309,7 @@ class OrderCompleteDoneRequestedMapper
   }
 
   static OrderCompleteDoneRequested fromJson(String json) {
-    return ensureInitialized().decodeJson<OrderCompleteDoneRequested>(
-      json,
-    );
+    return ensureInitialized().decodeJson<OrderCompleteDoneRequested>(json);
   }
 }
 
@@ -342,14 +340,17 @@ mixin OrderCompleteDoneRequestedMappable {
       >(this as OrderCompleteDoneRequested, $identity, $identity);
   @override
   String toString() {
-    return OrderCompleteDoneRequestedMapper.ensureInitialized()
-        .stringifyValue(this as OrderCompleteDoneRequested);
+    return OrderCompleteDoneRequestedMapper.ensureInitialized().stringifyValue(
+      this as OrderCompleteDoneRequested,
+    );
   }
 
   @override
   bool operator ==(Object other) {
-    return OrderCompleteDoneRequestedMapper.ensureInitialized()
-        .equalsValue(this as OrderCompleteDoneRequested, other);
+    return OrderCompleteDoneRequestedMapper.ensureInitialized().equalsValue(
+      this as OrderCompleteDoneRequested,
+      other,
+    );
   }
 
   @override
@@ -362,14 +363,9 @@ mixin OrderCompleteDoneRequestedMappable {
 
 extension OrderCompleteDoneRequestedValueCopy<$R, $Out>
     on ObjectCopyWith<$R, OrderCompleteDoneRequested, $Out> {
-  OrderCompleteDoneRequestedCopyWith<
-    $R,
-    OrderCompleteDoneRequested,
-    $Out
-  >
+  OrderCompleteDoneRequestedCopyWith<$R, OrderCompleteDoneRequested, $Out>
   get $asOrderCompleteDoneRequested => $base.as(
-    (v, t, t2) =>
-        _OrderCompleteDoneRequestedCopyWithImpl<$R, $Out>(v, t, t2),
+    (v, t, t2) => _OrderCompleteDoneRequestedCopyWithImpl<$R, $Out>(v, t, t2),
   );
 }
 
@@ -394,11 +390,7 @@ class _OrderCompleteDoneRequestedCopyWithImpl<$R, $Out>
           OrderCompleteDoneRequested,
           $Out
         > {
-  _OrderCompleteDoneRequestedCopyWithImpl(
-    super.value,
-    super.then,
-    super.then2,
-  );
+  _OrderCompleteDoneRequestedCopyWithImpl(super.value, super.then, super.then2);
 
   @override
   late final ClassMapperBase<OrderCompleteDoneRequested> $mapper =
@@ -410,17 +402,9 @@ class _OrderCompleteDoneRequestedCopyWithImpl<$R, $Out>
       OrderCompleteDoneRequested();
 
   @override
-  OrderCompleteDoneRequestedCopyWith<
-    $R2,
-    OrderCompleteDoneRequested,
-    $Out2
-  >
+  OrderCompleteDoneRequestedCopyWith<$R2, OrderCompleteDoneRequested, $Out2>
   $chain<$R2, $Out2>(Then<$Out2, $R2> t) =>
-      _OrderCompleteDoneRequestedCopyWithImpl<$R2, $Out2>(
-        $value,
-        $cast,
-        t,
-      );
+      _OrderCompleteDoneRequestedCopyWithImpl<$R2, $Out2>($value, $cast, t);
 }
 
 class OrderCompleteStateMapper extends ClassMapperBase<OrderCompleteState> {

@@ -167,7 +167,6 @@ void main() {
         await orderRepository.addItemToCurrentOrder(
           itemName: 'Latte',
           itemPrice: 500,
-          options: 'Medium',
           quantity: 1,
         );
 
@@ -188,7 +187,6 @@ void main() {
         await orderRepository.addItemToCurrentOrder(
           itemName: 'Latte',
           itemPrice: 500,
-          options: 'Medium',
           quantity: 1,
         );
 
@@ -209,8 +207,20 @@ void main() {
         await orderRepository.addItemToCurrentOrder(
           itemName: 'Espresso',
           itemPrice: 300,
-          options: 'Small · Oat Milk',
           quantity: 2,
+          modifiers: const [
+            SelectedModifier(
+              modifierGroupId: 'mg-milk',
+              modifierGroupName: 'Milk',
+              options: [
+                SelectedOption(
+                  id: 'milk-oat',
+                  name: 'Oat Milk',
+                  priceDeltaCents: 75,
+                ),
+              ],
+            ),
+          ],
         );
 
         final captured =
@@ -222,7 +232,10 @@ void main() {
         expect(captured['orderId'], 'order-abc');
         expect(captured['itemName'], 'Espresso');
         expect(captured['itemPrice'], 300);
-        expect(captured['options'], 'Small · Oat Milk');
+        expect(captured['modifiers'], isA<List<dynamic>>());
+        final firstModifier =
+            (captured['modifiers'] as List).first as Map<String, dynamic>;
+        expect(firstModifier['modifierGroupId'], 'mg-milk');
         expect(captured['quantity'], 2);
         expect(captured['lineItemId'], isA<String>());
       });
@@ -237,7 +250,6 @@ void main() {
           () => orderRepository.addItemToCurrentOrder(
             itemName: 'Latte',
             itemPrice: 500,
-            options: 'Medium',
             quantity: 1,
           ),
           throwsA(isA<Exception>()),

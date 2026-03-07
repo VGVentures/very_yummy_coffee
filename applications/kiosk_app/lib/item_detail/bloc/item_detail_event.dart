@@ -11,22 +11,14 @@ class ItemDetailSubscriptionRequested extends ItemDetailEvent {
   final String itemId;
 }
 
-class ItemDetailSizeSelected extends ItemDetailEvent {
-  const ItemDetailSizeSelected(this.size);
+class ItemDetailModifierOptionToggled extends ItemDetailEvent {
+  const ItemDetailModifierOptionToggled({
+    required this.groupId,
+    required this.optionId,
+  });
 
-  final DrinkSize size;
-}
-
-class ItemDetailMilkSelected extends ItemDetailEvent {
-  const ItemDetailMilkSelected(this.milk);
-
-  final MilkOption milk;
-}
-
-class ItemDetailExtraToggled extends ItemDetailEvent {
-  const ItemDetailExtraToggled(this.extra);
-
-  final DrinkExtra extra;
+  final String groupId;
+  final String optionId;
 }
 
 class ItemDetailQuantityIncremented extends ItemDetailEvent {

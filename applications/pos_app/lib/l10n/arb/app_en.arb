@@ -156,5 +156,9 @@
   "orderStatusPending": "Pending",
   "@orderStatusPending": {
     "description": "Order status: pending (not yet submitted)"
+  },
+  "modifierSheetConfirm": "Confirm",
+  "@modifierSheetConfirm": {
+    "description": "Confirm button on the modifier selection bottom sheet"
   }
 }

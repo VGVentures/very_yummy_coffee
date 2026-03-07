@@ -24,7 +24,7 @@ void main() {
       orderRepository = _MockOrderRepository();
 
       when(
-        () => menuRepository.getMenuItem(any(), any()),
+        () => menuRepository.getMenuGroupsAndItems(),
       ).thenAnswer((_) => const Stream.empty());
     });
 
@@ -42,7 +42,9 @@ void main() {
       expect(find.byType(ItemDetailView), findsOneWidget);
     });
 
-    testWidgets('subscribes to correct item on mount', (tester) async {
+    testWidgets('subscribes to menu groups and items on mount', (
+      tester,
+    ) async {
       await tester.pumpApp(
         const ItemDetailPage(
           key: Key('item_detail_page'),
@@ -54,7 +56,7 @@ void main() {
       );
 
       verify(
-        () => menuRepository.getMenuItem(groupId, itemId),
+        () => menuRepository.getMenuGroupsAndItems(),
       ).called(1);
     });
   });

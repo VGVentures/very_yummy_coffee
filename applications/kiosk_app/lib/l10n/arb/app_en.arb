@@ -45,18 +45,6 @@
   "@errorSomethingWentWrong": {
     "description": "Generic error message shown when an unexpected failure occurs"
   },
-  "itemDetailSizeLabel": "Size",
-  "@itemDetailSizeLabel": {
-    "description": "Label for the size customization section on the item detail page"
-  },
-  "itemDetailMilkLabel": "Milk",
-  "@itemDetailMilkLabel": {
-    "description": "Label for the milk customization section on the item detail page"
-  },
-  "itemDetailExtrasLabel": "Extras",
-  "@itemDetailExtrasLabel": {
-    "description": "Label for the extras customization section on the item detail page"
-  },
   "itemDetailAddToCart": "Add to Cart",
   "@itemDetailAddToCart": {
     "description": "Label for the add-to-cart button on the item detail page"

@@ -124,4 +124,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderStatusPending => 'Pending';
+
+  @override
+  String get modifierSheetConfirm => 'Confirm';
 }

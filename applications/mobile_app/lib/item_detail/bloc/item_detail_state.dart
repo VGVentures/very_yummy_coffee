@@ -1,75 +1,50 @@
 part of 'item_detail_bloc.dart';
 
 @MappableEnum()
-enum DrinkSize {
-  small,
-  medium,
-  large
-  ;
-
-  String get shortLabel => switch (this) {
-    DrinkSize.small => 'S',
-    DrinkSize.medium => 'M',
-    DrinkSize.large => 'L',
-  };
-
-  String get label => switch (this) {
-    DrinkSize.small => 'Small',
-    DrinkSize.medium => 'Medium',
-    DrinkSize.large => 'Large',
-  };
-}
-
-@MappableEnum()
-enum MilkOption {
-  whole,
-  oat,
-  almond,
-  soy
-  ;
-
-  String get label => switch (this) {
-    MilkOption.whole => 'Whole Milk',
-    MilkOption.oat => 'Oat Milk',
-    MilkOption.almond => 'Almond Milk',
-    MilkOption.soy => 'Soy Milk',
-  };
-}
-
-@MappableEnum()
-enum DrinkExtra {
-  extraShot,
-  vanillaSyrup,
-  caramel
-  ;
-
-  String get label => switch (this) {
-    DrinkExtra.extraShot => 'Extra Shot',
-    DrinkExtra.vanillaSyrup => 'Vanilla Syrup',
-    DrinkExtra.caramel => 'Caramel',
-  };
-}
-
-@MappableEnum()
 enum ItemDetailStatus { loading, idle, adding, added, failure }
 
 @MappableClass()
 class ItemDetailState with ItemDetailStateMappable {
   const ItemDetailState({
     this.item,
-    this.selectedSize = DrinkSize.medium,
-    this.selectedMilk = MilkOption.whole,
-    this.selectedExtras = const [],
+    this.applicableModifierGroups = const [],
+    this.selectedModifiers = const {},
     this.quantity = 1,
     this.status = ItemDetailStatus.loading,
   });
 
   final MenuItem? item;
-  final DrinkSize selectedSize;
-  final MilkOption selectedMilk;
-  final List<DrinkExtra> selectedExtras;
+  final List<ModifierGroup> applicableModifierGroups;
+
+  /// Maps modifier group ID to list of selected option IDs.
+  final Map<String, List<String>> selectedModifiers;
+
   final int quantity;
   final ItemDetailStatus status;
 
-  int get totalPrice => (item?.price ?? 0) * quantity;
+  /// Total price including base price and modifier deltas, times quantity.
+  int get totalPrice {
+    final basePrice = item?.price ?? 0;
+    var modifierDelta = 0;
+    for (final group in applicableModifierGroups) {
+      final selectedIds = selectedModifiers[group.id] ?? [];
+      for (final option in group.options) {
+        if (selectedIds.contains(option.id)) {
+          modifierDelta += option.priceDeltaCents;
+        }
+      }
+    }
+    return (basePrice + modifierDelta) * quantity;
+  }
+
+  /// Whether all required modifier groups have at least one selection.
+  bool get canAddToCart {
+    for (final group in applicableModifierGroups) {
+      if (group.required) {
+        final selectedIds = selectedModifiers[group.id] ?? [];
+        if (selectedIds.isEmpty) return false;
+      }
+    }
+    return true;
+  }
 }

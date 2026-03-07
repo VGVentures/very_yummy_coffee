@@ -15,8 +15,19 @@ const _testItem = LineItem(
   id: 'li-1',
   name: 'Espresso',
   price: 300,
-  options: 'Medium · Oat Milk',
   quantity: 2,
+  modifiers: [
+    SelectedModifier(
+      modifierGroupId: 'mg-size',
+      modifierGroupName: 'Size',
+      options: [SelectedOption(id: 'size-m', name: 'Medium')],
+    ),
+    SelectedModifier(
+      modifierGroupId: 'mg-milk',
+      modifierGroupName: 'Milk',
+      options: [SelectedOption(id: 'milk-oat', name: 'Oat Milk')],
+    ),
+  ],
 );
 
 const _testOrder = Order(

@@ -164,10 +164,10 @@ class _CartItemCard extends StatelessWidget {
                       color: context.colors.foreground,
                     ),
                   ),
-                  if (item.options.isNotEmpty) ...[
+                  if (item.modifiers.isNotEmpty) ...[
                     SizedBox(height: context.spacing.xs),
                     Text(
-                      item.options,
+                      item.modifierOptionNames.join(' · '),
                       style: context.typography.small.copyWith(
                         color: context.colors.mutedForeground,
                       ),

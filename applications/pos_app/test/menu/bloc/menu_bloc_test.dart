@@ -5,6 +5,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_pos_app/menu/bloc/menu_bloc.dart';
 
+class _FakeSelectedModifier extends Fake implements SelectedModifier {}
+
 class _MockMenuRepository extends Mock implements MenuRepository {}
 
 class _MockOrderRepository extends Mock implements OrderRepository {}
@@ -29,6 +31,10 @@ void main() {
     price: 600,
     available: false,
   );
+
+  setUpAll(() {
+    registerFallbackValue(_FakeSelectedModifier());
+  });
 
   group('MenuBloc', () {
     late MenuRepository menuRepository;
@@ -57,7 +63,13 @@ void main() {
         'emits [loading, success] when data arrives',
         build: () {
           when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
-            (_) => Stream.value((groups: [tGroup], items: [tItem])),
+            (_) => Stream.value(
+              (
+                groups: [tGroup],
+                items: [tItem],
+                modifierGroups: const <ModifierGroup>[],
+              ),
+            ),
           );
           return MenuBloc(
             menuRepository: menuRepository,
@@ -142,7 +154,6 @@ void main() {
             () => orderRepository.addItemToCurrentOrder(
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
-              options: any(named: 'options'),
               quantity: any(named: 'quantity'),
             ),
           ).thenAnswer((_) async {});
@@ -158,7 +169,6 @@ void main() {
             () => orderRepository.addItemToCurrentOrder(
               itemName: tItem.name,
               itemPrice: tItem.price,
-              options: '',
               quantity: 1,
             ),
           ).called(1);
@@ -175,7 +185,6 @@ void main() {
             () => orderRepository.addItemToCurrentOrder(
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
-              options: any(named: 'options'),
               quantity: any(named: 'quantity'),
             ),
           ).thenThrow(Exception('network error'));
@@ -208,11 +217,112 @@ void main() {
             () => orderRepository.addItemToCurrentOrder(
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
-              options: any(named: 'options'),
               quantity: any(named: 'quantity'),
             ),
           );
         },
+      );
+    });
+
+    group('MenuItemAdded with modifiers', () {
+      const tModifiers = [
+        SelectedModifier(
+          modifierGroupId: 'mg-size',
+          modifierGroupName: 'Size',
+          options: [SelectedOption(id: 'size-m', name: 'Medium')],
+        ),
+      ];
+
+      blocTest<MenuBloc, MenuState>(
+        'calls addItemToCurrentOrder with modifiers for available item',
+        build: () {
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          when(
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              quantity: any(named: 'quantity'),
+              modifiers: any(named: 'modifiers'),
+            ),
+          ).thenAnswer((_) async {});
+          return MenuBloc(
+            menuRepository: menuRepository,
+            orderRepository: orderRepository,
+          );
+        },
+        act: (bloc) => bloc.add(
+          const MenuItemAdded(tItem, modifiers: tModifiers),
+        ),
+        expect: () => <MenuState>[],
+        verify: (_) {
+          verify(
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: tItem.name,
+              itemPrice: tItem.price,
+              quantity: 1,
+              modifiers: tModifiers,
+            ),
+          ).called(1);
+        },
+      );
+
+      blocTest<MenuBloc, MenuState>(
+        'does not call addItemToCurrentOrder for unavailable item',
+        build: () {
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          return MenuBloc(
+            menuRepository: menuRepository,
+            orderRepository: orderRepository,
+          );
+        },
+        act: (bloc) => bloc.add(
+          const MenuItemAdded(
+            tUnavailableItem,
+            modifiers: tModifiers,
+          ),
+        ),
+        expect: () => <MenuState>[],
+        verify: (_) {
+          verifyNever(
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              quantity: any(named: 'quantity'),
+              modifiers: any(named: 'modifiers'),
+            ),
+          );
+        },
+      );
+
+      blocTest<MenuBloc, MenuState>(
+        'emits [failure] when addItemToCurrentOrder throws',
+        build: () {
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          when(
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              quantity: any(named: 'quantity'),
+              modifiers: any(named: 'modifiers'),
+            ),
+          ).thenThrow(Exception('network error'));
+          return MenuBloc(
+            menuRepository: menuRepository,
+            orderRepository: orderRepository,
+          );
+        },
+        act: (bloc) => bloc.add(
+          const MenuItemAdded(tItem, modifiers: tModifiers),
+        ),
+        expect: () => [
+          const MenuState(status: MenuStatus.failure),
+        ],
       );
     });
   });

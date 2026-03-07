@@ -59,7 +59,13 @@ void main() {
           when(
             () => menuRepository.getMenuGroupsAndItems(),
           ).thenAnswer(
-            (_) => Stream.value((groups: [group1], items: [item1])),
+            (_) => Stream.value(
+              (
+                groups: [group1],
+                items: [item1],
+                modifierGroups: const <ModifierGroup>[],
+              ),
+            ),
           );
           return MenuDisplayBloc(menuRepository: menuRepository);
         },

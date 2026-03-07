@@ -15,7 +15,6 @@ const _testItem = LineItem(
   id: 'li-1',
   name: 'Espresso',
   price: 300,
-  options: 'Small',
 );
 
 const _pendingOrder = Order(

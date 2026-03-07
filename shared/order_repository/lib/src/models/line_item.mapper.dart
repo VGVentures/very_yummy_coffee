@@ -15,6 +15,7 @@ class LineItemMapper extends ClassMapperBase<LineItem> {
   static LineItemMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = LineItemMapper._());
+      SelectedModifierMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -28,12 +29,12 @@ class LineItemMapper extends ClassMapperBase<LineItem> {
   static const Field<LineItem, String> _f$name = Field('name', _$name);
   static int _$price(LineItem v) => v.price;
   static const Field<LineItem, int> _f$price = Field('price', _$price);
-  static String _$options(LineItem v) => v.options;
-  static const Field<LineItem, String> _f$options = Field(
-    'options',
-    _$options,
+  static List<SelectedModifier> _$modifiers(LineItem v) => v.modifiers;
+  static const Field<LineItem, List<SelectedModifier>> _f$modifiers = Field(
+    'modifiers',
+    _$modifiers,
     opt: true,
-    def: '',
+    def: const [],
   );
   static int _$quantity(LineItem v) => v.quantity;
   static const Field<LineItem, int> _f$quantity = Field(
@@ -48,7 +49,7 @@ class LineItemMapper extends ClassMapperBase<LineItem> {
     #id: _f$id,
     #name: _f$name,
     #price: _f$price,
-    #options: _f$options,
+    #modifiers: _f$modifiers,
     #quantity: _f$quantity,
   };
 
@@ -57,7 +58,7 @@ class LineItemMapper extends ClassMapperBase<LineItem> {
       id: data.dec(_f$id),
       name: data.dec(_f$name),
       price: data.dec(_f$price),
-      options: data.dec(_f$options),
+      modifiers: data.dec(_f$modifiers),
       quantity: data.dec(_f$quantity),
     );
   }
@@ -119,11 +120,17 @@ extension LineItemValueCopy<$R, $Out> on ObjectCopyWith<$R, LineItem, $Out> {
 
 abstract class LineItemCopyWith<$R, $In extends LineItem, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<
+    $R,
+    SelectedModifier,
+    SelectedModifierCopyWith<$R, SelectedModifier, SelectedModifier>
+  >
+  get modifiers;
   $R call({
     String? id,
     String? name,
     int? price,
-    String? options,
+    List<SelectedModifier>? modifiers,
     int? quantity,
   });
   LineItemCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -138,18 +145,29 @@ class _LineItemCopyWithImpl<$R, $Out>
   late final ClassMapperBase<LineItem> $mapper =
       LineItemMapper.ensureInitialized();
   @override
+  ListCopyWith<
+    $R,
+    SelectedModifier,
+    SelectedModifierCopyWith<$R, SelectedModifier, SelectedModifier>
+  >
+  get modifiers => ListCopyWith(
+    $value.modifiers,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(modifiers: v),
+  );
+  @override
   $R call({
     String? id,
     String? name,
     int? price,
-    String? options,
+    List<SelectedModifier>? modifiers,
     int? quantity,
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (name != null) #name: name,
       if (price != null) #price: price,
-      if (options != null) #options: options,
+      if (modifiers != null) #modifiers: modifiers,
       if (quantity != null) #quantity: quantity,
     }),
   );
@@ -158,7 +176,7 @@ class _LineItemCopyWithImpl<$R, $Out>
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
     price: data.get(#price, or: $value.price),
-    options: data.get(#options, or: $value.options),
+    modifiers: data.get(#modifiers, or: $value.modifiers),
     quantity: data.get(#quantity, or: $value.quantity),
   );
 
