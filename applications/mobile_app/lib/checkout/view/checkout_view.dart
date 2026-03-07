@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:order_repository/order_repository.dart';
@@ -6,8 +7,21 @@ import 'package:very_yummy_coffee_mobile_app/checkout/checkout.dart';
 import 'package:very_yummy_coffee_mobile_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
-class CheckoutView extends StatelessWidget {
+class CheckoutView extends StatefulWidget {
   const CheckoutView({super.key});
+
+  @override
+  State<CheckoutView> createState() => _CheckoutViewState();
+}
+
+class _CheckoutViewState extends State<CheckoutView> {
+  final _nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +60,8 @@ class CheckoutView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       SizedBox(height: context.spacing.xl),
+                      _CustomerNameCard(controller: _nameController),
+                      SizedBox(height: context.spacing.xl),
                       const _FakePaymentCard(),
                       SizedBox(height: context.spacing.xl),
                       if (order != null) _OrderSummarySection(order: order),
@@ -58,6 +74,7 @@ class CheckoutView extends StatelessWidget {
                 _PlaceOrderButton(
                   order: order,
                   isSubmitting: state.status == CheckoutStatus.submitting,
+                  nameController: _nameController,
                 ),
               if (state.status == CheckoutStatus.failure && state.order != null)
                 Padding(
@@ -109,6 +126,59 @@ class _CheckoutHeader extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _CustomerNameCard extends StatelessWidget {
+  const _CustomerNameCard({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final typography = context.typography;
+    final spacing = context.spacing;
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: spacing.xl),
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: colors.card,
+          borderRadius: BorderRadius.circular(context.radius.large),
+          border: Border.all(color: colors.border),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(spacing.xl),
+          child: TextField(
+            controller: controller,
+            style: typography.body,
+            maxLength: 30,
+            maxLengthEnforcement: MaxLengthEnforcement.enforced,
+            decoration: InputDecoration(
+              hintText: context.l10n.checkoutCustomerNameHint,
+              hintStyle: typography.body.copyWith(
+                color: colors.mutedForeground,
+              ),
+              counterText: '',
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: spacing.md,
+                vertical: spacing.sm,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(context.radius.small),
+                borderSide: BorderSide(color: colors.border),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(context.radius.small),
+                borderSide: BorderSide(color: colors.border),
+              ),
+            ),
           ),
         ),
       ),
@@ -251,10 +321,12 @@ class _PlaceOrderButton extends StatelessWidget {
   const _PlaceOrderButton({
     required this.order,
     required this.isSubmitting,
+    required this.nameController,
   });
 
   final Order order;
   final bool isSubmitting;
+  final TextEditingController nameController;
 
   @override
   Widget build(BuildContext context) {
@@ -265,8 +337,9 @@ class _PlaceOrderButton extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: context.spacing.xl),
         child: BaseButton(
           label: context.l10n.checkoutPlaceOrder(total),
-          onPressed: () =>
-              context.read<CheckoutBloc>().add(const CheckoutConfirmed()),
+          onPressed: () => context.read<CheckoutBloc>().add(
+            CheckoutConfirmed(customerName: nameController.text),
+          ),
           isLoading: isSubmitting,
         ),
       ),

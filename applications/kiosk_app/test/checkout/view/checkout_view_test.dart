@@ -77,6 +77,21 @@ void main() {
       );
     });
 
+    testWidgets('renders customer name field with placeholder', (
+      tester,
+    ) async {
+      when(() => checkoutBloc.state).thenReturn(
+        const CheckoutState(status: CheckoutStatus.idle, order: order),
+      );
+
+      await tester.pumpApp(buildSubject(), goRouter: goRouter);
+
+      expect(
+        find.text('Enter your name (optional)'),
+        findsOneWidget,
+      );
+    });
+
     testWidgets('navigates to confirmation on success', (tester) async {
       when(() => checkoutBloc.state).thenReturn(
         const CheckoutState(status: CheckoutStatus.idle, order: order),

@@ -90,6 +90,16 @@ class _SuccessPanel extends StatelessWidget {
                   color: colors.primaryForeground.withValues(alpha: 0.7),
                 ),
               ),
+              if (order.customerName case final name? when name.isNotEmpty)
+                Padding(
+                  padding: EdgeInsets.only(top: spacing.xs),
+                  child: Text(
+                    name,
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      color: colors.primaryForeground.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ),
               SizedBox(height: spacing.md),
               Text(
                 l10n.orderCompleteDetails,

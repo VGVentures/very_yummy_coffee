@@ -291,6 +291,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Order Cancelled'**
   String get orderCompleteCancelledLabel;
+
+  /// Placeholder hint for the customer name text field on the checkout screen
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name (optional)'**
+  String get checkoutCustomerNameHint;
+
+  /// Personalized title on the order complete screen when customer name is present
+  ///
+  /// In en, this message translates to:
+  /// **'Thanks, {name}!'**
+  String kioskOrderPlacedTitlePersonalized(String name);
 }
 
 class _AppLocalizationsDelegate

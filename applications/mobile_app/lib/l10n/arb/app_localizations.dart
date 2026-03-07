@@ -309,6 +309,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 item} other{{count} items}}'**
   String homeOrderItemCount(int count);
+
+  /// Placeholder hint for the customer name text field on the checkout screen
+  ///
+  /// In en, this message translates to:
+  /// **'Your name (optional)'**
+  String get checkoutCustomerNameHint;
 }
 
 class _AppLocalizationsDelegate

@@ -173,5 +173,9 @@
         "type": "int"
       }
     }
+  },
+  "checkoutCustomerNameHint": "Your name (optional)",
+  "@checkoutCustomerNameHint": {
+    "description": "Placeholder hint for the customer name text field on the checkout screen"
   }
 }

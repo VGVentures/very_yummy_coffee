@@ -70,6 +70,45 @@ void main() {
       expect(find.text('Done'), findsOneWidget);
     });
 
+    testWidgets('renders personalized title when customer name is present', (
+      tester,
+    ) async {
+      setKioskViewport(tester);
+      when(() => orderCompleteBloc.state).thenReturn(
+        const OrderCompleteState(
+          status: OrderCompleteStatus.success,
+          order: Order(
+            id: 'order-1',
+            items: [LineItem(id: 'a', name: 'Latte', price: 500)],
+            status: OrderStatus.submitted,
+            customerName: 'Marcus',
+          ),
+        ),
+      );
+
+      await tester.pumpApp(buildSubject(), goRouter: goRouter);
+
+      expect(find.text('Thanks, Marcus!'), findsOneWidget);
+      expect(find.text('Order Placed!'), findsNothing);
+    });
+
+    testWidgets('renders generic title when customer name is null', (
+      tester,
+    ) async {
+      setKioskViewport(tester);
+      when(() => orderCompleteBloc.state).thenReturn(
+        const OrderCompleteState(
+          status: OrderCompleteStatus.success,
+          order: order,
+        ),
+      );
+
+      await tester.pumpApp(buildSubject(), goRouter: goRouter);
+
+      expect(find.text('Order Placed!'), findsOneWidget);
+      expect(find.textContaining('Thanks,'), findsNothing);
+    });
+
     testWidgets('renders order tracker on success', (tester) async {
       setKioskViewport(tester);
       when(() => orderCompleteBloc.state).thenReturn(

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -145,6 +147,119 @@ void main() {
         ],
         verify: (_) {
           verify(() => orderRepository.clearCurrentOrder()).called(1);
+        },
+      );
+    });
+
+    group('OrderTicketCustomerNameChanged', () {
+      blocTest<OrderTicketBloc, OrderTicketState>(
+        'calls updateNameOnCurrentOrder after 500ms debounce',
+        build: () {
+          when(() => orderRepository.currentOrderId).thenReturn(tOrderId);
+          when(
+            () => orderRepository.updateNameOnCurrentOrder(any()),
+          ).thenAnswer((_) async {});
+          return OrderTicketBloc(orderRepository: orderRepository);
+        },
+        seed: () => const OrderTicketState(
+          status: OrderTicketStatus.idle,
+          order: tOrder,
+        ),
+        act: (bloc) async {
+          bloc.add(const OrderTicketCustomerNameChanged('Marcus'));
+          await Future<void>.delayed(const Duration(milliseconds: 600));
+        },
+        expect: () => <OrderTicketState>[],
+        verify: (_) {
+          verify(
+            () => orderRepository.updateNameOnCurrentOrder('Marcus'),
+          ).called(1);
+        },
+      );
+
+      blocTest<OrderTicketBloc, OrderTicketState>(
+        'does not call updateNameOnCurrentOrder when currentOrderId is null',
+        build: () {
+          when(() => orderRepository.currentOrderId).thenReturn(null);
+          return OrderTicketBloc(orderRepository: orderRepository);
+        },
+        seed: () => const OrderTicketState(status: OrderTicketStatus.idle),
+        act: (bloc) async {
+          bloc.add(const OrderTicketCustomerNameChanged('Marcus'));
+          await Future<void>.delayed(const Duration(milliseconds: 600));
+        },
+        expect: () => <OrderTicketState>[],
+        verify: (_) {
+          verifyNever(
+            () => orderRepository.updateNameOnCurrentOrder(any()),
+          );
+        },
+      );
+    });
+
+    group('OrderTicketChargeRequested with pending name', () {
+      blocTest<OrderTicketBloc, OrderTicketState>(
+        'flushes pending name before submitting',
+        build: () {
+          when(() => orderRepository.currentOrderId).thenReturn(tOrderId);
+          when(() => orderRepository.submitCurrentOrder()).thenReturn(null);
+          when(
+            () => orderRepository.updateNameOnCurrentOrder(any()),
+          ).thenAnswer((_) async {});
+          return OrderTicketBloc(orderRepository: orderRepository);
+        },
+        seed: () => const OrderTicketState(
+          status: OrderTicketStatus.idle,
+          order: tOrder,
+        ),
+        act: (bloc) {
+          // Type a name then immediately charge (before debounce fires)
+          bloc
+            ..add(const OrderTicketCustomerNameChanged('Marcus'))
+            ..add(const OrderTicketChargeRequested());
+        },
+        expect: () => [
+          const OrderTicketState(
+            status: OrderTicketStatus.charging,
+            order: tOrder,
+          ),
+          const OrderTicketState(
+            status: OrderTicketStatus.submitted,
+            order: tOrder,
+            submittedOrderId: tOrderId,
+          ),
+        ],
+        verify: (_) {
+          verify(
+            () => orderRepository.updateNameOnCurrentOrder('Marcus'),
+          ).called(1);
+          verify(() => orderRepository.submitCurrentOrder()).called(1);
+        },
+      );
+    });
+
+    group('OrderTicketClearRequested cancels debounce', () {
+      blocTest<OrderTicketBloc, OrderTicketState>(
+        'cancels debounce timer on clear',
+        build: () {
+          when(() => orderRepository.currentOrderId).thenReturn(tOrderId);
+          when(() => orderRepository.clearCurrentOrder()).thenReturn(null);
+          return OrderTicketBloc(orderRepository: orderRepository);
+        },
+        seed: () => const OrderTicketState(
+          status: OrderTicketStatus.idle,
+          order: tOrder,
+        ),
+        act: (bloc) async {
+          bloc
+            ..add(const OrderTicketCustomerNameChanged('Marcus'))
+            ..add(const OrderTicketClearRequested());
+          await Future<void>.delayed(const Duration(milliseconds: 600));
+        },
+        verify: (_) {
+          verifyNever(
+            () => orderRepository.updateNameOnCurrentOrder(any()),
+          );
         },
       );
     });

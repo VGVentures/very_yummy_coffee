@@ -160,5 +160,13 @@
   "modifierSheetConfirm": "Confirm",
   "@modifierSheetConfirm": {
     "description": "Confirm button on the modifier selection bottom sheet"
+  },
+  "orderTicketCustomerNameHint": "Customer name",
+  "@orderTicketCustomerNameHint": {
+    "description": "Placeholder hint for the customer name text field on the order ticket"
+  },
+  "ordersColumnCustomer": "Customer",
+  "@ordersColumnCustomer": {
+    "description": "Column header for customer name in the history table"
   }
 }

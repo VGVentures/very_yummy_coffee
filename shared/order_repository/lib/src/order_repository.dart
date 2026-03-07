@@ -100,6 +100,21 @@ class OrderRepository {
     });
   }
 
+  /// Updates the customer name on the current order.
+  ///
+  /// Updates the customer name on the current order.
+  ///
+  /// No-op if [currentOrderId] is null. The name is trimmed; if empty after
+  /// trimming, `null` is sent to clear the name.
+  Future<void> updateNameOnCurrentOrder(String customerName) async {
+    if (_currentOrderId == null) return;
+    final trimmed = customerName.trim();
+    _wsRpcClient.sendAction('updateNameOnOrder', {
+      'orderId': _currentOrderId,
+      'customerName': trimmed.isEmpty ? null : trimmed,
+    });
+  }
+
   /// Submits the current order on the server (pending → submitted).
   ///
   /// Sends a `submitOrder` WS action and clears [currentOrderId].

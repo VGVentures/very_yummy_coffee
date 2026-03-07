@@ -261,6 +261,79 @@ void main() {
       });
     });
 
+    group('updateNameOnCurrentOrder', () {
+      test('is a no-op when currentOrderId is null', () async {
+        orderRepository = OrderRepository(wsRpcClient: wsRpcClient);
+
+        await orderRepository.updateNameOnCurrentOrder('Marcus');
+
+        verifyNever(
+          () => wsRpcClient.sendAction(any(), any()),
+        );
+      });
+
+      test('sets name on existing current order', () async {
+        orderRepository = OrderRepository(
+          wsRpcClient: wsRpcClient,
+          currentOrderId: 'order-abc',
+        );
+
+        await orderRepository.updateNameOnCurrentOrder('Marcus');
+
+        verifyNever(
+          () => wsRpcClient.sendAction('createOrder', any()),
+        );
+        final captured =
+            verify(
+                  () => wsRpcClient.sendAction(
+                    'updateNameOnOrder',
+                    captureAny(),
+                  ),
+                ).captured.single
+                as Map<String, dynamic>;
+        expect(captured['orderId'], 'order-abc');
+        expect(captured['customerName'], 'Marcus');
+      });
+
+      test('trims whitespace and sends trimmed name', () async {
+        orderRepository = OrderRepository(
+          wsRpcClient: wsRpcClient,
+          currentOrderId: 'order-abc',
+        );
+
+        await orderRepository.updateNameOnCurrentOrder('  Marcus  ');
+
+        final captured =
+            verify(
+                  () => wsRpcClient.sendAction(
+                    'updateNameOnOrder',
+                    captureAny(),
+                  ),
+                ).captured.single
+                as Map<String, dynamic>;
+        expect(captured['customerName'], 'Marcus');
+      });
+
+      test('sends null when name is whitespace-only', () async {
+        orderRepository = OrderRepository(
+          wsRpcClient: wsRpcClient,
+          currentOrderId: 'order-abc',
+        );
+
+        await orderRepository.updateNameOnCurrentOrder('   ');
+
+        final captured =
+            verify(
+                  () => wsRpcClient.sendAction(
+                    'updateNameOnOrder',
+                    captureAny(),
+                  ),
+                ).captured.single
+                as Map<String, dynamic>;
+        expect(captured['customerName'], isNull);
+      });
+    });
+
     group('submitCurrentOrder', () {
       test(
         'sends submitOrder action with currentOrderId and clears it',
