@@ -25,7 +25,7 @@ class OrderTicketView extends StatelessWidget {
             prev.status != OrderTicketStatus.submitted,
         listener: (context, state) {
           final orderId = state.submittedOrderId!;
-          context.go('/pos-order-complete/$orderId');
+          context.go('/order-complete/$orderId');
         },
         child: const OrderTicket(),
       ),
