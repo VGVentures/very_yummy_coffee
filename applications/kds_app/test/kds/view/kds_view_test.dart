@@ -15,7 +15,6 @@ const _testItem = LineItem(
   id: 'li-1',
   name: 'Latte',
   price: 450,
-  options: 'Large',
 );
 
 final _submittedOrder = Order(

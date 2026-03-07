@@ -10,7 +10,6 @@ const _testItem = LineItem(
   id: 'li-1',
   name: 'Latte',
   price: 450,
-  options: 'Large',
 );
 
 final _submittedAt = DateTime(2026, 3, 1, 10);

@@ -321,6 +321,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Pending'**
   String get orderStatusPending;
+
+  /// Confirm button on the modifier selection bottom sheet
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get modifierSheetConfirm;
 }
 
 class _AppLocalizationsDelegate

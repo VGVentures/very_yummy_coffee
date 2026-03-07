@@ -17,6 +17,7 @@ class MenuStateMapper extends ClassMapperBase<MenuState> {
       MapperContainer.globals.use(_instance = MenuStateMapper._());
       MenuGroupMapper.ensureInitialized();
       MenuItemMapper.ensureInitialized();
+      ModifierGroupMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -45,6 +46,13 @@ class MenuStateMapper extends ClassMapperBase<MenuState> {
     opt: true,
     def: const [],
   );
+  static List<ModifierGroup> _$modifierGroups(MenuState v) => v.modifierGroups;
+  static const Field<MenuState, List<ModifierGroup>> _f$modifierGroups = Field(
+    'modifierGroups',
+    _$modifierGroups,
+    opt: true,
+    def: const [],
+  );
   static String? _$selectedGroupId(MenuState v) => v.selectedGroupId;
   static const Field<MenuState, String> _f$selectedGroupId = Field(
     'selectedGroupId',
@@ -57,6 +65,7 @@ class MenuStateMapper extends ClassMapperBase<MenuState> {
     #status: _f$status,
     #groups: _f$groups,
     #allItems: _f$allItems,
+    #modifierGroups: _f$modifierGroups,
     #selectedGroupId: _f$selectedGroupId,
   };
 
@@ -65,6 +74,7 @@ class MenuStateMapper extends ClassMapperBase<MenuState> {
       status: data.dec(_f$status),
       groups: data.dec(_f$groups),
       allItems: data.dec(_f$allItems),
+      modifierGroups: data.dec(_f$modifierGroups),
       selectedGroupId: data.dec(_f$selectedGroupId),
     );
   }
@@ -132,10 +142,17 @@ abstract class MenuStateCopyWith<$R, $In extends MenuState, $Out>
   get groups;
   ListCopyWith<$R, MenuItem, MenuItemCopyWith<$R, MenuItem, MenuItem>>
   get allItems;
+  ListCopyWith<
+    $R,
+    ModifierGroup,
+    ModifierGroupCopyWith<$R, ModifierGroup, ModifierGroup>
+  >
+  get modifierGroups;
   $R call({
     MenuStatus? status,
     List<MenuGroup>? groups,
     List<MenuItem>? allItems,
+    List<ModifierGroup>? modifierGroups,
     String? selectedGroupId,
   });
   MenuStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -164,16 +181,29 @@ class _MenuStateCopyWithImpl<$R, $Out>
     (v) => call(allItems: v),
   );
   @override
+  ListCopyWith<
+    $R,
+    ModifierGroup,
+    ModifierGroupCopyWith<$R, ModifierGroup, ModifierGroup>
+  >
+  get modifierGroups => ListCopyWith(
+    $value.modifierGroups,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(modifierGroups: v),
+  );
+  @override
   $R call({
     MenuStatus? status,
     List<MenuGroup>? groups,
     List<MenuItem>? allItems,
+    List<ModifierGroup>? modifierGroups,
     Object? selectedGroupId = $none,
   }) => $apply(
     FieldCopyWithData({
       if (status != null) #status: status,
       if (groups != null) #groups: groups,
       if (allItems != null) #allItems: allItems,
+      if (modifierGroups != null) #modifierGroups: modifierGroups,
       if (selectedGroupId != $none) #selectedGroupId: selectedGroupId,
     }),
   );
@@ -182,6 +212,7 @@ class _MenuStateCopyWithImpl<$R, $Out>
     status: data.get(#status, or: $value.status),
     groups: data.get(#groups, or: $value.groups),
     allItems: data.get(#allItems, or: $value.allItems),
+    modifierGroups: data.get(#modifierGroups, or: $value.modifierGroups),
     selectedGroupId: data.get(#selectedGroupId, or: $value.selectedGroupId),
   );
 

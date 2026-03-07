@@ -34,6 +34,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         status: MenuStatus.success,
         groups: data.groups,
         allItems: data.items,
+        modifierGroups: data.modifierGroups,
       ),
       onError: (_, _) => state.copyWith(status: MenuStatus.failure),
     );
@@ -55,8 +56,8 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
       await _orderRepository.addItemToCurrentOrder(
         itemName: event.item.name,
         itemPrice: event.item.price,
-        options: '',
         quantity: 1,
+        modifiers: event.modifiers,
       );
     } on Exception catch (_) {
       emit(state.copyWith(status: MenuStatus.failure));

@@ -15,12 +15,35 @@ void main() {
     late OrderRepository orderRepository;
     const groupId = 'group-1';
     const itemId = 'item-1';
+    const testGroup = MenuGroup(
+      id: groupId,
+      name: 'Coffee',
+      description: 'Hot beverages',
+      color: 0xFFC96B45,
+    );
     const item = MenuItem(
       id: itemId,
       name: 'Latte',
       price: 500,
       groupId: groupId,
     );
+    final testModifierGroups = [
+      const ModifierGroup(
+        id: 'mg-size',
+        name: 'Size',
+        appliesToGroupIds: [groupId],
+        required: true,
+        defaultOptionId: 'size-tall',
+        options: [
+          ModifierOption(id: 'size-tall', name: 'Tall'),
+          ModifierOption(
+            id: 'size-grande',
+            name: 'Grande',
+            priceDeltaCents: 50,
+          ),
+        ],
+      ),
+    ];
 
     setUp(() {
       menuRepository = _MockMenuRepository();
@@ -29,7 +52,7 @@ void main() {
 
     test('initial state is ItemDetailState', () {
       when(
-        () => menuRepository.getMenuItem(any(), any()),
+        () => menuRepository.getMenuGroupsAndItems(),
       ).thenAnswer((_) => const Stream.empty());
       expect(
         ItemDetailBloc(
@@ -45,8 +68,14 @@ void main() {
         'emits idle state with item on success',
         build: () {
           when(
-            () => menuRepository.getMenuItem(groupId, itemId),
-          ).thenAnswer((_) => Stream.value(item));
+            () => menuRepository.getMenuGroupsAndItems(),
+          ).thenAnswer(
+            (_) => Stream.value((
+              groups: [testGroup],
+              items: [item],
+              modifierGroups: testModifierGroups,
+            )),
+          );
           return ItemDetailBloc(
             menuRepository: menuRepository,
             orderRepository: orderRepository,
@@ -56,7 +85,14 @@ void main() {
           const ItemDetailSubscriptionRequested(groupId, itemId),
         ),
         expect: () => [
-          const ItemDetailState(item: item, status: ItemDetailStatus.idle),
+          ItemDetailState(
+            item: item,
+            status: ItemDetailStatus.idle,
+            applicableModifierGroups: testModifierGroups,
+            selectedModifiers: const {
+              'mg-size': ['size-tall'],
+            },
+          ),
         ],
       );
 
@@ -64,7 +100,7 @@ void main() {
         'emits failure on error',
         build: () {
           when(
-            () => menuRepository.getMenuItem(groupId, itemId),
+            () => menuRepository.getMenuGroupsAndItems(),
           ).thenAnswer((_) => Stream.error(Exception('error')));
           return ItemDetailBloc(
             menuRepository: menuRepository,
@@ -80,109 +116,40 @@ void main() {
       );
     });
 
-    group('ItemDetailSizeSelected', () {
+    group('ItemDetailModifierOptionToggled', () {
       blocTest<ItemDetailBloc, ItemDetailState>(
-        'emits state with selected size',
+        'emits state with updated modifier selection',
         build: () {
           when(
-            () => menuRepository.getMenuItem(any(), any()),
+            () => menuRepository.getMenuGroupsAndItems(),
           ).thenAnswer((_) => const Stream.empty());
           return ItemDetailBloc(
             menuRepository: menuRepository,
             orderRepository: orderRepository,
           );
         },
-        seed: () => const ItemDetailState(
+        seed: () => ItemDetailState(
           item: item,
           status: ItemDetailStatus.idle,
+          applicableModifierGroups: testModifierGroups,
+          selectedModifiers: const {
+            'mg-size': ['size-tall'],
+          },
         ),
-        act: (bloc) => bloc.add(const ItemDetailSizeSelected(DrinkSize.large)),
-        expect: () => [
-          const ItemDetailState(
-            item: item,
-            status: ItemDetailStatus.idle,
-            selectedSize: DrinkSize.large,
+        act: (bloc) => bloc.add(
+          const ItemDetailModifierOptionToggled(
+            groupId: 'mg-size',
+            optionId: 'size-grande',
           ),
-        ],
-      );
-    });
-
-    group('ItemDetailMilkSelected', () {
-      blocTest<ItemDetailBloc, ItemDetailState>(
-        'emits state with selected milk',
-        build: () {
-          when(
-            () => menuRepository.getMenuItem(any(), any()),
-          ).thenAnswer((_) => const Stream.empty());
-          return ItemDetailBloc(
-            menuRepository: menuRepository,
-            orderRepository: orderRepository,
-          );
-        },
-        seed: () => const ItemDetailState(
-          item: item,
-          status: ItemDetailStatus.idle,
         ),
-        act: (bloc) => bloc.add(const ItemDetailMilkSelected(MilkOption.oat)),
         expect: () => [
-          const ItemDetailState(
+          ItemDetailState(
             item: item,
             status: ItemDetailStatus.idle,
-            selectedMilk: MilkOption.oat,
-          ),
-        ],
-      );
-    });
-
-    group('ItemDetailExtraToggled', () {
-      blocTest<ItemDetailBloc, ItemDetailState>(
-        'adds extra when not already selected',
-        build: () {
-          when(
-            () => menuRepository.getMenuItem(any(), any()),
-          ).thenAnswer((_) => const Stream.empty());
-          return ItemDetailBloc(
-            menuRepository: menuRepository,
-            orderRepository: orderRepository,
-          );
-        },
-        seed: () => const ItemDetailState(
-          item: item,
-          status: ItemDetailStatus.idle,
-        ),
-        act: (bloc) =>
-            bloc.add(const ItemDetailExtraToggled(DrinkExtra.extraShot)),
-        expect: () => [
-          const ItemDetailState(
-            item: item,
-            status: ItemDetailStatus.idle,
-            selectedExtras: [DrinkExtra.extraShot],
-          ),
-        ],
-      );
-
-      blocTest<ItemDetailBloc, ItemDetailState>(
-        'removes extra when already selected',
-        build: () {
-          when(
-            () => menuRepository.getMenuItem(any(), any()),
-          ).thenAnswer((_) => const Stream.empty());
-          return ItemDetailBloc(
-            menuRepository: menuRepository,
-            orderRepository: orderRepository,
-          );
-        },
-        seed: () => const ItemDetailState(
-          item: item,
-          status: ItemDetailStatus.idle,
-          selectedExtras: [DrinkExtra.extraShot],
-        ),
-        act: (bloc) =>
-            bloc.add(const ItemDetailExtraToggled(DrinkExtra.extraShot)),
-        expect: () => [
-          const ItemDetailState(
-            item: item,
-            status: ItemDetailStatus.idle,
+            applicableModifierGroups: testModifierGroups,
+            selectedModifiers: const {
+              'mg-size': ['size-grande'],
+            },
           ),
         ],
       );
@@ -193,7 +160,7 @@ void main() {
         'increments quantity',
         build: () {
           when(
-            () => menuRepository.getMenuItem(any(), any()),
+            () => menuRepository.getMenuGroupsAndItems(),
           ).thenAnswer((_) => const Stream.empty());
           return ItemDetailBloc(
             menuRepository: menuRepository,
@@ -220,7 +187,7 @@ void main() {
         'decrements quantity (min 1)',
         build: () {
           when(
-            () => menuRepository.getMenuItem(any(), any()),
+            () => menuRepository.getMenuGroupsAndItems(),
           ).thenAnswer((_) => const Stream.empty());
           return ItemDetailBloc(
             menuRepository: menuRepository,
@@ -241,14 +208,14 @@ void main() {
         'emits [adding, added] on success',
         build: () {
           when(
-            () => menuRepository.getMenuItem(any(), any()),
+            () => menuRepository.getMenuGroupsAndItems(),
           ).thenAnswer((_) => const Stream.empty());
           when(
             () => orderRepository.addItemToCurrentOrder(
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
-              options: any(named: 'options'),
+              modifiers: any(named: 'modifiers'),
             ),
           ).thenAnswer((_) async {});
           return ItemDetailBloc(
@@ -256,19 +223,31 @@ void main() {
             orderRepository: orderRepository,
           );
         },
-        seed: () => const ItemDetailState(
+        seed: () => ItemDetailState(
           item: item,
           status: ItemDetailStatus.idle,
+          applicableModifierGroups: testModifierGroups,
+          selectedModifiers: const {
+            'mg-size': ['size-tall'],
+          },
         ),
         act: (bloc) => bloc.add(const ItemDetailAddToCartRequested()),
         expect: () => [
-          const ItemDetailState(
+          ItemDetailState(
             item: item,
             status: ItemDetailStatus.adding,
+            applicableModifierGroups: testModifierGroups,
+            selectedModifiers: const {
+              'mg-size': ['size-tall'],
+            },
           ),
-          const ItemDetailState(
+          ItemDetailState(
             item: item,
             status: ItemDetailStatus.added,
+            applicableModifierGroups: testModifierGroups,
+            selectedModifiers: const {
+              'mg-size': ['size-tall'],
+            },
           ),
         ],
       );
@@ -277,7 +256,7 @@ void main() {
         'emits failure when item is null',
         build: () {
           when(
-            () => menuRepository.getMenuItem(any(), any()),
+            () => menuRepository.getMenuGroupsAndItems(),
           ).thenAnswer((_) => const Stream.empty());
           return ItemDetailBloc(
             menuRepository: menuRepository,
@@ -294,14 +273,14 @@ void main() {
         'emits [adding, failure] on error',
         build: () {
           when(
-            () => menuRepository.getMenuItem(any(), any()),
+            () => menuRepository.getMenuGroupsAndItems(),
           ).thenAnswer((_) => const Stream.empty());
           when(
             () => orderRepository.addItemToCurrentOrder(
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
-              options: any(named: 'options'),
+              modifiers: any(named: 'modifiers'),
             ),
           ).thenThrow(Exception('error'));
           return ItemDetailBloc(
@@ -309,19 +288,31 @@ void main() {
             orderRepository: orderRepository,
           );
         },
-        seed: () => const ItemDetailState(
+        seed: () => ItemDetailState(
           item: item,
           status: ItemDetailStatus.idle,
+          applicableModifierGroups: testModifierGroups,
+          selectedModifiers: const {
+            'mg-size': ['size-tall'],
+          },
         ),
         act: (bloc) => bloc.add(const ItemDetailAddToCartRequested()),
         expect: () => [
-          const ItemDetailState(
+          ItemDetailState(
             item: item,
             status: ItemDetailStatus.adding,
+            applicableModifierGroups: testModifierGroups,
+            selectedModifiers: const {
+              'mg-size': ['size-tall'],
+            },
           ),
-          const ItemDetailState(
+          ItemDetailState(
             item: item,
             status: ItemDetailStatus.failure,
+            applicableModifierGroups: testModifierGroups,
+            selectedModifiers: const {
+              'mg-size': ['size-tall'],
+            },
           ),
         ],
       );

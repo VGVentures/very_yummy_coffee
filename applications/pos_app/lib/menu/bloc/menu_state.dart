@@ -8,12 +8,14 @@ class MenuState with MenuStateMappable {
     this.status = MenuStatus.loading,
     this.groups = const [],
     this.allItems = const [],
+    this.modifierGroups = const [],
     this.selectedGroupId,
   });
 
   final MenuStatus status;
   final List<MenuGroup> groups;
   final List<MenuItem> allItems;
+  final List<ModifierGroup> modifierGroups;
   final String? selectedGroupId;
 
   List<MenuItem> get visibleItems => selectedGroupId == null

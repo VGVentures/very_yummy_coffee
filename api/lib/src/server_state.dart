@@ -13,6 +13,7 @@ import 'package:very_yummy_coffee_models/very_yummy_coffee_models.dart';
 class ServerState {
   List<Map<String, dynamic>> _menuGroups = [];
   List<Map<String, dynamic>> _menuItems = [];
+  List<Map<String, dynamic>> _modifierGroups = [];
 
   // orderId -> order map (raw JSON-compatible maps)
   final Map<String, Map<String, dynamic>> _orders = {};
@@ -35,6 +36,12 @@ class ServerState {
       MenuItemMapper.fromMap(map);
       return map;
     }).toList();
+    _modifierGroups = (fixture['modifierGroups'] as List<dynamic>?)?.map((e) {
+          final map = e as Map<String, dynamic>;
+          ModifierGroupMapper.fromMap(map);
+          return map;
+        }).toList() ??
+        [];
   }
 
   /// Adds [sink] as a subscriber to [topic].
@@ -71,7 +78,11 @@ class ServerState {
   /// Returns a snapshot of the current state for [topic].
   Map<String, dynamic> snapshotForTopic(String topic) {
     if (topic == 'menu') {
-      return {'groups': _menuGroups, 'items': _menuItems};
+      return {
+        'groups': _menuGroups,
+        'items': _menuItems,
+        'modifierGroups': _modifierGroups,
+      };
     }
     if (topic == 'orders') {
       return {'orders': _orders.values.toList()};
@@ -116,7 +127,8 @@ class ServerState {
                   'id': payload['lineItemId'] as String,
                   'name': payload['itemName'] as String,
                   'price': payload['itemPrice'] as int,
-                  'options': payload['options'] as String? ?? '',
+                  'modifiers':
+                      payload['modifiers'] as List<dynamic>? ?? const [],
                   'quantity': payload['quantity'] as int? ?? 1,
                 });
           _orders[orderId] = <String, dynamic>{...order, 'items': items};

@@ -121,10 +121,10 @@ class _CartItemRow extends StatelessWidget {
                       color: colors.foreground,
                     ),
                   ),
-                  if (item.options.isNotEmpty) ...[
+                  if (item.modifiers.isNotEmpty) ...[
                     SizedBox(height: spacing.xs),
                     Text(
-                      item.options,
+                      item.modifierOptionNames.join(' · '),
                       style: typography.small.copyWith(
                         color: colors.mutedForeground,
                       ),

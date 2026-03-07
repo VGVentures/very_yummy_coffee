@@ -106,24 +106,6 @@ abstract class AppLocalizations {
   /// **'Something went wrong'**
   String get errorSomethingWentWrong;
 
-  /// Label for the size customization section on the item detail page
-  ///
-  /// In en, this message translates to:
-  /// **'Size'**
-  String get itemDetailSizeLabel;
-
-  /// Label for the milk customization section on the item detail page
-  ///
-  /// In en, this message translates to:
-  /// **'Milk'**
-  String get itemDetailMilkLabel;
-
-  /// Label for the extras customization section on the item detail page
-  ///
-  /// In en, this message translates to:
-  /// **'Extras'**
-  String get itemDetailExtrasLabel;
-
   /// Label for the add-to-cart button on the item detail page
   ///
   /// In en, this message translates to:

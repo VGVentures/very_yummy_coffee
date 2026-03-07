@@ -145,11 +145,33 @@ class _ItemCustomPanel extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _SizeSection(selectedSize: state.selectedSize),
-                SizedBox(height: spacing.xl),
-                _MilkSection(selectedMilk: state.selectedMilk),
-                SizedBox(height: spacing.xl),
-                _ExtrasSection(selectedExtras: state.selectedExtras),
+                for (final group in state.applicableModifierGroups) ...[
+                  ModifierGroupSelector(
+                    groupName: group.name,
+                    isRequired: group.required,
+                    isMultiSelect: group.selectionMode == SelectionMode.multi,
+                    options: group.options
+                        .map(
+                          (o) => ModifierOptionData(
+                            name: o.name,
+                            priceDeltaCents: o.priceDeltaCents,
+                            isSelected:
+                                (state.selectedModifiers[group.id] ?? const [])
+                                    .contains(o.id),
+                          ),
+                        )
+                        .toList(),
+                    onOptionToggled: (index) {
+                      context.read<ItemDetailBloc>().add(
+                        ItemDetailModifierOptionToggled(
+                          groupId: group.id,
+                          optionId: group.options[index].id,
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: spacing.xl),
+                ],
               ],
             ),
           ),
@@ -169,257 +191,6 @@ class _ItemCustomPanel extends StatelessWidget {
               ),
             ),
           ),
-      ],
-    );
-  }
-}
-
-class _SizeSection extends StatelessWidget {
-  const _SizeSection({required this.selectedSize});
-
-  final DrinkSize selectedSize;
-
-  @override
-  Widget build(BuildContext context) {
-    return _CustomizationCard(
-      label: context.l10n.itemDetailSizeLabel,
-      child: Row(
-        children: DrinkSize.values.map((size) {
-          final isSelected = size == selectedSize;
-          return Expanded(
-            child: Padding(
-              padding: EdgeInsets.only(
-                right: size != DrinkSize.values.last ? context.spacing.sm : 0,
-              ),
-              child: _SizeOption(size: size, isSelected: isSelected),
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class _SizeOption extends StatelessWidget {
-  const _SizeOption({required this.size, required this.isSelected});
-
-  final DrinkSize size;
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final typography = context.typography;
-    final spacing = context.spacing;
-
-    return GestureDetector(
-      onTap: () =>
-          context.read<ItemDetailBloc>().add(ItemDetailSizeSelected(size)),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: EdgeInsets.symmetric(vertical: spacing.lg),
-        decoration: BoxDecoration(
-          color: isSelected ? colors.primary : colors.secondary,
-          borderRadius: BorderRadius.circular(context.radius.medium),
-          border: isSelected ? null : Border.all(color: colors.border),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              size.shortLabel,
-              style: typography.subtitle.copyWith(
-                color: isSelected
-                    ? colors.primaryForeground
-                    : colors.mutedForeground,
-              ),
-            ),
-            SizedBox(height: spacing.xs),
-            Text(
-              size.label,
-              style: typography.small.copyWith(
-                color: isSelected
-                    ? colors.primaryForeground
-                    : colors.mutedForeground,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _MilkSection extends StatelessWidget {
-  const _MilkSection({required this.selectedMilk});
-
-  final MilkOption selectedMilk;
-
-  @override
-  Widget build(BuildContext context) {
-    return _CustomizationCard(
-      label: context.l10n.itemDetailMilkLabel,
-      child: Column(
-        children: MilkOption.values.map((milk) {
-          final isSelected = milk == selectedMilk;
-          return Padding(
-            padding: EdgeInsets.only(
-              bottom: milk != MilkOption.values.last ? context.spacing.sm : 0,
-            ),
-            child: _MilkOption(milk: milk, isSelected: isSelected),
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class _MilkOption extends StatelessWidget {
-  const _MilkOption({required this.milk, required this.isSelected});
-
-  final MilkOption milk;
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final typography = context.typography;
-    final spacing = context.spacing;
-
-    return GestureDetector(
-      onTap: () =>
-          context.read<ItemDetailBloc>().add(ItemDetailMilkSelected(milk)),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: EdgeInsets.symmetric(
-          horizontal: spacing.xl,
-          vertical: spacing.lg,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected ? colors.primary : colors.secondary,
-          borderRadius: BorderRadius.circular(context.radius.medium),
-          border: isSelected
-              ? Border.all(color: colors.primary, width: 2)
-              : Border.all(color: colors.border),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              milk.label,
-              style: typography.body.copyWith(
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                color: isSelected
-                    ? colors.primaryForeground
-                    : colors.mutedForeground,
-              ),
-            ),
-            if (isSelected)
-              Icon(
-                Icons.check,
-                size: context.iconSize.medium,
-                color: colors.primaryForeground,
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ExtrasSection extends StatelessWidget {
-  const _ExtrasSection({required this.selectedExtras});
-
-  final List<DrinkExtra> selectedExtras;
-
-  @override
-  Widget build(BuildContext context) {
-    return _CustomizationCard(
-      label: context.l10n.itemDetailExtrasLabel,
-      child: Wrap(
-        spacing: context.spacing.sm,
-        runSpacing: context.spacing.sm,
-        children: DrinkExtra.values.map((extra) {
-          final isSelected = selectedExtras.contains(extra);
-          return _ExtraChip(extra: extra, isSelected: isSelected);
-        }).toList(),
-      ),
-    );
-  }
-}
-
-class _ExtraChip extends StatelessWidget {
-  const _ExtraChip({required this.extra, required this.isSelected});
-
-  final DrinkExtra extra;
-  final bool isSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final typography = context.typography;
-    final spacing = context.spacing;
-
-    return GestureDetector(
-      onTap: () =>
-          context.read<ItemDetailBloc>().add(ItemDetailExtraToggled(extra)),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: EdgeInsets.symmetric(
-          horizontal: spacing.lg,
-          vertical: spacing.sm + spacing.xs,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected ? colors.primary : colors.secondary,
-          borderRadius: BorderRadius.circular(context.radius.pill),
-          border: isSelected ? null : Border.all(color: colors.border),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              isSelected ? Icons.check : Icons.add,
-              size: 14,
-              color: isSelected
-                  ? colors.primaryForeground
-                  : colors.mutedForeground,
-            ),
-            SizedBox(width: spacing.xs),
-            Text(
-              extra.label,
-              style: typography.small.copyWith(
-                fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
-                color: isSelected
-                    ? colors.primaryForeground
-                    : colors.mutedForeground,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _CustomizationCard extends StatelessWidget {
-  const _CustomizationCard({required this.label, required this.child});
-
-  final String label;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: context.typography.subtitle.copyWith(
-            color: context.colors.foreground,
-          ),
-        ),
-        SizedBox(height: context.spacing.md),
-        child,
       ],
     );
   }
@@ -456,7 +227,7 @@ class _AddToCartBar extends StatelessWidget {
                 label:
                     '${context.l10n.itemDetailAddToCart} — '
                     '\$${(state.totalPrice / 100).toStringAsFixed(2)}',
-                onPressed: isUnavailable || isAdding
+                onPressed: isUnavailable || isAdding || !state.canAddToCart
                     ? null
                     : () => context.read<ItemDetailBloc>().add(
                         const ItemDetailAddToCartRequested(),

@@ -297,8 +297,9 @@ class _OrderItemsCard extends StatelessWidget {
             ),
             SizedBox(height: spacing.md),
             ...order.items.map((item) {
-              final lineTotal = (item.price * item.quantity / 100)
-                  .toStringAsFixed(2);
+              final lineTotal =
+                  (item.unitPriceWithModifiers * item.quantity / 100)
+                      .toStringAsFixed(2);
               return Padding(
                 padding: EdgeInsets.only(bottom: spacing.sm),
                 child: Row(

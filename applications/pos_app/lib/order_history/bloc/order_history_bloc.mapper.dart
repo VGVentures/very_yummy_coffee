@@ -74,23 +74,26 @@ class OrderHistoryStateMapper extends ClassMapperBase<OrderHistoryState> {
 
 mixin OrderHistoryStateMappable {
   String toJson() {
-    return OrderHistoryStateMapper.ensureInitialized().encodeJson<OrderHistoryState>(
-      this as OrderHistoryState,
-    );
+    return OrderHistoryStateMapper.ensureInitialized()
+        .encodeJson<OrderHistoryState>(this as OrderHistoryState);
   }
 
   Map<String, dynamic> toMap() {
-    return OrderHistoryStateMapper.ensureInitialized().encodeMap<OrderHistoryState>(
-      this as OrderHistoryState,
-    );
+    return OrderHistoryStateMapper.ensureInitialized()
+        .encodeMap<OrderHistoryState>(this as OrderHistoryState);
   }
 
-  OrderHistoryStateCopyWith<OrderHistoryState, OrderHistoryState, OrderHistoryState>
-  get copyWith => _OrderHistoryStateCopyWithImpl<OrderHistoryState, OrderHistoryState>(
-    this as OrderHistoryState,
-    $identity,
-    $identity,
-  );
+  OrderHistoryStateCopyWith<
+    OrderHistoryState,
+    OrderHistoryState,
+    OrderHistoryState
+  >
+  get copyWith =>
+      _OrderHistoryStateCopyWithImpl<OrderHistoryState, OrderHistoryState>(
+        this as OrderHistoryState,
+        $identity,
+        $identity,
+      );
   @override
   String toString() {
     return OrderHistoryStateMapper.ensureInitialized().stringifyValue(
@@ -116,11 +119,17 @@ mixin OrderHistoryStateMappable {
 
 extension OrderHistoryStateValueCopy<$R, $Out>
     on ObjectCopyWith<$R, OrderHistoryState, $Out> {
-  OrderHistoryStateCopyWith<$R, OrderHistoryState, $Out> get $asOrderHistoryState =>
-      $base.as((v, t, t2) => _OrderHistoryStateCopyWithImpl<$R, $Out>(v, t, t2));
+  OrderHistoryStateCopyWith<$R, OrderHistoryState, $Out>
+  get $asOrderHistoryState => $base.as(
+    (v, t, t2) => _OrderHistoryStateCopyWithImpl<$R, $Out>(v, t, t2),
+  );
 }
 
-abstract class OrderHistoryStateCopyWith<$R, $In extends OrderHistoryState, $Out>
+abstract class OrderHistoryStateCopyWith<
+  $R,
+  $In extends OrderHistoryState,
+  $Out
+>
     implements ClassCopyWith<$R, $In, $Out> {
   ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get activeOrders;
   ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get historyOrders;

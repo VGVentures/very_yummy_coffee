@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_pos_app/order_ticket/bloc/order_ticket_bloc.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class OrderTicketLineItem extends StatelessWidget {
   const OrderTicketLineItem({required this.lineItem, super.key});
@@ -11,7 +12,8 @@ class OrderTicketLineItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final total = lineItem.price * lineItem.quantity;
+    final total = lineItem.unitPriceWithModifiers * lineItem.quantity;
+    final modifierLabels = lineItem.modifierOptionNames;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -29,6 +31,11 @@ class OrderTicketLineItem extends StatelessWidget {
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
+                if (modifierLabels.isNotEmpty)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 2),
+                    child: ModifierSummaryChips(labels: modifierLabels),
+                  ),
                 if (lineItem.quantity > 1)
                   Text(
                     'Qty: ${lineItem.quantity}',
