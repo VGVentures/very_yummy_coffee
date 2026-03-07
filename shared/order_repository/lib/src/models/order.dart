@@ -24,12 +24,19 @@ class Order with OrderMappable {
     required this.id,
     required this.items,
     required this.status,
+    this.customerName,
     this.submittedAt,
   });
 
   final String id;
   final List<LineItem> items;
   final OrderStatus status;
+
+  /// The customer's name, displayed on KDS cards and receipts.
+  ///
+  /// Set via the `updateNameOnOrder` WS action. Null when no name has been
+  /// provided.
+  final String? customerName;
 
   /// The time at which the order was submitted to the kitchen.
   ///

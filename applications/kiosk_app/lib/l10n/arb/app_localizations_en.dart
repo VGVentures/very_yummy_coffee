@@ -122,4 +122,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get orderCompleteCancelledLabel => 'Order Cancelled';
+
+  @override
+  String get checkoutCustomerNameHint => 'Enter your name (optional)';
+
+  @override
+  String kioskOrderPlacedTitlePersonalized(String name) {
+    return 'Thanks, $name!';
+  }
 }

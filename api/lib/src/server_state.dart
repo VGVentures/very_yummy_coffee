@@ -114,8 +114,22 @@ class ServerState {
           'id': id,
           'items': <Map<String, dynamic>>[],
           'status': 'pending',
+          'customerName': null,
         };
         broadcast('orders', snapshotForTopic('orders'));
+
+      case 'updateNameOnOrder':
+        final orderId = payload['orderId'] as String;
+        final order = _orders[orderId];
+        if (order != null && order['status'] == 'pending') {
+          final name = payload['customerName'] as String?;
+          _orders[orderId] = <String, dynamic>{
+            ...order,
+            'customerName': (name != null && name.isEmpty) ? null : name,
+          };
+          broadcast('orders', snapshotForTopic('orders'));
+          broadcast('order:$orderId', _orders[orderId]!);
+        }
 
       case 'addItemToOrder':
         final orderId = payload['orderId'] as String;

@@ -38,6 +38,10 @@ class CheckoutBloc extends Bloc<CheckoutEvent, CheckoutState> {
       return;
     }
     emit(state.copyWith(status: CheckoutStatus.submitting));
+    final trimmedName = event.customerName.trim();
+    if (trimmedName.isNotEmpty) {
+      await _orderRepository.updateNameOnCurrentOrder(trimmedName);
+    }
     _orderRepository.submitCurrentOrder();
     emit(state.copyWith(status: CheckoutStatus.success));
   }

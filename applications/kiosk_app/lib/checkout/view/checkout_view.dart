@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:order_repository/order_repository.dart';
@@ -7,8 +8,21 @@ import 'package:very_yummy_coffee_kiosk_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_kiosk_app/widgets/widgets.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
-class CheckoutView extends StatelessWidget {
+class CheckoutView extends StatefulWidget {
   const CheckoutView({super.key});
+
+  @override
+  State<CheckoutView> createState() => _CheckoutViewState();
+}
+
+class _CheckoutViewState extends State<CheckoutView> {
+  final _nameController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +73,8 @@ class CheckoutView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      _CustomerNameCard(controller: _nameController),
+                      SizedBox(height: context.spacing.xl),
                       const _FakePaymentCard(),
                       SizedBox(height: context.spacing.xl),
                       if (order != null) _OrderSummaryCard(order: order),
@@ -84,11 +100,60 @@ class CheckoutView extends StatelessWidget {
                 _PlaceOrderBar(
                   order: order,
                   isSubmitting: state.status == CheckoutStatus.submitting,
+                  nameController: _nameController,
                 ),
             ],
           ),
         );
       },
+    );
+  }
+}
+
+class _CustomerNameCard extends StatelessWidget {
+  const _CustomerNameCard({required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final typography = context.typography;
+    final spacing = context.spacing;
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.card,
+        borderRadius: BorderRadius.circular(context.radius.large),
+        border: Border.all(color: colors.border),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(spacing.xl),
+        child: TextField(
+          controller: controller,
+          style: typography.body,
+          maxLength: 30,
+          maxLengthEnforcement: MaxLengthEnforcement.enforced,
+          decoration: InputDecoration(
+            hintText: context.l10n.checkoutCustomerNameHint,
+            hintStyle: typography.body.copyWith(color: colors.mutedForeground),
+            counterText: '',
+            isDense: true,
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: spacing.md,
+              vertical: spacing.sm,
+            ),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(context.radius.small),
+              borderSide: BorderSide(color: colors.border),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(context.radius.small),
+              borderSide: BorderSide(color: colors.border),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -198,10 +263,12 @@ class _PlaceOrderBar extends StatelessWidget {
   const _PlaceOrderBar({
     required this.order,
     required this.isSubmitting,
+    required this.nameController,
   });
 
   final Order order;
   final bool isSubmitting;
+  final TextEditingController nameController;
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +288,7 @@ class _PlaceOrderBar extends StatelessWidget {
             onPressed: isSubmitting
                 ? null
                 : () => context.read<CheckoutBloc>().add(
-                    const CheckoutConfirmed(),
+                    CheckoutConfirmed(customerName: nameController.text),
                   ),
             isLoading: isSubmitting,
           ),

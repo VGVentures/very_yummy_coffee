@@ -127,4 +127,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get modifierSheetConfirm => 'Confirm';
+
+  @override
+  String get orderTicketCustomerNameHint => 'Customer name';
+
+  @override
+  String get ordersColumnCustomer => 'Customer';
 }

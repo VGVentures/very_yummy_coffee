@@ -189,6 +189,16 @@ class _ActiveOrderCard extends StatelessWidget {
                 ),
             ],
           ),
+          if (order.customerName case final name? when name.isNotEmpty)
+            Padding(
+              padding: EdgeInsets.only(top: spacing.xs),
+              child: Text(
+                name,
+                style: typography.body.copyWith(
+                  color: colors.mutedForeground,
+                ),
+              ),
+            ),
           SizedBox(height: spacing.md),
           Text(
             itemSummary,
@@ -352,6 +362,10 @@ class _TableHeaderRow extends StatelessWidget {
             width: 110,
             child: _HeaderCell(text: l10n.ordersColumnOrder),
           ),
+          SizedBox(
+            width: 140,
+            child: _HeaderCell(text: l10n.ordersColumnCustomer),
+          ),
           Expanded(child: _HeaderCell(text: l10n.ordersColumnItems)),
           SizedBox(
             width: 110,
@@ -419,6 +433,15 @@ class _TableDataRow extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: colors.foreground,
               ),
+            ),
+          ),
+          SizedBox(
+            width: 140,
+            child: Text(
+              order.customerName ?? '---',
+              style: typography.muted,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           Expanded(

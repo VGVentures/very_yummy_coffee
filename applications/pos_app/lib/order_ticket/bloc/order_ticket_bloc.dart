@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:meta/meta.dart';
@@ -15,10 +17,14 @@ class OrderTicketBloc extends Bloc<OrderTicketEvent, OrderTicketState> {
     on<OrderTicketCreateOrderRequested>(_onCreateOrderRequested);
     on<OrderTicketChargeRequested>(_onChargeRequested);
     on<OrderTicketClearRequested>(_onClearRequested);
+    on<OrderTicketCustomerNameChanged>(_onCustomerNameChanged);
     on<OrderTicketItemRemoved>(_onItemRemoved);
   }
 
   final OrderRepository _orderRepository;
+
+  Timer? _debounceTimer;
+  String _pendingName = '';
 
   Future<void> _onSubscriptionRequested(
     OrderTicketSubscriptionRequested event,
@@ -50,6 +56,14 @@ class OrderTicketBloc extends Bloc<OrderTicketEvent, OrderTicketState> {
     final order = state.order;
     if (orderId == null || order == null || order.items.isEmpty) return;
     emit(state.copyWith(status: OrderTicketStatus.charging));
+
+    // Flush any pending debounced name update before submitting.
+    _debounceTimer?.cancel();
+    _debounceTimer = null;
+    if (_pendingName.trim().isNotEmpty) {
+      await _orderRepository.updateNameOnCurrentOrder(_pendingName);
+    }
+
     _orderRepository.submitCurrentOrder();
     emit(
       state.copyWith(
@@ -63,8 +77,23 @@ class OrderTicketBloc extends Bloc<OrderTicketEvent, OrderTicketState> {
     OrderTicketClearRequested event,
     Emitter<OrderTicketState> emit,
   ) {
+    _debounceTimer?.cancel();
+    _debounceTimer = null;
+    _pendingName = '';
     _orderRepository.clearCurrentOrder();
     emit(state.copyWith(status: OrderTicketStatus.idle, order: null));
+  }
+
+  void _onCustomerNameChanged(
+    OrderTicketCustomerNameChanged event,
+    Emitter<OrderTicketState> emit,
+  ) {
+    if (_orderRepository.currentOrderId == null) return;
+    _pendingName = event.name;
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () {
+      unawaited(_orderRepository.updateNameOnCurrentOrder(event.name));
+    });
   }
 
   void _onItemRemoved(
@@ -72,5 +101,11 @@ class OrderTicketBloc extends Bloc<OrderTicketEvent, OrderTicketState> {
     Emitter<OrderTicketState> emit,
   ) {
     _orderRepository.updateItemQuantity(event.lineItemId, 0);
+  }
+
+  @override
+  Future<void> close() {
+    _debounceTimer?.cancel();
+    return super.close();
   }
 }

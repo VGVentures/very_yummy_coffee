@@ -268,11 +268,21 @@ class CheckoutConfirmedMapper extends ClassMapperBase<CheckoutConfirmed> {
   @override
   final String id = 'CheckoutConfirmed';
 
+  static String _$customerName(CheckoutConfirmed v) => v.customerName;
+  static const Field<CheckoutConfirmed, String> _f$customerName = Field(
+    'customerName',
+    _$customerName,
+    opt: true,
+    def: '',
+  );
+
   @override
-  final MappableFields<CheckoutConfirmed> fields = const {};
+  final MappableFields<CheckoutConfirmed> fields = const {
+    #customerName: _f$customerName,
+  };
 
   static CheckoutConfirmed _instantiate(DecodingData data) {
-    return CheckoutConfirmed();
+    return CheckoutConfirmed(customerName: data.dec(_f$customerName));
   }
 
   @override
@@ -347,7 +357,7 @@ abstract class CheckoutConfirmedCopyWith<
 >
     implements CheckoutEventCopyWith<$R, $In, $Out> {
   @override
-  $R call();
+  $R call({String? customerName});
   CheckoutConfirmedCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
     Then<$Out2, $R2> t,
   );
@@ -362,9 +372,13 @@ class _CheckoutConfirmedCopyWithImpl<$R, $Out>
   late final ClassMapperBase<CheckoutConfirmed> $mapper =
       CheckoutConfirmedMapper.ensureInitialized();
   @override
-  $R call() => $apply(FieldCopyWithData({}));
+  $R call({String? customerName}) => $apply(
+    FieldCopyWithData({if (customerName != null) #customerName: customerName}),
+  );
   @override
-  CheckoutConfirmed $make(CopyWithData data) => CheckoutConfirmed();
+  CheckoutConfirmed $make(CopyWithData data) => CheckoutConfirmed(
+    customerName: data.get(#customerName, or: $value.customerName),
+  );
 
   @override
   CheckoutConfirmedCopyWith<$R2, CheckoutConfirmed, $Out2> $chain<$R2, $Out2>(

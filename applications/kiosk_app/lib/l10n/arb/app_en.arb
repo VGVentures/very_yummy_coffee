@@ -151,5 +151,18 @@
   "orderCompleteCancelledLabel": "Order Cancelled",
   "@orderCompleteCancelledLabel": {
     "description": "Label shown when the order has been cancelled"
+  },
+  "checkoutCustomerNameHint": "Enter your name (optional)",
+  "@checkoutCustomerNameHint": {
+    "description": "Placeholder hint for the customer name text field on the checkout screen"
+  },
+  "kioskOrderPlacedTitlePersonalized": "Thanks, {name}!",
+  "@kioskOrderPlacedTitlePersonalized": {
+    "description": "Personalized title on the order complete screen when customer name is present",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
   }
 }

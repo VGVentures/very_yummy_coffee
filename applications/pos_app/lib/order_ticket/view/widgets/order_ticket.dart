@@ -1,17 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_yummy_coffee_pos_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_pos_app/order_ticket/bloc/order_ticket_bloc.dart';
 import 'package:very_yummy_coffee_pos_app/order_ticket/view/widgets/order_ticket_line_item.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
-class OrderTicket extends StatelessWidget {
+class OrderTicket extends StatefulWidget {
   const OrderTicket({super.key});
+
+  @override
+  State<OrderTicket> createState() => _OrderTicketState();
+}
+
+class _OrderTicketState extends State<OrderTicket> {
+  final _nameController = TextEditingController();
+
+  /// Tracks the order ID the controller was last initialized for.
+  String? _controllerOrderId;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final theme = Theme.of(context);
+    final colors = context.colors;
+    final typography = context.typography;
+    final spacing = context.spacing;
 
     return BlocBuilder<OrderTicketBloc, OrderTicketState>(
       builder: (context, state) {
@@ -22,6 +42,16 @@ class OrderTicket extends StatelessWidget {
         final grandTotal = order?.grandTotal ?? 0;
         final isCharging = state.status == OrderTicketStatus.charging;
         final isIdle = state.status == OrderTicketStatus.idle;
+
+        // Clear controller when order changes (new order or clear).
+        if (order == null && _controllerOrderId != null) {
+          _nameController.clear();
+          _controllerOrderId = null;
+        } else if (order != null && _controllerOrderId != order.id) {
+          // New order — seed the controller from the order's name.
+          _nameController.text = order.customerName ?? '';
+          _controllerOrderId = order.id;
+        }
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -59,6 +89,48 @@ class OrderTicket extends StatelessWidget {
                 ],
               ),
             ),
+            // Customer name field
+            if (order != null)
+              Padding(
+                padding: EdgeInsets.only(
+                  left: spacing.lg,
+                  right: spacing.lg,
+                  bottom: spacing.md,
+                ),
+                child: TextField(
+                  controller: _nameController,
+                  style: typography.body,
+                  maxLength: 30,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                  decoration: InputDecoration(
+                    hintText: l10n.orderTicketCustomerNameHint,
+                    hintStyle: typography.body.copyWith(
+                      color: colors.mutedForeground,
+                    ),
+                    counterText: '',
+                    isDense: true,
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: spacing.md,
+                      vertical: spacing.sm,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                        context.radius.small,
+                      ),
+                      borderSide: BorderSide(color: colors.border),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(
+                        context.radius.small,
+                      ),
+                      borderSide: BorderSide(color: colors.border),
+                    ),
+                  ),
+                  onChanged: (value) => context.read<OrderTicketBloc>().add(
+                    OrderTicketCustomerNameChanged(value),
+                  ),
+                ),
+              ),
             const Divider(height: 1),
             // Items or empty state
             Expanded(

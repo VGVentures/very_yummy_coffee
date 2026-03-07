@@ -327,6 +327,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Confirm'**
   String get modifierSheetConfirm;
+
+  /// Placeholder hint for the customer name text field on the order ticket
+  ///
+  /// In en, this message translates to:
+  /// **'Customer name'**
+  String get orderTicketCustomerNameHint;
+
+  /// Column header for customer name in the history table
+  ///
+  /// In en, this message translates to:
+  /// **'Customer'**
+  String get ordersColumnCustomer;
 }
 
 class _AppLocalizationsDelegate
