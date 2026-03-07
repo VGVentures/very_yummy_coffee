@@ -16,7 +16,8 @@ final class MenuCategorySelected extends MenuEvent {
 }
 
 final class MenuItemAdded extends MenuEvent {
-  const MenuItemAdded(this.item);
+  const MenuItemAdded(this.item, {this.modifiers = const []});
 
   final MenuItem item;
+  final List<SelectedModifier> modifiers;
 }

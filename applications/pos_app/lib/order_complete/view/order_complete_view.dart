@@ -161,18 +161,32 @@ class _ReceiptPanel extends StatelessWidget {
                 const Divider(height: 1, indent: 16, endIndent: 16),
             itemBuilder: (context, index) {
               final item = order.items[index];
-              final total = item.price * item.quantity;
+              final total = item.unitPriceWithModifiers * item.quantity;
+              final modifierLabels = item.modifierOptionNames;
               return Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: spacing.lg,
                   vertical: spacing.sm,
                 ),
                 child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      child: Text(
-                        '${item.quantity}× ${item.name}',
-                        style: theme.textTheme.bodyMedium,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${item.quantity}× ${item.name}',
+                            style: theme.textTheme.bodyMedium,
+                          ),
+                          if (modifierLabels.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 2),
+                              child: ModifierSummaryChips(
+                                labels: modifierLabels,
+                              ),
+                            ),
+                        ],
                       ),
                     ),
                     Text(

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:menu_repository/menu_repository.dart';
 import 'package:very_yummy_coffee_pos_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_pos_app/menu/bloc/menu_bloc.dart';
 import 'package:very_yummy_coffee_pos_app/menu/view/widgets/menu_item_card.dart';
+import 'package:very_yummy_coffee_pos_app/menu/view/widgets/modifier_bottom_sheet.dart';
 
 class MenuItemGrid extends StatelessWidget {
   const MenuItemGrid({super.key});
@@ -31,7 +33,30 @@ class MenuItemGrid extends StatelessWidget {
             childAspectRatio: 1.2,
           ),
           itemCount: items.length,
-          itemBuilder: (context, index) => MenuItemCard(item: items[index]),
+          itemBuilder: (context, index) {
+            final item = items[index];
+            return MenuItemCard(
+              item: item,
+              onAdd: () async {
+                final applicable = state.modifierGroups.applicableTo(
+                  item.groupId,
+                );
+                if (applicable.isEmpty) {
+                  context.read<MenuBloc>().add(MenuItemAdded(item));
+                  return;
+                }
+                final modifiers = await showModifierBottomSheet(
+                  context: context,
+                  item: item,
+                  modifierGroups: applicable,
+                );
+                if (modifiers == null || !context.mounted) return;
+                context.read<MenuBloc>().add(
+                  MenuItemAdded(item, modifiers: modifiers),
+                );
+              },
+            );
+          },
         );
       },
     );

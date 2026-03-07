@@ -10,7 +10,6 @@ const _testItem = LineItem(
   id: 'li-1',
   name: 'Espresso',
   price: 300,
-  options: 'Medium',
 );
 
 const _testOrder = Order(

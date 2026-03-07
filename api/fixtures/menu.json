@@ -26,5 +26,60 @@
     { "id": "202", "name": "Chai Latte", "price": 500, "groupId": "2", "available": true },
     { "id": "301", "name": "Croissant", "price": 450, "groupId": "3", "available": true },
     { "id": "302", "name": "Chocolate Cake", "price": 650, "groupId": "3", "available": true }
+  ],
+  "modifierGroups": [
+    {
+      "id": "mg-size",
+      "name": "Size",
+      "appliesToGroupIds": ["2"],
+      "selectionMode": "single",
+      "required": true,
+      "defaultOptionId": "size-tall",
+      "options": [
+        { "id": "size-short", "name": "Short", "priceDeltaCents": 0 },
+        { "id": "size-tall", "name": "Tall", "priceDeltaCents": 0 },
+        { "id": "size-grande", "name": "Grande", "priceDeltaCents": 50 },
+        { "id": "size-venti", "name": "Venti", "priceDeltaCents": 100 }
+      ]
+    },
+    {
+      "id": "mg-milk",
+      "name": "Milk",
+      "appliesToGroupIds": ["2"],
+      "selectionMode": "single",
+      "required": true,
+      "defaultOptionId": "milk-whole",
+      "options": [
+        { "id": "milk-whole", "name": "Whole Milk", "priceDeltaCents": 0 },
+        { "id": "milk-2pct", "name": "2% Milk", "priceDeltaCents": 0 },
+        { "id": "milk-oat", "name": "Oat Milk", "priceDeltaCents": 75 },
+        { "id": "milk-almond", "name": "Almond Milk", "priceDeltaCents": 75 },
+        { "id": "milk-soy", "name": "Soy Milk", "priceDeltaCents": 75 }
+      ]
+    },
+    {
+      "id": "mg-syrup",
+      "name": "Syrup",
+      "appliesToGroupIds": ["2"],
+      "selectionMode": "multi",
+      "required": false,
+      "options": [
+        { "id": "syrup-vanilla", "name": "Vanilla", "priceDeltaCents": 50 },
+        { "id": "syrup-hazelnut", "name": "Hazelnut", "priceDeltaCents": 50 },
+        { "id": "syrup-caramel", "name": "Caramel", "priceDeltaCents": 50 }
+      ]
+    },
+    {
+      "id": "mg-temp",
+      "name": "Temperature",
+      "appliesToGroupIds": ["2"],
+      "selectionMode": "single",
+      "required": false,
+      "defaultOptionId": "temp-hot",
+      "options": [
+        { "id": "temp-hot", "name": "Hot", "priceDeltaCents": 0 },
+        { "id": "temp-iced", "name": "Iced", "priceDeltaCents": 0 }
+      ]
+    }
   ]
 }

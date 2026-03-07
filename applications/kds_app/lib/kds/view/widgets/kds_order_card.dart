@@ -72,13 +72,28 @@ class KdsOrderCard extends StatelessWidget {
             SizedBox(height: spacing.sm),
             // Line items
             ...order.items.map(
-              (item) => Padding(
-                padding: EdgeInsets.symmetric(vertical: spacing.xxs),
-                child: Text(
-                  '${item.quantity}× ${item.name}',
-                  style: typography.body,
-                ),
-              ),
+              (item) {
+                final modifierLabels = item.modifierOptionNames;
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: spacing.xxs),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${item.quantity}× ${item.name}',
+                        style: typography.body,
+                      ),
+                      if (modifierLabels.isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.only(top: spacing.xxs),
+                          child: ModifierSummaryChips(
+                            labels: modifierLabels,
+                          ),
+                        ),
+                    ],
+                  ),
+                );
+              },
             ),
             SizedBox(height: spacing.md),
             // Action row: Cancel (left, muted) + primary action (right)

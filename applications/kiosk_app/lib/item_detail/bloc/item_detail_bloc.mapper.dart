@@ -8,160 +8,6 @@
 
 part of 'item_detail_bloc.dart';
 
-class DrinkSizeMapper extends EnumMapper<DrinkSize> {
-  DrinkSizeMapper._();
-
-  static DrinkSizeMapper? _instance;
-  static DrinkSizeMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = DrinkSizeMapper._());
-    }
-    return _instance!;
-  }
-
-  static DrinkSize fromValue(dynamic value) {
-    ensureInitialized();
-    return MapperContainer.globals.fromValue(value);
-  }
-
-  @override
-  DrinkSize decode(dynamic value) {
-    switch (value) {
-      case r'small':
-        return DrinkSize.small;
-      case r'medium':
-        return DrinkSize.medium;
-      case r'large':
-        return DrinkSize.large;
-      default:
-        throw MapperException.unknownEnumValue(value);
-    }
-  }
-
-  @override
-  dynamic encode(DrinkSize self) {
-    switch (self) {
-      case DrinkSize.small:
-        return r'small';
-      case DrinkSize.medium:
-        return r'medium';
-      case DrinkSize.large:
-        return r'large';
-    }
-  }
-}
-
-extension DrinkSizeMapperExtension on DrinkSize {
-  String toValue() {
-    DrinkSizeMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<DrinkSize>(this) as String;
-  }
-}
-
-class MilkOptionMapper extends EnumMapper<MilkOption> {
-  MilkOptionMapper._();
-
-  static MilkOptionMapper? _instance;
-  static MilkOptionMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = MilkOptionMapper._());
-    }
-    return _instance!;
-  }
-
-  static MilkOption fromValue(dynamic value) {
-    ensureInitialized();
-    return MapperContainer.globals.fromValue(value);
-  }
-
-  @override
-  MilkOption decode(dynamic value) {
-    switch (value) {
-      case r'whole':
-        return MilkOption.whole;
-      case r'oat':
-        return MilkOption.oat;
-      case r'almond':
-        return MilkOption.almond;
-      case r'soy':
-        return MilkOption.soy;
-      default:
-        throw MapperException.unknownEnumValue(value);
-    }
-  }
-
-  @override
-  dynamic encode(MilkOption self) {
-    switch (self) {
-      case MilkOption.whole:
-        return r'whole';
-      case MilkOption.oat:
-        return r'oat';
-      case MilkOption.almond:
-        return r'almond';
-      case MilkOption.soy:
-        return r'soy';
-    }
-  }
-}
-
-extension MilkOptionMapperExtension on MilkOption {
-  String toValue() {
-    MilkOptionMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<MilkOption>(this) as String;
-  }
-}
-
-class DrinkExtraMapper extends EnumMapper<DrinkExtra> {
-  DrinkExtraMapper._();
-
-  static DrinkExtraMapper? _instance;
-  static DrinkExtraMapper ensureInitialized() {
-    if (_instance == null) {
-      MapperContainer.globals.use(_instance = DrinkExtraMapper._());
-    }
-    return _instance!;
-  }
-
-  static DrinkExtra fromValue(dynamic value) {
-    ensureInitialized();
-    return MapperContainer.globals.fromValue(value);
-  }
-
-  @override
-  DrinkExtra decode(dynamic value) {
-    switch (value) {
-      case r'extraShot':
-        return DrinkExtra.extraShot;
-      case r'vanillaSyrup':
-        return DrinkExtra.vanillaSyrup;
-      case r'caramel':
-        return DrinkExtra.caramel;
-      default:
-        throw MapperException.unknownEnumValue(value);
-    }
-  }
-
-  @override
-  dynamic encode(DrinkExtra self) {
-    switch (self) {
-      case DrinkExtra.extraShot:
-        return r'extraShot';
-      case DrinkExtra.vanillaSyrup:
-        return r'vanillaSyrup';
-      case DrinkExtra.caramel:
-        return r'caramel';
-    }
-  }
-}
-
-extension DrinkExtraMapperExtension on DrinkExtra {
-  String toValue() {
-    DrinkExtraMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<DrinkExtra>(this) as String;
-  }
-}
-
 class ItemDetailStatusMapper extends EnumMapper<ItemDetailStatus> {
   ItemDetailStatusMapper._();
 
@@ -228,9 +74,7 @@ class ItemDetailStateMapper extends ClassMapperBase<ItemDetailState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = ItemDetailStateMapper._());
       MenuItemMapper.ensureInitialized();
-      DrinkSizeMapper.ensureInitialized();
-      MilkOptionMapper.ensureInitialized();
-      DrinkExtraMapper.ensureInitialized();
+      ModifierGroupMapper.ensureInitialized();
       ItemDetailStatusMapper.ensureInitialized();
     }
     return _instance!;
@@ -245,24 +89,24 @@ class ItemDetailStateMapper extends ClassMapperBase<ItemDetailState> {
     _$item,
     opt: true,
   );
-  static DrinkSize _$selectedSize(ItemDetailState v) => v.selectedSize;
-  static const Field<ItemDetailState, DrinkSize> _f$selectedSize = Field(
-    'selectedSize',
-    _$selectedSize,
+  static List<ModifierGroup> _$applicableModifierGroups(ItemDetailState v) =>
+      v.applicableModifierGroups;
+  static const Field<ItemDetailState, List<ModifierGroup>>
+  _f$applicableModifierGroups = Field(
+    'applicableModifierGroups',
+    _$applicableModifierGroups,
     opt: true,
-    def: DrinkSize.medium,
+    def: const [],
   );
-  static MilkOption _$selectedMilk(ItemDetailState v) => v.selectedMilk;
-  static const Field<ItemDetailState, MilkOption> _f$selectedMilk = Field(
-    'selectedMilk',
-    _$selectedMilk,
+  static Map<String, List<String>> _$selectedModifiers(ItemDetailState v) =>
+      v.selectedModifiers;
+  static const Field<ItemDetailState, Map<String, List<String>>>
+  _f$selectedModifiers = Field(
+    'selectedModifiers',
+    _$selectedModifiers,
     opt: true,
-    def: MilkOption.whole,
+    def: const {},
   );
-  static List<DrinkExtra> _$selectedExtras(ItemDetailState v) =>
-      v.selectedExtras;
-  static const Field<ItemDetailState, List<DrinkExtra>> _f$selectedExtras =
-      Field('selectedExtras', _$selectedExtras, opt: true, def: const []);
   static int _$quantity(ItemDetailState v) => v.quantity;
   static const Field<ItemDetailState, int> _f$quantity = Field(
     'quantity',
@@ -281,9 +125,8 @@ class ItemDetailStateMapper extends ClassMapperBase<ItemDetailState> {
   @override
   final MappableFields<ItemDetailState> fields = const {
     #item: _f$item,
-    #selectedSize: _f$selectedSize,
-    #selectedMilk: _f$selectedMilk,
-    #selectedExtras: _f$selectedExtras,
+    #applicableModifierGroups: _f$applicableModifierGroups,
+    #selectedModifiers: _f$selectedModifiers,
     #quantity: _f$quantity,
     #status: _f$status,
   };
@@ -291,9 +134,8 @@ class ItemDetailStateMapper extends ClassMapperBase<ItemDetailState> {
   static ItemDetailState _instantiate(DecodingData data) {
     return ItemDetailState(
       item: data.dec(_f$item),
-      selectedSize: data.dec(_f$selectedSize),
-      selectedMilk: data.dec(_f$selectedMilk),
-      selectedExtras: data.dec(_f$selectedExtras),
+      applicableModifierGroups: data.dec(_f$applicableModifierGroups),
+      selectedModifiers: data.dec(_f$selectedModifiers),
       quantity: data.dec(_f$quantity),
       status: data.dec(_f$status),
     );
@@ -362,13 +204,23 @@ extension ItemDetailStateValueCopy<$R, $Out>
 abstract class ItemDetailStateCopyWith<$R, $In extends ItemDetailState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   MenuItemCopyWith<$R, MenuItem, MenuItem>? get item;
-  ListCopyWith<$R, DrinkExtra, ObjectCopyWith<$R, DrinkExtra, DrinkExtra>>
-  get selectedExtras;
+  ListCopyWith<
+    $R,
+    ModifierGroup,
+    ModifierGroupCopyWith<$R, ModifierGroup, ModifierGroup>
+  >
+  get applicableModifierGroups;
+  MapCopyWith<
+    $R,
+    String,
+    List<String>,
+    ObjectCopyWith<$R, List<String>, List<String>>
+  >
+  get selectedModifiers;
   $R call({
     MenuItem? item,
-    DrinkSize? selectedSize,
-    MilkOption? selectedMilk,
-    List<DrinkExtra>? selectedExtras,
+    List<ModifierGroup>? applicableModifierGroups,
+    Map<String, List<String>>? selectedModifiers,
     int? quantity,
     ItemDetailStatus? status,
   });
@@ -389,26 +241,41 @@ class _ItemDetailStateCopyWithImpl<$R, $Out>
   MenuItemCopyWith<$R, MenuItem, MenuItem>? get item =>
       $value.item?.copyWith.$chain((v) => call(item: v));
   @override
-  ListCopyWith<$R, DrinkExtra, ObjectCopyWith<$R, DrinkExtra, DrinkExtra>>
-  get selectedExtras => ListCopyWith(
-    $value.selectedExtras,
+  ListCopyWith<
+    $R,
+    ModifierGroup,
+    ModifierGroupCopyWith<$R, ModifierGroup, ModifierGroup>
+  >
+  get applicableModifierGroups => ListCopyWith(
+    $value.applicableModifierGroups,
+    (v, t) => v.copyWith.$chain(t),
+    (v) => call(applicableModifierGroups: v),
+  );
+  @override
+  MapCopyWith<
+    $R,
+    String,
+    List<String>,
+    ObjectCopyWith<$R, List<String>, List<String>>
+  >
+  get selectedModifiers => MapCopyWith(
+    $value.selectedModifiers,
     (v, t) => ObjectCopyWith(v, $identity, t),
-    (v) => call(selectedExtras: v),
+    (v) => call(selectedModifiers: v),
   );
   @override
   $R call({
     Object? item = $none,
-    DrinkSize? selectedSize,
-    MilkOption? selectedMilk,
-    List<DrinkExtra>? selectedExtras,
+    List<ModifierGroup>? applicableModifierGroups,
+    Map<String, List<String>>? selectedModifiers,
     int? quantity,
     ItemDetailStatus? status,
   }) => $apply(
     FieldCopyWithData({
       if (item != $none) #item: item,
-      if (selectedSize != null) #selectedSize: selectedSize,
-      if (selectedMilk != null) #selectedMilk: selectedMilk,
-      if (selectedExtras != null) #selectedExtras: selectedExtras,
+      if (applicableModifierGroups != null)
+        #applicableModifierGroups: applicableModifierGroups,
+      if (selectedModifiers != null) #selectedModifiers: selectedModifiers,
       if (quantity != null) #quantity: quantity,
       if (status != null) #status: status,
     }),
@@ -416,9 +283,14 @@ class _ItemDetailStateCopyWithImpl<$R, $Out>
   @override
   ItemDetailState $make(CopyWithData data) => ItemDetailState(
     item: data.get(#item, or: $value.item),
-    selectedSize: data.get(#selectedSize, or: $value.selectedSize),
-    selectedMilk: data.get(#selectedMilk, or: $value.selectedMilk),
-    selectedExtras: data.get(#selectedExtras, or: $value.selectedExtras),
+    applicableModifierGroups: data.get(
+      #applicableModifierGroups,
+      or: $value.applicableModifierGroups,
+    ),
+    selectedModifiers: data.get(
+      #selectedModifiers,
+      or: $value.selectedModifiers,
+    ),
     quantity: data.get(#quantity, or: $value.quantity),
     status: data.get(#status, or: $value.status),
   );

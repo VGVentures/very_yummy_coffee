@@ -23,6 +23,20 @@ const _testItem = MenuItem(
   groupId: 'drinks',
 );
 
+const _testModifierGroups = [
+  ModifierGroup(
+    id: 'mg-size',
+    name: 'Size',
+    appliesToGroupIds: ['drinks'],
+    required: true,
+    defaultOptionId: 'size-tall',
+    options: [
+      ModifierOption(id: 'size-tall', name: 'Tall'),
+      ModifierOption(id: 'size-grande', name: 'Grande', priceDeltaCents: 50),
+    ],
+  ),
+];
+
 void main() {
   group('ItemDetailView', () {
     late ItemDetailBloc bloc;
@@ -54,11 +68,15 @@ void main() {
         final loadedState = _MockItemDetailState();
         when(() => loadedState.status).thenReturn(ItemDetailStatus.idle);
         when(() => loadedState.item).thenReturn(_testItem);
-        when(() => loadedState.selectedSize).thenReturn(DrinkSize.medium);
-        when(() => loadedState.selectedMilk).thenReturn(MilkOption.whole);
-        when(() => loadedState.selectedExtras).thenReturn(const []);
+        when(
+          () => loadedState.applicableModifierGroups,
+        ).thenReturn(_testModifierGroups);
+        when(() => loadedState.selectedModifiers).thenReturn(const {
+          'mg-size': ['size-tall'],
+        });
         when(() => loadedState.quantity).thenReturn(1);
         when(() => loadedState.totalPrice).thenReturn(300);
+        when(() => loadedState.canAddToCart).thenReturn(true);
         when(() => bloc.state).thenReturn(loadedState);
       });
 
@@ -84,7 +102,7 @@ void main() {
         expect(find.text(r'$3.00'), findsOneWidget);
       });
 
-      testWidgets('shows size section label', (tester) async {
+      testWidgets('shows modifier group name', (tester) async {
         await tester.pumpApp(
           BlocProvider.value(
             value: bloc,
@@ -93,28 +111,6 @@ void main() {
         );
 
         expect(find.text('Size'), findsOneWidget);
-      });
-
-      testWidgets('shows milk section label', (tester) async {
-        await tester.pumpApp(
-          BlocProvider.value(
-            value: bloc,
-            child: const ItemDetailView(),
-          ),
-        );
-
-        expect(find.text('Milk'), findsOneWidget);
-      });
-
-      testWidgets('shows extras section label', (tester) async {
-        await tester.pumpApp(
-          BlocProvider.value(
-            value: bloc,
-            child: const ItemDetailView(),
-          ),
-        );
-
-        expect(find.text('Extras'), findsOneWidget);
       });
 
       testWidgets('shows add to cart button with total price', (tester) async {
@@ -143,11 +139,15 @@ void main() {
         final state = _MockItemDetailState();
         when(() => state.status).thenReturn(ItemDetailStatus.idle);
         when(() => state.item).thenReturn(_testItem);
-        when(() => state.selectedSize).thenReturn(DrinkSize.medium);
-        when(() => state.selectedMilk).thenReturn(MilkOption.whole);
-        when(() => state.selectedExtras).thenReturn(const []);
+        when(
+          () => state.applicableModifierGroups,
+        ).thenReturn(_testModifierGroups);
+        when(() => state.selectedModifiers).thenReturn(const {
+          'mg-size': ['size-tall'],
+        });
         when(() => state.quantity).thenReturn(2);
         when(() => state.totalPrice).thenReturn(600);
+        when(() => state.canAddToCart).thenReturn(true);
 
         when(() => bloc.state).thenReturn(state);
         whenListen(bloc, Stream.value(state));
@@ -170,11 +170,15 @@ void main() {
         final state = _MockItemDetailState();
         when(() => state.status).thenReturn(ItemDetailStatus.adding);
         when(() => state.item).thenReturn(_testItem);
-        when(() => state.selectedSize).thenReturn(DrinkSize.medium);
-        when(() => state.selectedMilk).thenReturn(MilkOption.whole);
-        when(() => state.selectedExtras).thenReturn(const []);
+        when(
+          () => state.applicableModifierGroups,
+        ).thenReturn(_testModifierGroups);
+        when(() => state.selectedModifiers).thenReturn(const {
+          'mg-size': ['size-tall'],
+        });
         when(() => state.quantity).thenReturn(1);
         when(() => state.totalPrice).thenReturn(300);
+        when(() => state.canAddToCart).thenReturn(true);
         when(() => bloc.state).thenReturn(state);
         whenListen(bloc, Stream.value(state));
 
@@ -199,11 +203,15 @@ void main() {
         final state = _MockItemDetailState();
         when(() => state.status).thenReturn(ItemDetailStatus.added);
         when(() => state.item).thenReturn(_testItem);
-        when(() => state.selectedSize).thenReturn(DrinkSize.medium);
-        when(() => state.selectedMilk).thenReturn(MilkOption.whole);
-        when(() => state.selectedExtras).thenReturn(const []);
+        when(
+          () => state.applicableModifierGroups,
+        ).thenReturn(_testModifierGroups);
+        when(() => state.selectedModifiers).thenReturn(const {
+          'mg-size': ['size-tall'],
+        });
         when(() => state.quantity).thenReturn(1);
         when(() => state.totalPrice).thenReturn(300);
+        when(() => state.canAddToCart).thenReturn(true);
         when(() => bloc.state).thenReturn(state);
         whenListen(bloc, Stream.value(state));
 

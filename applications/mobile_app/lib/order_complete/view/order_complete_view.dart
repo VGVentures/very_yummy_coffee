@@ -191,8 +191,9 @@ class _OrderDetails extends StatelessWidget {
               ),
               SizedBox(height: context.spacing.md),
               ...order.items.map((item) {
-                final lineTotal = (item.price * item.quantity / 100)
-                    .toStringAsFixed(2);
+                final lineTotal =
+                    (item.unitPriceWithModifiers * item.quantity / 100)
+                        .toStringAsFixed(2);
                 return Padding(
                   padding: EdgeInsets.only(bottom: context.spacing.sm),
                   child: Row(

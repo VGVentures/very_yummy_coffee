@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:menu_repository/menu_repository.dart';
 import 'package:very_yummy_coffee_pos_app/l10n/l10n.dart';
-import 'package:very_yummy_coffee_pos_app/menu/bloc/menu_bloc.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class MenuItemCard extends StatelessWidget {
-  const MenuItemCard({required this.item, super.key});
+  const MenuItemCard({
+    required this.item,
+    required this.onAdd,
+    super.key,
+  });
 
   final MenuItem item;
+  final VoidCallback? onAdd;
 
   @override
   Widget build(BuildContext context) {
@@ -55,9 +58,7 @@ class MenuItemCard extends StatelessWidget {
               ),
               const Spacer(),
               GestureDetector(
-                onTap: item.available
-                    ? () => context.read<MenuBloc>().add(MenuItemAdded(item))
-                    : null,
+                onTap: item.available ? onAdd : null,
                 child: ColoredBox(
                   color: item.available
                       ? primary

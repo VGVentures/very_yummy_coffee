@@ -71,8 +71,8 @@ class OrderRepository {
   Future<void> addItemToCurrentOrder({
     required String itemName,
     required int itemPrice,
-    required String options,
     required int quantity,
+    List<SelectedModifier> modifiers = const [],
   }) async {
     if (_currentOrderId == null) {
       await createOrder();
@@ -83,7 +83,7 @@ class OrderRepository {
       'lineItemId': _uuid.v4(),
       'itemName': itemName,
       'itemPrice': itemPrice,
-      'options': options,
+      'modifiers': modifiers.map((m) => m.toMap()).toList(),
       'quantity': quantity,
     });
   }

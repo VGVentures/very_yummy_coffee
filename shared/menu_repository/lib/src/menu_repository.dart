@@ -6,10 +6,15 @@ import 'package:very_yummy_coffee_models/very_yummy_coffee_models.dart';
 
 /// Internal cache holding the full menu fetched from the server.
 class _MenuCache {
-  const _MenuCache({required this.groups, required this.items});
+  const _MenuCache({
+    required this.groups,
+    required this.items,
+    required this.modifierGroups,
+  });
 
   final List<MenuGroup> groups;
   final List<MenuItem> items;
+  final List<ModifierGroup> modifierGroups;
 
   List<MenuItem> itemsForGroup(String groupId) =>
       items.where((i) => i.groupId == groupId).toList();
@@ -72,12 +77,24 @@ class MenuRepository {
   /// Uses the same underlying WebSocket subscription as [getMenuGroups].
   /// Preferred for screens that need both groups and items simultaneously,
   /// as it avoids creating two separate ref-counted subscriptions.
-  Stream<({List<MenuGroup> groups, List<MenuItem> items})>
+  Stream<
+    ({
+      List<MenuGroup> groups,
+      List<MenuItem> items,
+      List<ModifierGroup> modifierGroups,
+    })
+  >
   getMenuGroupsAndItems() => Rx.defer(() {
     _initMenuIfNeeded();
     _menuListenerCount += 1;
     return _menuSubject!.stream
-        .map((cache) => (groups: cache.groups, items: cache.items))
+        .map(
+          (cache) => (
+            groups: cache.groups,
+            items: cache.items,
+            modifierGroups: cache.modifierGroups,
+          ),
+        )
         .doOnCancel(_decrementMenuCount);
   });
 
@@ -91,6 +108,9 @@ class MenuRepository {
       final itemList = payload['items'] as List<dynamic>?;
       if (groupList == null || itemList == null) return;
 
+      final modifierGroupList =
+          payload['modifierGroups'] as List<dynamic>? ?? [];
+
       _menuSubject?.add(
         _MenuCache(
           groups: groupList
@@ -98,6 +118,11 @@ class MenuRepository {
               .toList(),
           items: itemList
               .map((e) => MenuItemMapper.fromMap(e as Map<String, dynamic>))
+              .toList(),
+          modifierGroups: modifierGroupList
+              .map(
+                (e) => ModifierGroupMapper.fromMap(e as Map<String, dynamic>),
+              )
               .toList(),
         ),
       );

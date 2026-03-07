@@ -23,6 +23,23 @@ void main() {
       price: 500,
       groupId: groupId,
     );
+    const testModifierGroups = [
+      ModifierGroup(
+        id: 'mg-size',
+        name: 'Size',
+        appliesToGroupIds: [groupId],
+        required: true,
+        defaultOptionId: 'size-tall',
+        options: [
+          ModifierOption(id: 'size-tall', name: 'Tall'),
+          ModifierOption(
+            id: 'size-grande',
+            name: 'Grande',
+            priceDeltaCents: 50,
+          ),
+        ],
+      ),
+    ];
 
     setUp(() {
       itemDetailBloc = _MockItemDetailBloc();
@@ -47,24 +64,44 @@ void main() {
 
     testWidgets('renders item detail split pane on success', (tester) async {
       when(() => itemDetailBloc.state).thenReturn(
-        const ItemDetailState(item: item, status: ItemDetailStatus.idle),
+        const ItemDetailState(
+          item: item,
+          status: ItemDetailStatus.idle,
+          applicableModifierGroups: testModifierGroups,
+          selectedModifiers: {
+            'mg-size': ['size-tall'],
+          },
+        ),
       );
 
       await tester.pumpApp(buildSubject(), goRouter: goRouter);
 
       expect(find.text('Latte'), findsAtLeast(1));
       expect(find.text('Size'), findsOneWidget);
-      expect(find.text('Milk'), findsOneWidget);
     });
 
     testWidgets('navigates to groupId route on added status', (tester) async {
       when(() => itemDetailBloc.state).thenReturn(
-        const ItemDetailState(item: item, status: ItemDetailStatus.idle),
+        const ItemDetailState(
+          item: item,
+          status: ItemDetailStatus.idle,
+          applicableModifierGroups: testModifierGroups,
+          selectedModifiers: {
+            'mg-size': ['size-tall'],
+          },
+        ),
       );
       whenListen(
         itemDetailBloc,
         Stream.value(
-          const ItemDetailState(item: item, status: ItemDetailStatus.added),
+          const ItemDetailState(
+            item: item,
+            status: ItemDetailStatus.added,
+            applicableModifierGroups: testModifierGroups,
+            selectedModifiers: {
+              'mg-size': ['size-tall'],
+            },
+          ),
         ),
       );
 
