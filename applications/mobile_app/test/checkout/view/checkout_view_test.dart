@@ -99,6 +99,29 @@ void main() {
         verify(() => bloc.add(const CheckoutConfirmed())).called(1);
       });
 
+      testWidgets('renders customer name field with placeholder', (
+        tester,
+      ) async {
+        await tester.pumpApp(buildSubject());
+
+        expect(find.text('Your name (optional)'), findsOneWidget);
+        expect(find.byType(TextField), findsOneWidget);
+      });
+
+      testWidgets('dispatches CheckoutConfirmed with customer name', (
+        tester,
+      ) async {
+        await tester.pumpApp(buildSubject());
+
+        await tester.enterText(find.byType(TextField), 'Marcus');
+        await tester.tap(find.textContaining('Place Order'));
+        await tester.pump();
+
+        verify(
+          () => bloc.add(const CheckoutConfirmed(customerName: 'Marcus')),
+        ).called(1);
+      });
+
       testWidgets('back arrow navigates to /menu/cart', (tester) async {
         final goRouter = MockGoRouter();
         await tester.pumpApp(buildSubject(), goRouter: goRouter);

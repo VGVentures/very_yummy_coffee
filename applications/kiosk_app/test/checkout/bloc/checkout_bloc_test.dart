@@ -99,14 +99,46 @@ void main() {
       );
 
       blocTest<CheckoutBloc, CheckoutState>(
-        'emits [submitting, failure] on error',
+        'calls updateNameOnCurrentOrder before submit when name is provided',
         build: () {
           when(
             () => orderRepository.currentOrderStream,
           ).thenAnswer((_) => const Stream.empty());
+          when(() => orderRepository.submitCurrentOrder()).thenReturn(null);
           when(
-            () => orderRepository.submitCurrentOrder(),
-          ).thenThrow(Exception('error'));
+            () => orderRepository.updateNameOnCurrentOrder(any()),
+          ).thenAnswer((_) async {});
+          return CheckoutBloc(orderRepository: orderRepository);
+        },
+        seed: () =>
+            const CheckoutState(status: CheckoutStatus.idle, order: order),
+        act: (bloc) =>
+            bloc.add(const CheckoutConfirmed(customerName: 'Marcus')),
+        expect: () => [
+          const CheckoutState(
+            status: CheckoutStatus.submitting,
+            order: order,
+          ),
+          const CheckoutState(
+            status: CheckoutStatus.success,
+            order: order,
+          ),
+        ],
+        verify: (_) {
+          verify(
+            () => orderRepository.updateNameOnCurrentOrder('Marcus'),
+          ).called(1);
+          verify(() => orderRepository.submitCurrentOrder()).called(1);
+        },
+      );
+
+      blocTest<CheckoutBloc, CheckoutState>(
+        'skips updateNameOnCurrentOrder when name is empty',
+        build: () {
+          when(
+            () => orderRepository.currentOrderStream,
+          ).thenAnswer((_) => const Stream.empty());
+          when(() => orderRepository.submitCurrentOrder()).thenReturn(null);
           return CheckoutBloc(orderRepository: orderRepository);
         },
         seed: () =>
@@ -118,10 +150,16 @@ void main() {
             order: order,
           ),
           const CheckoutState(
-            status: CheckoutStatus.failure,
+            status: CheckoutStatus.success,
             order: order,
           ),
         ],
+        verify: (_) {
+          verifyNever(
+            () => orderRepository.updateNameOnCurrentOrder(any()),
+          );
+          verify(() => orderRepository.submitCurrentOrder()).called(1);
+        },
       );
     });
   });

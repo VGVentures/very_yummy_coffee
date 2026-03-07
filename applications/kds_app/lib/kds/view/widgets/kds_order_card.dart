@@ -69,6 +69,17 @@ class KdsOrderCard extends StatelessWidget {
                 ),
               ],
             ),
+            if (order.customerName case final name? when name.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: spacing.xs),
+                child: Text(
+                  name,
+                  style: typography.body.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: colors.foreground,
+                  ),
+                ),
+              ),
             SizedBox(height: spacing.sm),
             // Line items
             ...order.items.map(

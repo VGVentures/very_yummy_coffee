@@ -21,6 +21,12 @@ final class OrderTicketClearRequested extends OrderTicketEvent {
   const OrderTicketClearRequested();
 }
 
+final class OrderTicketCustomerNameChanged extends OrderTicketEvent {
+  const OrderTicketCustomerNameChanged(this.name);
+
+  final String name;
+}
+
 final class OrderTicketItemRemoved extends OrderTicketEvent {
   const OrderTicketItemRemoved(this.lineItemId);
 

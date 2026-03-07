@@ -92,6 +92,12 @@ class OrderMapper extends ClassMapperBase<Order> {
   static const Field<Order, List<LineItem>> _f$items = Field('items', _$items);
   static OrderStatus _$status(Order v) => v.status;
   static const Field<Order, OrderStatus> _f$status = Field('status', _$status);
+  static String? _$customerName(Order v) => v.customerName;
+  static const Field<Order, String> _f$customerName = Field(
+    'customerName',
+    _$customerName,
+    opt: true,
+  );
   static DateTime? _$submittedAt(Order v) => v.submittedAt;
   static const Field<Order, DateTime> _f$submittedAt = Field(
     'submittedAt',
@@ -104,6 +110,7 @@ class OrderMapper extends ClassMapperBase<Order> {
     #id: _f$id,
     #items: _f$items,
     #status: _f$status,
+    #customerName: _f$customerName,
     #submittedAt: _f$submittedAt,
   };
 
@@ -112,6 +119,7 @@ class OrderMapper extends ClassMapperBase<Order> {
       id: data.dec(_f$id),
       items: data.dec(_f$items),
       status: data.dec(_f$status),
+      customerName: data.dec(_f$customerName),
       submittedAt: data.dec(_f$submittedAt),
     );
   }
@@ -168,6 +176,7 @@ abstract class OrderCopyWith<$R, $In extends Order, $Out>
     String? id,
     List<LineItem>? items,
     OrderStatus? status,
+    String? customerName,
     DateTime? submittedAt,
   });
   OrderCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -191,12 +200,14 @@ class _OrderCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Order, $Out>
     String? id,
     List<LineItem>? items,
     OrderStatus? status,
+    Object? customerName = $none,
     Object? submittedAt = $none,
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
       if (items != null) #items: items,
       if (status != null) #status: status,
+      if (customerName != $none) #customerName: customerName,
       if (submittedAt != $none) #submittedAt: submittedAt,
     }),
   );
@@ -205,6 +216,7 @@ class _OrderCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Order, $Out>
     id: data.get(#id, or: $value.id),
     items: data.get(#items, or: $value.items),
     status: data.get(#status, or: $value.status),
+    customerName: data.get(#customerName, or: $value.customerName),
     submittedAt: data.get(#submittedAt, or: $value.submittedAt),
   );
 

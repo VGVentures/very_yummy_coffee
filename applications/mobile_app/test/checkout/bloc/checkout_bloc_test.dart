@@ -121,6 +121,64 @@ void main() {
           () => orderRepository.submitCurrentOrder(),
         ).called(1),
       );
+
+      blocTest<CheckoutBloc, CheckoutState>(
+        'calls updateNameOnCurrentOrder before submit when name is provided',
+        build: () {
+          when(
+            () => orderRepository.updateNameOnCurrentOrder(any()),
+          ).thenAnswer((_) async {});
+          return buildBloc();
+        },
+        seed: () => const CheckoutState(
+          order: _testOrder,
+          status: CheckoutStatus.idle,
+        ),
+        act: (bloc) =>
+            bloc.add(const CheckoutConfirmed(customerName: 'Marcus')),
+        expect: () => [
+          const CheckoutState(
+            order: _testOrder,
+            status: CheckoutStatus.submitting,
+          ),
+          const CheckoutState(
+            order: _testOrder,
+            status: CheckoutStatus.success,
+          ),
+        ],
+        verify: (_) {
+          verify(
+            () => orderRepository.updateNameOnCurrentOrder('Marcus'),
+          ).called(1);
+          verify(() => orderRepository.submitCurrentOrder()).called(1);
+        },
+      );
+
+      blocTest<CheckoutBloc, CheckoutState>(
+        'skips updateNameOnCurrentOrder when name is empty',
+        build: buildBloc,
+        seed: () => const CheckoutState(
+          order: _testOrder,
+          status: CheckoutStatus.idle,
+        ),
+        act: (bloc) => bloc.add(const CheckoutConfirmed()),
+        expect: () => [
+          const CheckoutState(
+            order: _testOrder,
+            status: CheckoutStatus.submitting,
+          ),
+          const CheckoutState(
+            order: _testOrder,
+            status: CheckoutStatus.success,
+          ),
+        ],
+        verify: (_) {
+          verifyNever(
+            () => orderRepository.updateNameOnCurrentOrder(any()),
+          );
+          verify(() => orderRepository.submitCurrentOrder()).called(1);
+        },
+      );
     });
   });
 }

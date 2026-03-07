@@ -88,6 +88,13 @@ class _SuccessHeroPanel extends StatelessWidget {
     final radius = context.radius;
     final l10n = context.l10n;
 
+    final String title;
+    if (order.customerName case final name? when name.isNotEmpty) {
+      title = l10n.kioskOrderPlacedTitlePersonalized(name);
+    } else {
+      title = l10n.kioskOrderPlacedTitle;
+    }
+
     return SizedBox(
       width: 520,
       child: DecoratedBox(
@@ -110,7 +117,7 @@ class _SuccessHeroPanel extends StatelessWidget {
             ),
             SizedBox(height: spacing.xxl),
             Text(
-              l10n.kioskOrderPlacedTitle,
+              title,
               style: typography.headline.copyWith(
                 fontSize: 32,
                 color: colors.primaryForeground,
