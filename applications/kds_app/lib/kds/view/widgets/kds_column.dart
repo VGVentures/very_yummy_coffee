@@ -3,28 +3,31 @@ import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_kds_app/kds/view/widgets/kds_order_card.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
-/// A single column on the KDS display (NEW, IN PROGRESS, or READY).
+/// A single column on the KDS display (PENDING, NEW, IN PROGRESS, or READY).
 ///
 /// Renders a color-accented header with the column [label], followed by a
-/// scrollable list of [orders]. Each card shows an action button labeled
-/// [actionLabel] and triggers [onAction] / [onCancel] callbacks.
+/// scrollable list of [orders]. When [actionLabel], [onAction], and [onCancel]
+/// are provided, each card shows action buttons. When null (e.g. PENDING
+/// column), cards are read-only.
 class KdsColumn extends StatelessWidget {
   const KdsColumn({
     required this.orders,
     required this.accentColor,
     required this.label,
-    required this.actionLabel,
-    required this.onAction,
-    required this.onCancel,
+    this.actionLabel,
+    this.onAction,
+    this.onCancel,
+    this.cardOpacity,
     super.key,
   });
 
   final List<Order> orders;
   final Color accentColor;
   final String label;
-  final String actionLabel;
-  final void Function(String orderId) onAction;
-  final void Function(String orderId) onCancel;
+  final String? actionLabel;
+  final void Function(String orderId)? onAction;
+  final void Function(String orderId)? onCancel;
+  final double? cardOpacity;
 
   @override
   Widget build(BuildContext context) {
@@ -81,14 +84,18 @@ class KdsColumn extends StatelessWidget {
               itemCount: orders.length,
               itemBuilder: (context, index) {
                 final order = orders[index];
-                return KdsOrderCard(
+                Widget card = KdsOrderCard(
                   key: ValueKey(order.id),
                   order: order,
                   accentColor: accentColor,
                   actionLabel: actionLabel,
-                  onAction: () => onAction(order.id),
-                  onCancel: () => onCancel(order.id),
+                  onAction: onAction != null ? () => onAction!(order.id) : null,
+                  onCancel: onCancel != null ? () => onCancel!(order.id) : null,
                 );
+                if (cardOpacity != null) {
+                  card = Opacity(opacity: cardOpacity!, child: card);
+                }
+                return card;
               },
             ),
           ),

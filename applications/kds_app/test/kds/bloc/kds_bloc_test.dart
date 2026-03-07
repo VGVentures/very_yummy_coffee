@@ -42,6 +42,18 @@ final _readyOrder = Order(
   submittedAt: _submittedAt,
 );
 
+const _pendingOrder = Order(
+  id: 'order-4444',
+  items: [_testItem],
+  status: OrderStatus.pending,
+);
+
+const _emptyPendingOrder = Order(
+  id: 'order-5555',
+  items: [],
+  status: OrderStatus.pending,
+);
+
 void main() {
   group('KdsBloc', () {
     late OrderRepository orderRepository;
@@ -58,6 +70,7 @@ void main() {
       );
       final bloc = buildBloc();
       expect(bloc.state.status, KdsStatus.initial);
+      expect(bloc.state.pendingOrders, isEmpty);
       expect(bloc.state.newOrders, isEmpty);
       expect(bloc.state.inProgressOrders, isEmpty);
       expect(bloc.state.readyOrders, isEmpty);
@@ -69,7 +82,14 @@ void main() {
         build: () {
           when(() => orderRepository.ordersStream).thenAnswer(
             (_) => Stream.value(
-              Orders(orders: [_submittedOrder, _inProgressOrder, _readyOrder]),
+              Orders(
+                orders: [
+                  _pendingOrder,
+                  _submittedOrder,
+                  _inProgressOrder,
+                  _readyOrder,
+                ],
+              ),
             ),
           );
           return buildBloc();
@@ -79,11 +99,53 @@ void main() {
           const KdsState(status: KdsStatus.loading),
           KdsState(
             status: KdsStatus.success,
+            pendingOrders: [_pendingOrder],
             newOrders: [_submittedOrder],
             inProgressOrders: [_inProgressOrder],
             readyOrders: [_readyOrder],
           ),
         ],
+      );
+
+      blocTest<KdsBloc, KdsState>(
+        'pending order moves to newOrders when submitted',
+        build: () {
+          final submittedVersion = Order(
+            id: _pendingOrder.id,
+            items: _pendingOrder.items,
+            status: OrderStatus.submitted,
+            submittedAt: _submittedAt,
+          );
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => Stream.fromIterable([
+              const Orders(orders: [_pendingOrder]),
+              Orders(orders: [submittedVersion]),
+            ]),
+          );
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(const KdsSubscriptionRequested()),
+        verify: (bloc) {
+          expect(bloc.state.pendingOrders, isEmpty);
+          expect(bloc.state.newOrders, hasLength(1));
+          expect(bloc.state.newOrders.first.id, _pendingOrder.id);
+        },
+      );
+
+      blocTest<KdsBloc, KdsState>(
+        'excludes pending orders with no items',
+        build: () {
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => Stream.value(
+              const Orders(orders: [_emptyPendingOrder, _pendingOrder]),
+            ),
+          );
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(const KdsSubscriptionRequested()),
+        verify: (bloc) {
+          expect(bloc.state.pendingOrders, [_pendingOrder]);
+        },
       );
 
       blocTest<KdsBloc, KdsState>(

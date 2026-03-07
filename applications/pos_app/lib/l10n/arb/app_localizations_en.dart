@@ -84,6 +84,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ordersTitle => 'Orders';
 
   @override
+  String get ordersPendingTitle => 'Pending';
+
+  @override
   String get ordersActiveTitle => 'In Progress';
 
   @override

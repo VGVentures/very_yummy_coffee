@@ -106,6 +106,12 @@ abstract class AppLocalizations {
   /// **'Connecting to kitchen…'**
   String get connecting;
 
+  /// Header label for the PENDING orders column
+  ///
+  /// In en, this message translates to:
+  /// **'PENDING'**
+  String get columnPending;
+
   /// Header label for the NEW orders column
   ///
   /// In en, this message translates to:

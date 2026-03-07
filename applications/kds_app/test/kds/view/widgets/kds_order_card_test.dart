@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:order_repository/order_repository.dart';
+import 'package:very_yummy_coffee_kds_app/kds/view/widgets/kds_elapsed_widget.dart';
 import 'package:very_yummy_coffee_kds_app/kds/view/widgets/kds_order_card.dart';
 
 import '../../../helpers/pump_app.dart';
@@ -15,13 +16,18 @@ void main() {
       status: OrderStatus.submitted,
     );
 
-    Widget buildCard(Order order) {
+    Widget buildCard(
+      Order order, {
+      String? actionLabel = 'Start',
+      VoidCallback? onAction = _noop,
+      VoidCallback? onCancel = _noop,
+    }) {
       return KdsOrderCard(
         order: order,
         accentColor: Colors.orange,
-        actionLabel: 'Start',
-        onAction: () {},
-        onCancel: () {},
+        actionLabel: actionLabel,
+        onAction: onAction,
+        onCancel: onCancel,
       );
     }
 
@@ -47,5 +53,36 @@ void main() {
       // Verify the order number still renders
       expect(find.text(order.orderNumber), findsOneWidget);
     });
+
+    testWidgets(
+      'hides action buttons and elapsed widget when callbacks are null',
+      (tester) async {
+        await tester.pumpApp(
+          buildCard(
+            baseOrder,
+            actionLabel: null,
+            onAction: null,
+            onCancel: null,
+          ),
+        );
+
+        expect(find.byType(FilledButton), findsNothing);
+        expect(find.byType(TextButton), findsNothing);
+        expect(find.byType(KdsElapsedWidget), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'shows action buttons and elapsed widget when callbacks are provided',
+      (tester) async {
+        await tester.pumpApp(buildCard(baseOrder));
+
+        expect(find.byType(FilledButton), findsOneWidget);
+        expect(find.byType(TextButton), findsOneWidget);
+        expect(find.byType(KdsElapsedWidget), findsOneWidget);
+      },
+    );
   });
 }
+
+void _noop() {}
