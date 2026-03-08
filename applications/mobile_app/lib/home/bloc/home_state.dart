@@ -12,7 +12,7 @@ class HomeState with HomeStateMappable {
 
   final HomeStatus status;
 
-  /// Active orders only (pending, submitted, inProgress, ready). Completed and
+  /// Active orders only (submitted, inProgress, ready). Pending, completed, and
   /// cancelled are filtered out by [HomeBloc].
   final List<Order> orders;
 }

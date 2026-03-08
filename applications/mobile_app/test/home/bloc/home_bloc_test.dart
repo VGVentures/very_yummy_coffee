@@ -80,7 +80,7 @@ void main() {
         expect: () => [
           const HomeState(
             status: HomeStatus.success,
-            orders: [_pendingOrder, _submittedOrder],
+            orders: [_submittedOrder],
           ),
         ],
       );
@@ -124,7 +124,7 @@ void main() {
       );
 
       blocTest<HomeBloc, HomeState>(
-        'filters out completed and cancelled orders',
+        'filters out pending, completed, and cancelled orders',
         build: () {
           when(() => orderRepository.ordersStream).thenAnswer(
             (_) => Stream.value(
@@ -144,7 +144,7 @@ void main() {
         expect: () => [
           const HomeState(
             status: HomeStatus.success,
-            orders: [_pendingOrder, _submittedOrder],
+            orders: [_submittedOrder],
           ),
         ],
       );
@@ -184,9 +184,9 @@ void main() {
         build: () {
           when(() => orderRepository.ordersStream).thenAnswer(
             (_) => Stream.fromIterable([
-              const Orders(orders: [_pendingOrder]),
+              const Orders(orders: [_submittedOrder]),
               const Orders(
-                orders: [_pendingOrder, _submittedOrder],
+                orders: [_submittedOrder, _readyOrder],
               ),
             ]),
           );
@@ -196,11 +196,11 @@ void main() {
         expect: () => [
           const HomeState(
             status: HomeStatus.success,
-            orders: [_pendingOrder],
+            orders: [_submittedOrder],
           ),
           const HomeState(
             status: HomeStatus.success,
-            orders: [_pendingOrder, _submittedOrder],
+            orders: [_submittedOrder, _readyOrder],
           ),
         ],
       );
