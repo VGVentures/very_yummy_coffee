@@ -6,7 +6,7 @@ import 'package:very_yummy_coffee_kds_app/kds/view/widgets/kds_top_bar.dart';
 import 'package:very_yummy_coffee_kds_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
-/// The main KDS display: three columns (NEW, IN PROGRESS, READY) in a
+/// The main KDS display: four columns (PENDING, NEW, IN PROGRESS, READY) in a
 /// full-screen landscape layout.
 class KdsView extends StatelessWidget {
   const KdsView({super.key});
@@ -28,6 +28,14 @@ class KdsView extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Expanded(
+                      child: KdsColumn(
+                        orders: state.pendingOrders,
+                        accentColor: colors.statusNeutralForeground,
+                        label: l10n.columnPending,
+                        cardOpacity: 0.6,
+                      ),
+                    ),
                     Expanded(
                       child: KdsColumn(
                         orders: state.newOrders,

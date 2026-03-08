@@ -8,6 +8,10 @@
   "@connecting": {
     "description": "Message shown on the connecting screen"
   },
+  "columnPending": "PENDING",
+  "@columnPending": {
+    "description": "Header label for the PENDING orders column"
+  },
   "columnNew": "NEW",
   "@columnNew": {
     "description": "Header label for the NEW orders column"

@@ -12,17 +12,17 @@ class KdsOrderCard extends StatelessWidget {
   const KdsOrderCard({
     required this.order,
     required this.accentColor,
-    required this.actionLabel,
-    required this.onAction,
-    required this.onCancel,
+    this.actionLabel,
+    this.onAction,
+    this.onCancel,
     super.key,
   });
 
   final Order order;
   final Color accentColor;
-  final String actionLabel;
-  final VoidCallback onAction;
-  final VoidCallback onCancel;
+  final String? actionLabel;
+  final VoidCallback? onAction;
+  final VoidCallback? onCancel;
 
   @override
   Widget build(BuildContext context) {
@@ -58,15 +58,16 @@ class KdsOrderCard extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                DefaultTextStyle(
-                  style: typography.caption.copyWith(
-                    color: colors.mutedForeground,
+                if (onAction != null)
+                  DefaultTextStyle(
+                    style: typography.caption.copyWith(
+                      color: colors.mutedForeground,
+                    ),
+                    child: KdsElapsedWidget(
+                      submittedAt: order.submittedAt,
+                      isLiveTimer: order.status == OrderStatus.inProgress,
+                    ),
                   ),
-                  child: KdsElapsedWidget(
-                    submittedAt: order.submittedAt,
-                    isLiveTimer: order.status == OrderStatus.inProgress,
-                  ),
-                ),
               ],
             ),
             if (order.customerName case final name? when name.isNotEmpty)
@@ -106,28 +107,30 @@ class KdsOrderCard extends StatelessWidget {
                 );
               },
             ),
-            SizedBox(height: spacing.md),
-            // Action row: Cancel (left, muted) + primary action (right)
-            Row(
-              children: [
-                TextButton(
-                  onPressed: onCancel,
-                  style: TextButton.styleFrom(
-                    foregroundColor: colors.mutedForeground,
+            if (onAction != null && actionLabel != null) ...[
+              SizedBox(height: spacing.md),
+              // Action row: Cancel (left, muted) + primary action (right)
+              Row(
+                children: [
+                  TextButton(
+                    onPressed: onCancel,
+                    style: TextButton.styleFrom(
+                      foregroundColor: colors.mutedForeground,
+                    ),
+                    child: Text(l10n.actionCancel),
                   ),
-                  child: Text(l10n.actionCancel),
-                ),
-                const Spacer(),
-                FilledButton(
-                  onPressed: onAction,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: accentColor,
-                    foregroundColor: colors.primaryForeground,
+                  const Spacer(),
+                  FilledButton(
+                    onPressed: onAction,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: accentColor,
+                      foregroundColor: colors.primaryForeground,
+                    ),
+                    child: Text(actionLabel!),
                   ),
-                  child: Text(actionLabel),
-                ),
-              ],
-            ),
+                ],
+              ),
+            ],
           ],
         ),
       ),

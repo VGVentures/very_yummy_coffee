@@ -6,11 +6,13 @@ enum OrderHistoryStatus { loading, success, failure }
 class OrderHistoryState with OrderHistoryStateMappable {
   const OrderHistoryState({
     this.status = OrderHistoryStatus.loading,
+    this.pendingOrders = const [],
     this.activeOrders = const [],
     this.historyOrders = const [],
   });
 
   final OrderHistoryStatus status;
+  final List<Order> pendingOrders;
   final List<Order> activeOrders;
   final List<Order> historyOrders;
 }

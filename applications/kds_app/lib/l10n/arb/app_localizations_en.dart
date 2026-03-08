@@ -15,6 +15,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get connecting => 'Connecting to kitchen…';
 
   @override
+  String get columnPending => 'PENDING';
+
+  @override
   String get columnNew => 'NEW';
 
   @override

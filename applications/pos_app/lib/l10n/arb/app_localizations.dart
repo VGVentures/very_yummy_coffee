@@ -238,6 +238,12 @@ abstract class AppLocalizations {
   /// **'Orders'**
   String get ordersTitle;
 
+  /// Section title for pending orders still being built by customers
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get ordersPendingTitle;
+
   /// Section title for active/in-flight orders
   ///
   /// In en, this message translates to:

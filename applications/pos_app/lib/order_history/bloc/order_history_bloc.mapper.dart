@@ -30,6 +30,13 @@ class OrderHistoryStateMapper extends ClassMapperBase<OrderHistoryState> {
     opt: true,
     def: OrderHistoryStatus.loading,
   );
+  static List<Order> _$pendingOrders(OrderHistoryState v) => v.pendingOrders;
+  static const Field<OrderHistoryState, List<Order>> _f$pendingOrders = Field(
+    'pendingOrders',
+    _$pendingOrders,
+    opt: true,
+    def: const [],
+  );
   static List<Order> _$activeOrders(OrderHistoryState v) => v.activeOrders;
   static const Field<OrderHistoryState, List<Order>> _f$activeOrders = Field(
     'activeOrders',
@@ -48,6 +55,7 @@ class OrderHistoryStateMapper extends ClassMapperBase<OrderHistoryState> {
   @override
   final MappableFields<OrderHistoryState> fields = const {
     #status: _f$status,
+    #pendingOrders: _f$pendingOrders,
     #activeOrders: _f$activeOrders,
     #historyOrders: _f$historyOrders,
   };
@@ -55,6 +63,7 @@ class OrderHistoryStateMapper extends ClassMapperBase<OrderHistoryState> {
   static OrderHistoryState _instantiate(DecodingData data) {
     return OrderHistoryState(
       status: data.dec(_f$status),
+      pendingOrders: data.dec(_f$pendingOrders),
       activeOrders: data.dec(_f$activeOrders),
       historyOrders: data.dec(_f$historyOrders),
     );
@@ -131,10 +140,12 @@ abstract class OrderHistoryStateCopyWith<
   $Out
 >
     implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get pendingOrders;
   ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get activeOrders;
   ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get historyOrders;
   $R call({
     OrderHistoryStatus? status,
+    List<Order>? pendingOrders,
     List<Order>? activeOrders,
     List<Order>? historyOrders,
   });
@@ -152,6 +163,13 @@ class _OrderHistoryStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<OrderHistoryState> $mapper =
       OrderHistoryStateMapper.ensureInitialized();
   @override
+  ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get pendingOrders =>
+      ListCopyWith(
+        $value.pendingOrders,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(pendingOrders: v),
+      );
+  @override
   ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get activeOrders =>
       ListCopyWith(
         $value.activeOrders,
@@ -168,11 +186,13 @@ class _OrderHistoryStateCopyWithImpl<$R, $Out>
   @override
   $R call({
     OrderHistoryStatus? status,
+    List<Order>? pendingOrders,
     List<Order>? activeOrders,
     List<Order>? historyOrders,
   }) => $apply(
     FieldCopyWithData({
       if (status != null) #status: status,
+      if (pendingOrders != null) #pendingOrders: pendingOrders,
       if (activeOrders != null) #activeOrders: activeOrders,
       if (historyOrders != null) #historyOrders: historyOrders,
     }),
@@ -180,6 +200,7 @@ class _OrderHistoryStateCopyWithImpl<$R, $Out>
   @override
   OrderHistoryState $make(CopyWithData data) => OrderHistoryState(
     status: data.get(#status, or: $value.status),
+    pendingOrders: data.get(#pendingOrders, or: $value.pendingOrders),
     activeOrders: data.get(#activeOrders, or: $value.activeOrders),
     historyOrders: data.get(#historyOrders, or: $value.historyOrders),
   );

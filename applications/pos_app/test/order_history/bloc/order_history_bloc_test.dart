@@ -35,6 +35,11 @@ void main() {
   const tPendingOrder = Order(
     id: 'order-6',
     status: OrderStatus.pending,
+    items: [LineItem(id: 'li-p', name: 'Espresso', price: 350)],
+  );
+  const tEmptyPendingOrder = Order(
+    id: 'order-7',
+    status: OrderStatus.pending,
     items: [],
   );
 
@@ -79,10 +84,51 @@ void main() {
         expect: () => [
           const OrderHistoryState(
             status: OrderHistoryStatus.success,
+            pendingOrders: [tPendingOrder],
             activeOrders: [tSubmittedOrder, tInProgressOrder, tReadyOrder],
             historyOrders: [tCompletedOrder, tCancelledOrder],
           ),
         ],
+      );
+
+      blocTest<OrderHistoryBloc, OrderHistoryState>(
+        'pending order moves to activeOrders when submitted',
+        build: () {
+          const submittedVersion = Order(
+            id: 'order-6',
+            status: OrderStatus.submitted,
+            items: [],
+          );
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => Stream.fromIterable([
+              const Orders(orders: [tPendingOrder]),
+              const Orders(orders: [submittedVersion]),
+            ]),
+          );
+          return OrderHistoryBloc(orderRepository: orderRepository);
+        },
+        act: (bloc) => bloc.add(const OrderHistorySubscriptionRequested()),
+        verify: (bloc) {
+          expect(bloc.state.pendingOrders, isEmpty);
+          expect(bloc.state.activeOrders, hasLength(1));
+          expect(bloc.state.activeOrders.first.id, tPendingOrder.id);
+        },
+      );
+
+      blocTest<OrderHistoryBloc, OrderHistoryState>(
+        'excludes pending orders with no items',
+        build: () {
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => Stream.value(
+              const Orders(orders: [tEmptyPendingOrder, tPendingOrder]),
+            ),
+          );
+          return OrderHistoryBloc(orderRepository: orderRepository);
+        },
+        act: (bloc) => bloc.add(const OrderHistorySubscriptionRequested()),
+        verify: (bloc) {
+          expect(bloc.state.pendingOrders, [tPendingOrder]);
+        },
       );
 
       blocTest<OrderHistoryBloc, OrderHistoryState>(

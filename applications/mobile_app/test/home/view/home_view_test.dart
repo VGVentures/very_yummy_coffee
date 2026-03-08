@@ -11,16 +11,12 @@ import '../../helpers/helpers.dart';
 class _MockHomeBloc extends MockBloc<HomeEvent, HomeState>
     implements HomeBloc {}
 
+class _MockOrderRepository extends Mock implements OrderRepository {}
+
 const _testItem = LineItem(
   id: 'li-1',
   name: 'Espresso',
   price: 300,
-);
-
-const _pendingOrder = Order(
-  id: 'order-test-abcd',
-  items: [_testItem],
-  status: OrderStatus.pending,
 );
 
 const _submittedOrder = Order(
@@ -91,17 +87,17 @@ void main() {
       testWidgets('shows order cards when orders are present', (tester) async {
         const state = HomeState(
           status: HomeStatus.success,
-          orders: [_pendingOrder, _submittedOrder],
+          orders: [_submittedOrder, _readyOrder],
         );
         when(() => bloc.state).thenReturn(state);
         whenListen(bloc, Stream.value(state));
 
         await tester.pumpApp(buildSubject());
 
-        // Last 4 chars of 'order-test-abcd' → 'ABCD'
-        expect(find.textContaining('ABCD'), findsOneWidget);
         // Last 4 chars of 'order-test-5678' → '5678'
         expect(find.textContaining('5678'), findsOneWidget);
+        // Last 4 chars of 'order-test-9012' → '9012'
+        expect(find.textContaining('9012'), findsOneWidget);
       });
 
       testWidgets('shows Ready status pill for a ready order', (tester) async {
@@ -146,20 +142,26 @@ void main() {
         },
       );
 
-      testWidgets('shows Continue Order button when there is a pending order', (
-        tester,
-      ) async {
-        const state = HomeState(
-          status: HomeStatus.success,
-          orders: [_pendingOrder],
-        );
-        when(() => bloc.state).thenReturn(state);
-        whenListen(bloc, Stream.value(state));
+      testWidgets(
+        'shows Continue Order button when currentOrderId is set',
+        (tester) async {
+          const state = HomeState(status: HomeStatus.success);
+          when(() => bloc.state).thenReturn(state);
+          whenListen(bloc, Stream.value(state));
 
-        await tester.pumpApp(buildSubject());
+          final orderRepository = _MockOrderRepository();
+          when(
+            () => orderRepository.currentOrderId,
+          ).thenReturn('order-in-progress');
 
-        expect(find.text('Continue Order'), findsOneWidget);
-      });
+          await tester.pumpApp(
+            buildSubject(),
+            orderRepository: orderRepository,
+          );
+
+          expect(find.text('Continue Order'), findsOneWidget);
+        },
+      );
 
       testWidgets('tapping Start New Order navigates to /menu', (
         tester,

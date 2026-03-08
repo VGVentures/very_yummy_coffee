@@ -57,6 +57,47 @@ class _OrdersBody extends StatelessWidget {
               Row(
                 children: [
                   Text(
+                    l10n.ordersPendingTitle,
+                    style: typography.label.copyWith(color: colors.foreground),
+                  ),
+                  if (state.pendingOrders.isNotEmpty) ...[
+                    SizedBox(width: spacing.md),
+                    _CountBadge(count: state.pendingOrders.length),
+                  ],
+                ],
+              ),
+              SizedBox(height: spacing.lg),
+              if (state.pendingOrders.isEmpty)
+                Text(l10n.ordersEmpty, style: typography.muted)
+              else
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      for (int i = 0; i < state.pendingOrders.length; i++) ...[
+                        if (i > 0) SizedBox(width: spacing.lg),
+                        Opacity(
+                          opacity: 0.6,
+                          child: _ActiveOrderCard(
+                            order: state.pendingOrders[i],
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+        Divider(height: 1, thickness: 1, color: colors.border),
+        Padding(
+          padding: EdgeInsets.all(spacing.xxl),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
                     l10n.ordersActiveTitle,
                     style: typography.label.copyWith(color: colors.foreground),
                   ),

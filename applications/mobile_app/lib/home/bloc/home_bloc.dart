@@ -25,6 +25,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         final active = orders.orders
             .where(
               (o) =>
+                  o.status != OrderStatus.pending &&
                   o.status != OrderStatus.completed &&
                   o.status != OrderStatus.cancelled,
             )
