@@ -23,6 +23,11 @@ class OrderHistoryBloc extends Bloc<OrderHistoryEvent, OrderHistoryState> {
     await emit.forEach(
       _orderRepository.ordersStream,
       onData: (orders) {
+        final pending = orders.orders
+            .where(
+              (o) => o.status == OrderStatus.pending && o.items.isNotEmpty,
+            )
+            .toList();
         final active = orders.orders
             .where(
               (o) =>
@@ -40,6 +45,7 @@ class OrderHistoryBloc extends Bloc<OrderHistoryEvent, OrderHistoryState> {
             .toList();
         return state.copyWith(
           status: OrderHistoryStatus.success,
+          pendingOrders: pending,
           activeOrders: active,
           historyOrders: history,
         );

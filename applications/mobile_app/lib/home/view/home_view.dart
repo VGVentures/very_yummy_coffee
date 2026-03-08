@@ -43,11 +43,8 @@ class HomeView extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BlocSelector<HomeBloc, HomeState, bool>(
-        selector: (state) =>
-            state.orders.any((o) => o.status == OrderStatus.pending),
-        builder: (context, hasOrders) =>
-            _StartNewOrderBar(hasOrders: hasOrders),
+      bottomNavigationBar: _StartNewOrderBar(
+        hasCurrentOrder: context.read<OrderRepository>().currentOrderId != null,
       ),
     );
   }
@@ -275,9 +272,9 @@ class _ErrorState extends StatelessWidget {
 }
 
 class _StartNewOrderBar extends StatelessWidget {
-  const _StartNewOrderBar({required this.hasOrders});
+  const _StartNewOrderBar({required this.hasCurrentOrder});
 
-  final bool hasOrders;
+  final bool hasCurrentOrder;
 
   @override
   Widget build(BuildContext context) {
@@ -288,7 +285,7 @@ class _StartNewOrderBar extends StatelessWidget {
           vertical: context.spacing.lg,
         ),
         child: BaseButton(
-          label: hasOrders
+          label: hasCurrentOrder
               ? context.l10n.homeContinueOrderButton
               : context.l10n.homeStartNewOrderButton,
           onPressed: () => context.go(MenuGroupsPage.routeName),

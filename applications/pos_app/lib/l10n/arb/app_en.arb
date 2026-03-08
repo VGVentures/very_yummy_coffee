@@ -101,6 +101,10 @@
   "@ordersTitle": {
     "description": "Title for the orders list screen"
   },
+  "ordersPendingTitle": "Pending",
+  "@ordersPendingTitle": {
+    "description": "Section title for pending orders still being built by customers"
+  },
   "ordersActiveTitle": "In Progress",
   "@ordersActiveTitle": {
     "description": "Section title for active/in-flight orders"

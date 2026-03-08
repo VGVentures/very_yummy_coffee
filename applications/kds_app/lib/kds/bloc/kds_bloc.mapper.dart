@@ -85,6 +85,13 @@ class KdsStateMapper extends ClassMapperBase<KdsState> {
     opt: true,
     def: KdsStatus.initial,
   );
+  static List<Order> _$pendingOrders(KdsState v) => v.pendingOrders;
+  static const Field<KdsState, List<Order>> _f$pendingOrders = Field(
+    'pendingOrders',
+    _$pendingOrders,
+    opt: true,
+    def: const [],
+  );
   static List<Order> _$newOrders(KdsState v) => v.newOrders;
   static const Field<KdsState, List<Order>> _f$newOrders = Field(
     'newOrders',
@@ -110,6 +117,7 @@ class KdsStateMapper extends ClassMapperBase<KdsState> {
   @override
   final MappableFields<KdsState> fields = const {
     #status: _f$status,
+    #pendingOrders: _f$pendingOrders,
     #newOrders: _f$newOrders,
     #inProgressOrders: _f$inProgressOrders,
     #readyOrders: _f$readyOrders,
@@ -118,6 +126,7 @@ class KdsStateMapper extends ClassMapperBase<KdsState> {
   static KdsState _instantiate(DecodingData data) {
     return KdsState(
       status: data.dec(_f$status),
+      pendingOrders: data.dec(_f$pendingOrders),
       newOrders: data.dec(_f$newOrders),
       inProgressOrders: data.dec(_f$inProgressOrders),
       readyOrders: data.dec(_f$readyOrders),
@@ -181,11 +190,13 @@ extension KdsStateValueCopy<$R, $Out> on ObjectCopyWith<$R, KdsState, $Out> {
 
 abstract class KdsStateCopyWith<$R, $In extends KdsState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
+  ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get pendingOrders;
   ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get newOrders;
   ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get inProgressOrders;
   ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get readyOrders;
   $R call({
     KdsStatus? status,
+    List<Order>? pendingOrders,
     List<Order>? newOrders,
     List<Order>? inProgressOrders,
     List<Order>? readyOrders,
@@ -201,6 +212,13 @@ class _KdsStateCopyWithImpl<$R, $Out>
   @override
   late final ClassMapperBase<KdsState> $mapper =
       KdsStateMapper.ensureInitialized();
+  @override
+  ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get pendingOrders =>
+      ListCopyWith(
+        $value.pendingOrders,
+        (v, t) => v.copyWith.$chain(t),
+        (v) => call(pendingOrders: v),
+      );
   @override
   ListCopyWith<$R, Order, OrderCopyWith<$R, Order, Order>> get newOrders =>
       ListCopyWith(
@@ -225,12 +243,14 @@ class _KdsStateCopyWithImpl<$R, $Out>
   @override
   $R call({
     KdsStatus? status,
+    List<Order>? pendingOrders,
     List<Order>? newOrders,
     List<Order>? inProgressOrders,
     List<Order>? readyOrders,
   }) => $apply(
     FieldCopyWithData({
       if (status != null) #status: status,
+      if (pendingOrders != null) #pendingOrders: pendingOrders,
       if (newOrders != null) #newOrders: newOrders,
       if (inProgressOrders != null) #inProgressOrders: inProgressOrders,
       if (readyOrders != null) #readyOrders: readyOrders,
@@ -239,6 +259,7 @@ class _KdsStateCopyWithImpl<$R, $Out>
   @override
   KdsState $make(CopyWithData data) => KdsState(
     status: data.get(#status, or: $value.status),
+    pendingOrders: data.get(#pendingOrders, or: $value.pendingOrders),
     newOrders: data.get(#newOrders, or: $value.newOrders),
     inProgressOrders: data.get(#inProgressOrders, or: $value.inProgressOrders),
     readyOrders: data.get(#readyOrders, or: $value.readyOrders),

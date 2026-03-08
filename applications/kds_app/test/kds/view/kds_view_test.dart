@@ -46,9 +46,9 @@ void main() {
       kdsBloc = _MockKdsBloc();
     });
 
-    // KDS is a landscape 3-column layout — tests need a wide viewport.
+    // KDS is a landscape 4-column layout — tests need a wide viewport.
     void setLandscapeSize(WidgetTester tester) {
-      tester.view.physicalSize = const Size(1280, 800);
+      tester.view.physicalSize = const Size(1600, 800);
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.resetPhysicalSize);
       addTearDown(tester.view.resetDevicePixelRatio);
@@ -59,13 +59,13 @@ void main() {
       child: const KdsView(),
     );
 
-    testWidgets('renders three KdsColumn widgets', (tester) async {
+    testWidgets('renders four KdsColumn widgets', (tester) async {
       setLandscapeSize(tester);
       when(() => kdsBloc.state).thenReturn(const KdsState());
 
       await tester.pumpApp(buildSubject());
 
-      expect(find.byType(KdsColumn), findsNWidgets(3));
+      expect(find.byType(KdsColumn), findsNWidgets(4));
     });
 
     testWidgets('renders column labels from localization', (tester) async {
@@ -75,6 +75,7 @@ void main() {
       await tester.pumpApp(buildSubject());
 
       final l10n = tester.l10n;
+      expect(find.text(l10n.columnPending), findsOneWidget);
       expect(find.text(l10n.columnNew), findsOneWidget);
       expect(find.text(l10n.columnInProgress), findsOneWidget);
       expect(find.text(l10n.columnReady), findsOneWidget);

@@ -45,6 +45,11 @@ class KdsBloc extends Bloc<KdsEvent, KdsState> {
 
         return state.copyWith(
           status: KdsStatus.success,
+          pendingOrders: orders.orders
+              .where(
+                (o) => o.status == OrderStatus.pending && o.items.isNotEmpty,
+              )
+              .toList(),
           newOrders: sorted
               .where((o) => o.status == OrderStatus.submitted)
               .toList(),
