@@ -6,6 +6,7 @@ import 'package:connection_repository/connection_repository.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:menu_repository/menu_repository.dart';
+import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_menu_board_app/app/app.dart';
 
 void main() {
@@ -29,6 +30,9 @@ void main() {
               ),
               RepositoryProvider(
                 create: (_) => MenuRepository(wsRpcClient: wsRpcClient),
+              ),
+              RepositoryProvider(
+                create: (_) => OrderRepository(wsRpcClient: wsRpcClient),
               ),
             ],
             child: const App(),

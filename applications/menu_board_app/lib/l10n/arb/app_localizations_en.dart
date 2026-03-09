@@ -19,4 +19,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failedToLoadMenu => 'Failed to load menu.';
+
+  @override
+  String get orderStatusPreparing => 'Preparing';
+
+  @override
+  String get orderStatusReady => 'Ready for Pickup';
+
+  @override
+  String orderStatusMoreCount(int count) {
+    return '+$count more';
+  }
 }

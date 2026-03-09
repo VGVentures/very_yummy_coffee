@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:menu_repository/menu_repository.dart';
 import 'package:very_yummy_coffee_menu_board_app/app/app.dart';
 import 'package:very_yummy_coffee_menu_board_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_menu_board_app/menu_display/bloc/menu_display_bloc.dart';
 import 'package:very_yummy_coffee_menu_board_app/menu_display/view/widgets/featured_item_panel.dart';
 import 'package:very_yummy_coffee_menu_board_app/menu_display/view/widgets/menu_column.dart';
+import 'package:very_yummy_coffee_menu_board_app/order_status/order_status.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class MenuDisplayView extends StatelessWidget {
@@ -72,9 +74,9 @@ class MenuDisplayView extends StatelessWidget {
                     if (state.groups.isNotEmpty)
                       SizedBox(
                         width: _featuredPanelWidth,
-                        child: FeaturedItemPanel(
-                          group: state.groups.last,
-                          item: state.featuredRight,
+                        child: _RightPanel(
+                          lastGroup: state.groups.last,
+                          featuredRight: state.featuredRight,
                         ),
                       ),
                   ],
@@ -84,6 +86,49 @@ class MenuDisplayView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _RightPanel extends StatelessWidget {
+  const _RightPanel({
+    required this.lastGroup,
+    required this.featuredRight,
+  });
+
+  final MenuGroup lastGroup;
+  final MenuItem? featuredRight;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<OrderStatusBloc, OrderStatusState>(
+      builder: (context, orderState) {
+        final hasOrders =
+            orderState.inProgressOrders.isNotEmpty ||
+            orderState.readyOrders.isNotEmpty;
+
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          layoutBuilder: (currentChild, previousChildren) {
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                ...previousChildren,
+                ?currentChild,
+              ],
+            );
+          },
+          child: hasOrders
+              ? const OrderStatusPanel(
+                  key: ValueKey('order_status'),
+                )
+              : FeaturedItemPanel(
+                  key: const ValueKey('featured'),
+                  group: lastGroup,
+                  item: featuredRight,
+                ),
+        );
+      },
     );
   }
 }

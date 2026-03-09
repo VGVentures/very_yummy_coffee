@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:menu_repository/menu_repository.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_menu_board_app/app/app.dart';
 import 'package:very_yummy_coffee_menu_board_app/l10n/arb/app_localizations.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
@@ -15,6 +16,8 @@ import 'go_router.dart';
 class _MockAppBloc extends MockBloc<AppEvent, AppState> implements AppBloc {}
 
 class _MockMenuRepository extends Mock implements MenuRepository {}
+
+class _MockOrderRepository extends Mock implements OrderRepository {}
 
 AppBloc _defaultAppBloc() {
   final bloc = _MockAppBloc();
@@ -30,12 +33,16 @@ extension AppTester on WidgetTester {
     AppBloc? appBloc,
     GoRouter? goRouter,
     MenuRepository? menuRepository,
+    OrderRepository? orderRepository,
   }) async {
     await pumpWidget(
       MultiRepositoryProvider(
         providers: [
           RepositoryProvider<MenuRepository>.value(
             value: menuRepository ?? _MockMenuRepository(),
+          ),
+          RepositoryProvider<OrderRepository>.value(
+            value: orderRepository ?? _MockOrderRepository(),
           ),
         ],
         child: MultiBlocProvider(
