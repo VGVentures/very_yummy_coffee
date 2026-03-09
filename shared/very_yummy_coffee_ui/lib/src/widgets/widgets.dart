@@ -4,6 +4,7 @@ export 'buttons/buttons.dart';
 export 'coffee_card.dart';
 export 'modifier_group_selector.dart';
 export 'modifier_summary_chips.dart';
+export 'order_status_card.dart';
 export 'order_step_tracker.dart';
 export 'out_of_stock_badge.dart';
 export 'unavailable_overlay.dart';

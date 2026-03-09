@@ -15,5 +15,22 @@
   "failedToLoadMenu": "Failed to load menu.",
   "@failedToLoadMenu": {
     "description": "Error message shown when the menu fails to load"
+  },
+  "orderStatusPreparing": "Preparing",
+  "@orderStatusPreparing": {
+    "description": "Section header for orders being prepared"
+  },
+  "orderStatusReady": "Ready for Pickup",
+  "@orderStatusReady": {
+    "description": "Section header for orders ready for pickup"
+  },
+  "orderStatusMoreCount": "+{count} more",
+  "@orderStatusMoreCount": {
+    "description": "Indicator for additional orders beyond the visible cap",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }
