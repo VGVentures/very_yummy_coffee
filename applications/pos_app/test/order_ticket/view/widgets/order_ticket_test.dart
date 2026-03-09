@@ -22,7 +22,6 @@ const _testItem = LineItem(
   id: 'li-1',
   name: 'Espresso',
   price: 300,
-  quantity: 1,
   menuItemId: 'menu-1',
 );
 

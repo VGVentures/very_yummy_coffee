@@ -19,7 +19,7 @@ void main() {
         () => orderRepository.currentOrderStream,
       ).thenAnswer((_) => const Stream.empty());
       when(
-        () => menuRepository.getMenuGroupsAndItems(),
+        menuRepository.getMenuGroupsAndItems,
       ).thenAnswer((_) => const Stream.empty());
 
       await tester.pumpApp(

@@ -63,10 +63,10 @@ void main() {
         act: (bloc) => bloc.add(const StockManagementSubscriptionRequested()),
         expect: () => [
           const StockManagementState(status: StockManagementStatus.loading),
-          StockManagementState(
+          const StockManagementState(
             status: StockManagementStatus.success,
-            groups: const [tGroup],
-            items: const [tItem, tUnavailableItem],
+            groups: [tGroup],
+            items: [tItem, tUnavailableItem],
           ),
         ],
       );

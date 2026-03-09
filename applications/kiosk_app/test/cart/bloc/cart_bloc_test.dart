@@ -16,7 +16,12 @@ const _menuGroup = MenuGroup(
   color: 0xFF000000,
 );
 
-const _allAvailableMenu = (
+const ({
+  List<MenuGroup> groups,
+  List<MenuItem> items,
+  List<ModifierGroup> modifierGroups,
+})
+_allAvailableMenu = (
   groups: [_menuGroup],
   items: [
     MenuItem(id: 'menu-1', name: 'Latte', price: 500, groupId: 'g1'),
@@ -24,7 +29,12 @@ const _allAvailableMenu = (
   modifierGroups: <ModifierGroup>[],
 );
 
-const _menuWithUnavailable = (
+const ({
+  List<MenuGroup> groups,
+  List<MenuItem> items,
+  List<ModifierGroup> modifierGroups,
+})
+_menuWithUnavailable = (
   groups: [_menuGroup],
   items: [
     MenuItem(
