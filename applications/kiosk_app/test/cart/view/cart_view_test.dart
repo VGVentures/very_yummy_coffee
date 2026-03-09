@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_kiosk_app/cart/cart.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -60,6 +61,63 @@ void main() {
 
       expect(find.text('Your cart is empty'), findsOneWidget);
       expect(find.text('Browse Menu'), findsOneWidget);
+    });
+
+    testWidgets('shows OutOfStockBadge on unavailable item', (
+      tester,
+    ) async {
+      when(() => cartBloc.state).thenReturn(
+        const CartState(
+          status: CartStatus.success,
+          order: Order(
+            id: '1',
+            items: [
+              LineItem(
+                id: 'a',
+                name: 'Latte',
+                price: 500,
+                menuItemId: 'menu-1',
+              ),
+            ],
+            status: OrderStatus.pending,
+          ),
+          unavailableLineItemIds: ['a'],
+        ),
+      );
+
+      await tester.pumpApp(buildSubject(), goRouter: goRouter);
+
+      expect(find.byType(OutOfStockBadge), findsOneWidget);
+    });
+
+    testWidgets('shows warning when cart has unavailable items', (
+      tester,
+    ) async {
+      when(() => cartBloc.state).thenReturn(
+        const CartState(
+          status: CartStatus.success,
+          order: Order(
+            id: '1',
+            items: [
+              LineItem(
+                id: 'a',
+                name: 'Latte',
+                price: 500,
+                menuItemId: 'menu-1',
+              ),
+            ],
+            status: OrderStatus.pending,
+          ),
+          unavailableLineItemIds: ['a'],
+        ),
+      );
+
+      await tester.pumpApp(buildSubject(), goRouter: goRouter);
+
+      expect(
+        find.text('Remove unavailable items to proceed'),
+        findsOneWidget,
+      );
     });
 
     testWidgets('renders cart items on success', (tester) async {

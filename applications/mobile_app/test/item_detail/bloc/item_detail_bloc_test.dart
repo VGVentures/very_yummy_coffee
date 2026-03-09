@@ -259,6 +259,7 @@ void main() {
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
               modifiers: any(named: 'modifiers'),
+              menuItemId: any(named: 'menuItemId'),
             ),
           ).thenAnswer((_) async {});
           return buildBloc();
@@ -289,6 +290,7 @@ void main() {
               itemPrice: testItem.price,
               quantity: 1,
               modifiers: any(named: 'modifiers'),
+              menuItemId: any(named: 'menuItemId'),
             ),
           ).called(1);
         },
@@ -312,6 +314,7 @@ void main() {
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
               modifiers: any(named: 'modifiers'),
+              menuItemId: any(named: 'menuItemId'),
             ),
           ).thenAnswer((_) async {});
           return buildBloc();
@@ -324,8 +327,48 @@ void main() {
               itemPrice: testItem.price,
               quantity: 3,
               modifiers: any(named: 'modifiers'),
+              menuItemId: any(named: 'menuItemId'),
             ),
           ).called(1);
+        },
+      );
+
+      blocTest<ItemDetailBloc, ItemDetailState>(
+        'emits [failure] when item is unavailable',
+        seed: () => const ItemDetailState(
+          item: MenuItem(
+            id: itemId,
+            name: 'Flat White',
+            price: 550,
+            groupId: groupId,
+            available: false,
+          ),
+          status: ItemDetailStatus.idle,
+        ),
+        build: buildBloc,
+        act: (bloc) => bloc.add(const ItemDetailAddToCartRequested()),
+        expect: () => [
+          const ItemDetailState(
+            item: MenuItem(
+              id: itemId,
+              name: 'Flat White',
+              price: 550,
+              groupId: groupId,
+              available: false,
+            ),
+            status: ItemDetailStatus.failure,
+          ),
+        ],
+        verify: (_) {
+          verifyNever(
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              quantity: any(named: 'quantity'),
+              modifiers: any(named: 'modifiers'),
+              menuItemId: any(named: 'menuItemId'),
+            ),
+          );
         },
       );
 
@@ -346,6 +389,7 @@ void main() {
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
               modifiers: any(named: 'modifiers'),
+              menuItemId: any(named: 'menuItemId'),
             ),
           ).thenThrow(Exception('network error'));
           return buildBloc();

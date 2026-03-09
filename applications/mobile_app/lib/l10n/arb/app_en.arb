@@ -177,5 +177,13 @@
   "checkoutCustomerNameHint": "Your name (optional)",
   "@checkoutCustomerNameHint": {
     "description": "Placeholder hint for the customer name text field on the checkout screen"
+  },
+  "cartItemUnavailable": "Unavailable",
+  "@cartItemUnavailable": {
+    "description": "Badge label shown on cart line items that are no longer available"
+  },
+  "cartRemoveUnavailableToCheckout": "Remove unavailable items to proceed",
+  "@cartRemoveUnavailableToCheckout": {
+    "description": "Warning message shown when the cart contains unavailable items"
   }
 }

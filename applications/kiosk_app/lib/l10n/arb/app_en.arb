@@ -164,5 +164,13 @@
         "type": "String"
       }
     }
+  },
+  "cartItemUnavailable": "Unavailable",
+  "@cartItemUnavailable": {
+    "description": "Badge label shown on cart line items that are no longer available"
+  },
+  "cartRemoveUnavailableToCheckout": "Remove unavailable items to proceed",
+  "@cartRemoveUnavailableToCheckout": {
+    "description": "Warning message shown when the cart contains unavailable items"
   }
 }

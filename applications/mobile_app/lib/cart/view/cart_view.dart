@@ -56,8 +56,12 @@ class CartView extends StatelessWidget {
                         itemCount: order.items.length,
                         separatorBuilder: (_, _) =>
                             Divider(height: 1, color: context.colors.border),
-                        itemBuilder: (_, index) =>
-                            _CartItemCard(item: order.items[index]),
+                        itemBuilder: (_, index) => _CartItemCard(
+                          item: order.items[index],
+                          isUnavailable: state.unavailableLineItemIds.contains(
+                            order.items[index].id,
+                          ),
+                        ),
                       ),
                       _OrderSummaryCard(order: order),
                       SizedBox(height: context.spacing.xl),
@@ -65,7 +69,10 @@ class CartView extends StatelessWidget {
                   ),
                 ),
               ),
-              _CheckoutButton(order: order),
+              _CheckoutButton(
+                order: order,
+                hasUnavailableItems: state.hasUnavailableItems,
+              ),
             ],
           ),
         );
@@ -126,9 +133,13 @@ class _CartHeader extends StatelessWidget {
 }
 
 class _CartItemCard extends StatelessWidget {
-  const _CartItemCard({required this.item});
+  const _CartItemCard({
+    required this.item,
+    this.isUnavailable = false,
+  });
 
   final LineItem item;
+  final bool isUnavailable;
 
   @override
   Widget build(BuildContext context) {
@@ -161,7 +172,9 @@ class _CartItemCard extends StatelessWidget {
                     item.name,
                     style: context.typography.body.copyWith(
                       fontWeight: FontWeight.w600,
-                      color: context.colors.foreground,
+                      color: isUnavailable
+                          ? context.colors.mutedForeground
+                          : context.colors.foreground,
                     ),
                   ),
                   if (item.modifiers.isNotEmpty) ...[
@@ -171,6 +184,12 @@ class _CartItemCard extends StatelessWidget {
                       style: context.typography.small.copyWith(
                         color: context.colors.mutedForeground,
                       ),
+                    ),
+                  ],
+                  if (isUnavailable) ...[
+                    SizedBox(height: context.spacing.xs),
+                    OutOfStockBadge(
+                      label: context.l10n.cartItemUnavailable,
                     ),
                   ],
                   SizedBox(height: context.spacing.sm),
@@ -362,9 +381,13 @@ class _SummaryRow extends StatelessWidget {
 }
 
 class _CheckoutButton extends StatelessWidget {
-  const _CheckoutButton({required this.order});
+  const _CheckoutButton({
+    required this.order,
+    this.hasUnavailableItems = false,
+  });
 
   final Order order;
+  final bool hasUnavailableItems;
 
   @override
   Widget build(BuildContext context) {
@@ -373,9 +396,28 @@ class _CheckoutButton extends StatelessWidget {
       top: false,
       child: Padding(
         padding: EdgeInsets.all(context.spacing.xl),
-        child: BaseButton(
-          label: context.l10n.cartProceedToCheckout(total),
-          onPressed: () => context.go('/home/menu/cart/checkout'),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (hasUnavailableItems)
+              Padding(
+                padding: EdgeInsets.only(bottom: context.spacing.sm),
+                child: Text(
+                  context.l10n.cartRemoveUnavailableToCheckout,
+                  textAlign: TextAlign.center,
+                  style: context.typography.caption.copyWith(
+                    color: context.colors.destructive,
+                  ),
+                ),
+              ),
+            BaseButton(
+              label: context.l10n.cartProceedToCheckout(total),
+              onPressed: hasUnavailableItems
+                  ? null
+                  : () => context.go('/home/menu/cart/checkout'),
+            ),
+          ],
         ),
       ),
     );

@@ -40,5 +40,24 @@ void main() {
       expect(find.text('Americano'), findsOneWidget);
       expect(find.text(r'$4.00'), findsOneWidget);
     });
+
+    testWidgets('shows Not available for OOS featured item', (tester) async {
+      const oosItem = MenuItem(
+        id: 'i1',
+        name: 'Americano',
+        price: 400,
+        groupId: 'g1',
+        available: false,
+      );
+
+      await tester.pumpApp(
+        const FeaturedItemPanel(group: group, item: oosItem),
+      );
+
+      expect(find.text('Americano'), findsOneWidget);
+      expect(find.text('Not available'), findsOneWidget);
+      // Should not show the price pill
+      expect(find.text(r'$4.00'), findsNothing);
+    });
   });
 }

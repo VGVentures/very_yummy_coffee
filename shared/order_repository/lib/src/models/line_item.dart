@@ -13,6 +13,7 @@ class LineItem with LineItemMappable {
     required this.id,
     required this.name,
     required this.price,
+    this.menuItemId,
     this.modifiers = const [],
     this.quantity = 1,
   });
@@ -20,6 +21,7 @@ class LineItem with LineItemMappable {
   final String id;
   final String name;
   final int price;
+  final String? menuItemId;
   final List<SelectedModifier> modifiers;
   final int quantity;
 

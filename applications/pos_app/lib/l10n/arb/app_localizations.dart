@@ -345,6 +345,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Customer'**
   String get ordersColumnCustomer;
+
+  /// Label for the stock management navigation button
+  ///
+  /// In en, this message translates to:
+  /// **'Stock'**
+  String get posStockManagement;
+
+  /// Count of available items per group on stock management screen
+  ///
+  /// In en, this message translates to:
+  /// **'{available}/{total} in stock'**
+  String posStockItemCount(int available, int total);
+
+  /// Label shown on cart line items that are out of stock
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get cartItemUnavailable;
+
+  /// Warning text shown when cart contains out-of-stock items
+  ///
+  /// In en, this message translates to:
+  /// **'Remove unavailable items to proceed'**
+  String get cartRemoveUnavailableToCheckout;
 }
 
 class _AppLocalizationsDelegate

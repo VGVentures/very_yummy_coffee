@@ -156,6 +156,10 @@ class _DrinkInfoSection extends StatelessWidget {
                 color: context.colors.foreground,
               ),
             ),
+            if (!item.available) ...[
+              SizedBox(height: context.spacing.md),
+              const OutOfStockBadge(),
+            ],
           ],
         ),
       ),

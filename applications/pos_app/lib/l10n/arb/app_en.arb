@@ -172,5 +172,25 @@
   "ordersColumnCustomer": "Customer",
   "@ordersColumnCustomer": {
     "description": "Column header for customer name in the history table"
+  },
+  "posStockManagement": "Stock",
+  "@posStockManagement": {
+    "description": "Label for the stock management navigation button"
+  },
+  "posStockItemCount": "{available}/{total} in stock",
+  "@posStockItemCount": {
+    "description": "Count of available items per group on stock management screen",
+    "placeholders": {
+      "available": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "cartItemUnavailable": "Unavailable",
+  "@cartItemUnavailable": {
+    "description": "Label shown on cart line items that are out of stock"
+  },
+  "cartRemoveUnavailableToCheckout": "Remove unavailable items to proceed",
+  "@cartRemoveUnavailableToCheckout": {
+    "description": "Warning text shown when cart contains out-of-stock items"
   }
 }

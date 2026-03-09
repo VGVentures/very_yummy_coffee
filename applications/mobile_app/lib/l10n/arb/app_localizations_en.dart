@@ -143,4 +143,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get checkoutCustomerNameHint => 'Your name (optional)';
+
+  @override
+  String get cartItemUnavailable => 'Unavailable';
+
+  @override
+  String get cartRemoveUnavailableToCheckout =>
+      'Remove unavailable items to proceed';
 }

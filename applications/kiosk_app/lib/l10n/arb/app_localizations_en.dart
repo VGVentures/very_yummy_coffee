@@ -130,4 +130,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String kioskOrderPlacedTitlePersonalized(String name) {
     return 'Thanks, $name!';
   }
+
+  @override
+  String get cartItemUnavailable => 'Unavailable';
+
+  @override
+  String get cartRemoveUnavailableToCheckout =>
+      'Remove unavailable items to proceed';
 }

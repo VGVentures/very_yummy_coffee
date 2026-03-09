@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:menu_repository/menu_repository.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_mobile_app/cart/cart.dart';
 
@@ -18,6 +19,7 @@ class CartPage extends StatelessWidget {
     return BlocProvider(
       create: (_) => CartBloc(
         orderRepository: context.read<OrderRepository>(),
+        menuRepository: context.read<MenuRepository>(),
       )..add(const CartSubscriptionRequested()),
       child: const CartView(),
     );

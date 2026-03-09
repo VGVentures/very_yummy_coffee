@@ -29,6 +29,12 @@ class LineItemMapper extends ClassMapperBase<LineItem> {
   static const Field<LineItem, String> _f$name = Field('name', _$name);
   static int _$price(LineItem v) => v.price;
   static const Field<LineItem, int> _f$price = Field('price', _$price);
+  static String? _$menuItemId(LineItem v) => v.menuItemId;
+  static const Field<LineItem, String> _f$menuItemId = Field(
+    'menuItemId',
+    _$menuItemId,
+    opt: true,
+  );
   static List<SelectedModifier> _$modifiers(LineItem v) => v.modifiers;
   static const Field<LineItem, List<SelectedModifier>> _f$modifiers = Field(
     'modifiers',
@@ -49,6 +55,7 @@ class LineItemMapper extends ClassMapperBase<LineItem> {
     #id: _f$id,
     #name: _f$name,
     #price: _f$price,
+    #menuItemId: _f$menuItemId,
     #modifiers: _f$modifiers,
     #quantity: _f$quantity,
   };
@@ -58,6 +65,7 @@ class LineItemMapper extends ClassMapperBase<LineItem> {
       id: data.dec(_f$id),
       name: data.dec(_f$name),
       price: data.dec(_f$price),
+      menuItemId: data.dec(_f$menuItemId),
       modifiers: data.dec(_f$modifiers),
       quantity: data.dec(_f$quantity),
     );
@@ -130,6 +138,7 @@ abstract class LineItemCopyWith<$R, $In extends LineItem, $Out>
     String? id,
     String? name,
     int? price,
+    String? menuItemId,
     List<SelectedModifier>? modifiers,
     int? quantity,
   });
@@ -160,6 +169,7 @@ class _LineItemCopyWithImpl<$R, $Out>
     String? id,
     String? name,
     int? price,
+    Object? menuItemId = $none,
     List<SelectedModifier>? modifiers,
     int? quantity,
   }) => $apply(
@@ -167,6 +177,7 @@ class _LineItemCopyWithImpl<$R, $Out>
       if (id != null) #id: id,
       if (name != null) #name: name,
       if (price != null) #price: price,
+      if (menuItemId != $none) #menuItemId: menuItemId,
       if (modifiers != null) #modifiers: modifiers,
       if (quantity != null) #quantity: quantity,
     }),
@@ -176,6 +187,7 @@ class _LineItemCopyWithImpl<$R, $Out>
     id: data.get(#id, or: $value.id),
     name: data.get(#name, or: $value.name),
     price: data.get(#price, or: $value.price),
+    menuItemId: data.get(#menuItemId, or: $value.menuItemId),
     modifiers: data.get(#modifiers, or: $value.modifiers),
     quantity: data.get(#quantity, or: $value.quantity),
   );

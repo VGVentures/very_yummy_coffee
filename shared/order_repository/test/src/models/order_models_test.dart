@@ -65,6 +65,52 @@ void main() {
   });
 
   group('LineItem', () {
+    test('menuItemId defaults to null', () {
+      const item = LineItem(id: '1', name: 'Latte', price: 450);
+      expect(item.menuItemId, isNull);
+    });
+
+    test('menuItemId can be set', () {
+      const item = LineItem(
+        id: '1',
+        name: 'Latte',
+        price: 450,
+        menuItemId: '101',
+      );
+      expect(item.menuItemId, '101');
+    });
+
+    test('fromMap deserializes with menuItemId', () {
+      final item = LineItemMapper.fromMap(const {
+        'id': '1',
+        'name': 'Latte',
+        'price': 450,
+        'menuItemId': '101',
+      });
+      expect(item.menuItemId, '101');
+    });
+
+    test('fromMap deserializes without menuItemId (backward compat)', () {
+      final item = LineItemMapper.fromMap(const {
+        'id': '1',
+        'name': 'Latte',
+        'price': 450,
+      });
+      expect(item.menuItemId, isNull);
+    });
+
+    test('toMap/fromMap roundtrip with menuItemId', () {
+      const item = LineItem(
+        id: '1',
+        name: 'Latte',
+        price: 450,
+        menuItemId: '101',
+      );
+      final restored = LineItemMapper.fromMap(item.toMap());
+      expect(restored, equals(item));
+      expect(restored.menuItemId, '101');
+    });
+
     test('modifierPriceDelta returns 0 with no modifiers', () {
       const item = LineItem(id: '1', name: 'Latte', price: 450);
       expect(item.modifierPriceDelta, 0);

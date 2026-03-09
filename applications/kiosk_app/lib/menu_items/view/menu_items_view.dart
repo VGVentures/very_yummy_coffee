@@ -95,9 +95,7 @@ class _ItemCard extends StatelessWidget {
     final isAvailable = item.available;
 
     return GestureDetector(
-      onTap: isAvailable
-          ? () => context.go('/home/menu/$groupId/${item.id}')
-          : null,
+      onTap: () => context.go('/home/menu/$groupId/${item.id}'),
       child: Container(
         decoration: BoxDecoration(
           color: colors.card,
@@ -105,61 +103,56 @@ class _ItemCard extends StatelessWidget {
           border: Border.all(color: colors.border),
         ),
         clipBehavior: Clip.antiAlias,
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          colors.imagePlaceholder,
-                          colors.imagePlaceholder.withValues(alpha: 0.5),
-                        ],
-                      ),
+        child: UnavailableOverlay(
+          isUnavailable: !isAvailable,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        colors.imagePlaceholder,
+                        colors.imagePlaceholder.withValues(alpha: 0.5),
+                      ],
                     ),
-                    child: Center(
-                      child: Icon(
-                        Icons.local_cafe_outlined,
-                        size: 48,
-                        color: colors.primary.withValues(alpha: 0.4),
-                      ),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.local_cafe_outlined,
+                      size: 48,
+                      color: colors.primary.withValues(alpha: 0.4),
                     ),
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(spacing.lg),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item.name,
-                        style: typography.subtitle.copyWith(
-                          color: colors.foreground,
-                        ),
-                      ),
-                      SizedBox(height: spacing.xs),
-                      Text(
-                        '\$${(item.price / 100).toStringAsFixed(2)}',
-                        style: typography.body.copyWith(
-                          color: colors.primary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            if (!isAvailable)
-              Positioned.fill(
-                child: ColoredBox(color: colors.unavailableOverlay),
               ),
-          ],
+              Padding(
+                padding: EdgeInsets.all(spacing.lg),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      item.name,
+                      style: typography.subtitle.copyWith(
+                        color: colors.foreground,
+                      ),
+                    ),
+                    SizedBox(height: spacing.xs),
+                    Text(
+                      '\$${(item.price / 100).toStringAsFixed(2)}',
+                      style: typography.body.copyWith(
+                        color: colors.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

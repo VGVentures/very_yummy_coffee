@@ -57,6 +57,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         itemName: event.item.name,
         itemPrice: event.item.price,
         quantity: 1,
+        menuItemId: event.item.id,
         modifiers: event.modifiers,
       );
     } on Exception catch (_) {
