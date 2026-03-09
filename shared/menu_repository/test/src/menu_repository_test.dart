@@ -166,9 +166,9 @@ void main() {
       });
 
       test('sends updateMenuItemAvailability action with available false', () {
-        final repo = MenuRepository(wsRpcClient: wsRpcClient);
-
-        repo.setItemAvailability('101', available: false);
+        MenuRepository(
+          wsRpcClient: wsRpcClient,
+        ).setItemAvailability('101', available: false);
 
         verify(
           () => wsRpcClient.sendAction('updateMenuItemAvailability', {
@@ -179,9 +179,9 @@ void main() {
       });
 
       test('sends updateMenuItemAvailability action with available true', () {
-        final repo = MenuRepository(wsRpcClient: wsRpcClient);
-
-        repo.setItemAvailability('101', available: true);
+        MenuRepository(
+          wsRpcClient: wsRpcClient,
+        ).setItemAvailability('101', available: true);
 
         verify(
           () => wsRpcClient.sendAction('updateMenuItemAvailability', {
