@@ -117,6 +117,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load menu.'**
   String get failedToLoadMenu;
+
+  /// Section header for orders being prepared
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing'**
+  String get orderStatusPreparing;
+
+  /// Section header for orders ready for pickup
+  ///
+  /// In en, this message translates to:
+  /// **'Ready for Pickup'**
+  String get orderStatusReady;
+
+  /// Indicator for additional orders beyond the visible cap
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more'**
+  String orderStatusMoreCount(int count);
 }
 
 class _AppLocalizationsDelegate
