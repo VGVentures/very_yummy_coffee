@@ -109,6 +109,15 @@ class _RightPanel extends StatelessWidget {
 
         return AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
+          layoutBuilder: (currentChild, previousChildren) {
+            return Stack(
+              fit: StackFit.expand,
+              children: [
+                ...previousChildren,
+                ?currentChild,
+              ],
+            );
+          },
           child: hasOrders
               ? const OrderStatusPanel(
                   key: ValueKey('order_status'),

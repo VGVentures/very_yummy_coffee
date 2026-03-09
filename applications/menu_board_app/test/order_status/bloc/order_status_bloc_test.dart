@@ -83,7 +83,7 @@ void main() {
     );
 
     blocTest<OrderStatusBloc, OrderStatusState>(
-      'filters to only inProgress and ready orders',
+      'filters to only submitted, inProgress, and ready orders',
       build: () {
         when(() => orderRepository.ordersStream).thenAnswer(
           (_) => Stream.value(
@@ -106,7 +106,7 @@ void main() {
         const OrderStatusState(status: OrderStatusStatus.loading),
         OrderStatusState(
           status: OrderStatusStatus.success,
-          inProgressOrders: [inProgressOrder],
+          inProgressOrders: [inProgressOrder, submittedOrder],
           readyOrders: [readyOrder],
         ),
       ],

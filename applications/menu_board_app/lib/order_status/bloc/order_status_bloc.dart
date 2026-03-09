@@ -37,7 +37,11 @@ class OrderStatusBloc extends Bloc<OrderStatusEvent, OrderStatusState> {
         return state.copyWith(
           status: OrderStatusStatus.success,
           inProgressOrders: sorted
-              .where((o) => o.status == OrderStatus.inProgress)
+              .where(
+                (o) =>
+                    o.status == OrderStatus.submitted ||
+                    o.status == OrderStatus.inProgress,
+              )
               .toList(),
           readyOrders: sorted
               .where((o) => o.status == OrderStatus.ready)
