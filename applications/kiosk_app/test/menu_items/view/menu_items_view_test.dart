@@ -7,6 +7,7 @@ import 'package:menu_repository/menu_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:very_yummy_coffee_kiosk_app/menu_groups/menu_groups.dart';
 import 'package:very_yummy_coffee_kiosk_app/menu_items/menu_items.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -109,8 +110,49 @@ void main() {
       await tester.pumpApp(buildSubject(), goRouter: goRouter);
 
       expect(find.text('Latte'), findsOneWidget);
-      // Unavailable overlay is a ColoredBox on top
-      expect(find.byType(ColoredBox), findsWidgets);
+      expect(find.byType(UnavailableOverlay), findsOneWidget);
+    });
+
+    testWidgets('unavailable items remain tappable', (tester) async {
+      when(() => menuItemsBloc.state).thenReturn(
+        const MenuItemsState(
+          status: MenuItemsStatus.success,
+          menuItems: [
+            MenuItem(
+              id: '1',
+              name: 'Latte',
+              price: 500,
+              groupId: groupId,
+              available: false,
+            ),
+          ],
+        ),
+      );
+
+      await tester.pumpApp(buildSubject(), goRouter: goRouter);
+      await tester.tap(find.text('Latte'), warnIfMissed: false);
+
+      verify(() => goRouter.go('/home/menu/$groupId/1')).called(1);
+    });
+
+    testWidgets('does not show UnavailableOverlay for available items', (
+      tester,
+    ) async {
+      when(() => menuItemsBloc.state).thenReturn(
+        const MenuItemsState(
+          status: MenuItemsStatus.success,
+          menuItems: [
+            MenuItem(id: '1', name: 'Latte', price: 500, groupId: groupId),
+          ],
+        ),
+      );
+
+      await tester.pumpApp(buildSubject(), goRouter: goRouter);
+
+      final overlay = tester.widget<UnavailableOverlay>(
+        find.byType(UnavailableOverlay),
+      );
+      expect(overlay.isUnavailable, isFalse);
     });
   });
 }

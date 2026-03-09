@@ -37,8 +37,10 @@ class ItemDetailState with ItemDetailStateMappable {
     return (basePrice + modifierDelta) * quantity;
   }
 
-  /// Whether all required modifier groups have at least one selection.
+  /// Whether the item is available and all required modifier groups have
+  /// at least one selection.
   bool get canAddToCart {
+    if (item != null && !item!.available) return false;
     for (final group in applicableModifierGroups) {
       if (group.required) {
         final selectedIds = selectedModifiers[group.id] ?? [];

@@ -155,6 +155,7 @@ void main() {
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
+              menuItemId: any(named: 'menuItemId'),
             ),
           ).thenAnswer((_) async {});
           return MenuBloc(
@@ -170,6 +171,7 @@ void main() {
               itemName: tItem.name,
               itemPrice: tItem.price,
               quantity: 1,
+              menuItemId: tItem.id,
             ),
           ).called(1);
         },
@@ -186,6 +188,7 @@ void main() {
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
+              menuItemId: any(named: 'menuItemId'),
             ),
           ).thenThrow(Exception('network error'));
           return MenuBloc(
@@ -218,6 +221,7 @@ void main() {
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
+              menuItemId: any(named: 'menuItemId'),
             ),
           );
         },
@@ -244,6 +248,7 @@ void main() {
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
+              menuItemId: any(named: 'menuItemId'),
               modifiers: any(named: 'modifiers'),
             ),
           ).thenAnswer((_) async {});
@@ -262,6 +267,7 @@ void main() {
               itemName: tItem.name,
               itemPrice: tItem.price,
               quantity: 1,
+              menuItemId: tItem.id,
               modifiers: tModifiers,
             ),
           ).called(1);
@@ -292,6 +298,7 @@ void main() {
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
+              menuItemId: any(named: 'menuItemId'),
               modifiers: any(named: 'modifiers'),
             ),
           );
@@ -309,6 +316,7 @@ void main() {
               itemName: any(named: 'itemName'),
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
+              menuItemId: any(named: 'menuItemId'),
               modifiers: any(named: 'modifiers'),
             ),
           ).thenThrow(Exception('network error'));

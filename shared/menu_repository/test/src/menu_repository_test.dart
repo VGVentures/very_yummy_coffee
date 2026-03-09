@@ -99,6 +99,35 @@ void main() {
         wsController.add(menuPayload);
       });
 
+      test('emits updated availability when item toggled', () {
+        final repo = MenuRepository(wsRpcClient: wsRpcClient);
+
+        final updatedPayload = {
+          'groups': menuPayload['groups'],
+          'items': [
+            {
+              'id': itemId,
+              'name': 'Espresso',
+              'price': 300,
+              'groupId': groupId,
+              'available': false,
+            },
+          ],
+        };
+
+        expect(
+          repo.getMenuItem(groupId, itemId),
+          emitsInOrder([
+            isA<MenuItem>().having((i) => i.available, 'available', true),
+            isA<MenuItem>().having((i) => i.available, 'available', false),
+          ]),
+        );
+
+        wsController
+          ..add(menuPayload)
+          ..add(updatedPayload);
+      });
+
       test('emits updated item when stream emits again', () async {
         final repo = MenuRepository(wsRpcClient: wsRpcClient);
 
@@ -126,6 +155,40 @@ void main() {
         wsController
           ..add(menuPayload)
           ..add(updatedPayload);
+      });
+    });
+
+    group('setItemAvailability', () {
+      late WsRpcClient wsRpcClient;
+
+      setUp(() {
+        wsRpcClient = _MockWsRpcClient();
+      });
+
+      test('sends updateMenuItemAvailability action with available false', () {
+        MenuRepository(
+          wsRpcClient: wsRpcClient,
+        ).setItemAvailability('101', available: false);
+
+        verify(
+          () => wsRpcClient.sendAction('updateMenuItemAvailability', {
+            'itemId': '101',
+            'available': false,
+          }),
+        ).called(1);
+      });
+
+      test('sends updateMenuItemAvailability action with available true', () {
+        MenuRepository(
+          wsRpcClient: wsRpcClient,
+        ).setItemAvailability('101', available: true);
+
+        verify(
+          () => wsRpcClient.sendAction('updateMenuItemAvailability', {
+            'itemId': '101',
+            'available': true,
+          }),
+        ).called(1);
       });
     });
   });

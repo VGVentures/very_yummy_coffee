@@ -129,44 +129,50 @@ class _MenuItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: context.colors.card,
-        borderRadius: BorderRadius.circular(context.radius.large),
-        border: Border.all(color: context.colors.border),
-      ),
-      padding: EdgeInsets.all(context.spacing.xl),
-      child: Row(
-        children: [
-          Container(
-            width: context.iconSize.imageThumbnail,
-            height: context.iconSize.imageThumbnail,
-            decoration: BoxDecoration(
-              color: context.colors.imagePlaceholder,
-              borderRadius: BorderRadius.circular(context.radius.medium),
-            ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(context.radius.large),
+      child: UnavailableOverlay(
+        isUnavailable: !item.available,
+        child: Container(
+          decoration: BoxDecoration(
+            color: context.colors.card,
+            borderRadius: BorderRadius.circular(context.radius.large),
+            border: Border.all(color: context.colors.border),
           ),
-          SizedBox(width: context.spacing.lg),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  item.name,
-                  style: context.typography.subtitle.copyWith(
-                    color: context.colors.primary,
-                  ),
+          padding: EdgeInsets.all(context.spacing.xl),
+          child: Row(
+            children: [
+              Container(
+                width: context.iconSize.imageThumbnail,
+                height: context.iconSize.imageThumbnail,
+                decoration: BoxDecoration(
+                  color: context.colors.imagePlaceholder,
+                  borderRadius: BorderRadius.circular(context.radius.medium),
                 ),
-                SizedBox(height: context.spacing.xs),
-                Text(
-                  '\$${(item.price / 100).toStringAsFixed(2)}',
-                  style: context.typography.muted,
+              ),
+              SizedBox(width: context.spacing.lg),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      item.name,
+                      style: context.typography.subtitle.copyWith(
+                        color: context.colors.primary,
+                      ),
+                    ),
+                    SizedBox(height: context.spacing.xs),
+                    Text(
+                      '\$${(item.price / 100).toStringAsFixed(2)}',
+                      style: context.typography.muted,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

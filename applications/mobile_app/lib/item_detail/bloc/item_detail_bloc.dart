@@ -114,6 +114,7 @@ class ItemDetailBloc extends Bloc<ItemDetailEvent, ItemDetailState> {
         itemName: item.name,
         itemPrice: item.price,
         quantity: state.quantity,
+        menuItemId: item.id,
         modifiers: modifiers,
       );
       emit(state.copyWith(status: ItemDetailStatus.added));

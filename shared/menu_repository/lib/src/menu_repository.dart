@@ -98,6 +98,17 @@ class MenuRepository {
         .doOnCancel(_decrementMenuCount);
   });
 
+  /// Sets the availability of a menu item on the server.
+  ///
+  /// Sends an `updateMenuItemAvailability` WS action. The server will
+  /// broadcast the updated menu to all subscribed clients.
+  void setItemAvailability(String itemId, {required bool available}) {
+    _wsRpcClient.sendAction('updateMenuItemAvailability', {
+      'itemId': itemId,
+      'available': available,
+    });
+  }
+
   void _initMenuIfNeeded() {
     if (_menuSubject != null) return;
 

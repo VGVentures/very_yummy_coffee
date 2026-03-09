@@ -35,7 +35,7 @@ Real-time sync uses a single WebSocket endpoint at `GET /api/rpc` (`routes/api/r
 {"type": "unsubscribe", "topic": "menu"}
 {"type": "action", "action": "updateMenuItemAvailability", "payload": {"itemId": "101", "available": false}}
 {"type": "action", "action": "createOrder",         "payload": {"id": "<uuid>"}}
-{"type": "action", "action": "addItemToOrder",      "payload": {"orderId": "<uuid>", "lineItemId": "<uuid>", "itemName": "...", "itemPrice": 550}}
+{"type": "action", "action": "addItemToOrder",      "payload": {"orderId": "<uuid>", "lineItemId": "<uuid>", "itemName": "...", "itemPrice": 550, "menuItemId": "101"}}
 {"type": "action", "action": "removeItemFromOrder", "payload": {"orderId": "<uuid>", "lineItemId": "<uuid>"}}
 {"type": "action", "action": "completeOrder",       "payload": {"orderId": "<uuid>"}}
 {"type": "action", "action": "updateNameOnOrder",  "payload": {"orderId": "<uuid>", "customerName": "Marcus"}}

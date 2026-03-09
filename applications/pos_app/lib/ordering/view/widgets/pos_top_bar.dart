@@ -61,6 +61,13 @@ class PosTopBar extends StatelessWidget {
               ? []
               : [
                   TextButton(
+                    onPressed: () => context.go('/stock-management'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: colors.primaryForeground,
+                    ),
+                    child: Text(l10n.posStockManagement),
+                  ),
+                  TextButton(
                     onPressed: () => context.go('/order-history'),
                     style: TextButton.styleFrom(
                       foregroundColor: colors.primaryForeground,

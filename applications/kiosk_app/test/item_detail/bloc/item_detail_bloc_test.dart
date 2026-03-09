@@ -216,6 +216,7 @@ void main() {
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
               modifiers: any(named: 'modifiers'),
+              menuItemId: any(named: 'menuItemId'),
             ),
           ).thenAnswer((_) async {});
           return ItemDetailBloc(
@@ -270,6 +271,53 @@ void main() {
       );
 
       blocTest<ItemDetailBloc, ItemDetailState>(
+        'emits [failure] when item is unavailable',
+        build: () {
+          when(
+            () => menuRepository.getMenuGroupsAndItems(),
+          ).thenAnswer((_) => const Stream.empty());
+          return ItemDetailBloc(
+            menuRepository: menuRepository,
+            orderRepository: orderRepository,
+          );
+        },
+        seed: () => const ItemDetailState(
+          item: MenuItem(
+            id: itemId,
+            name: 'Latte',
+            price: 500,
+            groupId: groupId,
+            available: false,
+          ),
+          status: ItemDetailStatus.idle,
+        ),
+        act: (bloc) => bloc.add(const ItemDetailAddToCartRequested()),
+        expect: () => [
+          const ItemDetailState(
+            item: MenuItem(
+              id: itemId,
+              name: 'Latte',
+              price: 500,
+              groupId: groupId,
+              available: false,
+            ),
+            status: ItemDetailStatus.failure,
+          ),
+        ],
+        verify: (_) {
+          verifyNever(
+            () => orderRepository.addItemToCurrentOrder(
+              itemName: any(named: 'itemName'),
+              itemPrice: any(named: 'itemPrice'),
+              quantity: any(named: 'quantity'),
+              modifiers: any(named: 'modifiers'),
+              menuItemId: any(named: 'menuItemId'),
+            ),
+          );
+        },
+      );
+
+      blocTest<ItemDetailBloc, ItemDetailState>(
         'emits [adding, failure] on error',
         build: () {
           when(
@@ -281,6 +329,7 @@ void main() {
               itemPrice: any(named: 'itemPrice'),
               quantity: any(named: 'quantity'),
               modifiers: any(named: 'modifiers'),
+              menuItemId: any(named: 'menuItemId'),
             ),
           ).thenThrow(Exception('error'));
           return ItemDetailBloc(

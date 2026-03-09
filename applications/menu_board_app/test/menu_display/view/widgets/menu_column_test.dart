@@ -43,5 +43,32 @@ void main() {
 
       expect(tester.takeException(), isNull);
     });
+
+    testWidgets('shows Not available for OOS item instead of price', (
+      tester,
+    ) async {
+      const oosItem = MenuItem(
+        id: 'i2',
+        name: 'Latte',
+        price: 500,
+        groupId: 'g1',
+        available: false,
+      );
+
+      await tester.pumpApp(
+        const MenuColumn(
+          groupEntries: [
+            (group, [item, oosItem]),
+          ],
+        ),
+      );
+
+      expect(find.text('Americano'), findsOneWidget);
+      expect(find.text(r'$4.00'), findsOneWidget);
+      expect(find.text('Latte'), findsOneWidget);
+      expect(find.text('Not available'), findsOneWidget);
+      // OOS item should not show its price
+      expect(find.text(r'$5.00'), findsNothing);
+    });
   });
 }

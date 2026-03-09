@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:menu_repository/menu_repository.dart';
+import 'package:very_yummy_coffee_menu_board_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_menu_board_app/menu_display/view/widgets/price_formatter.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
@@ -9,7 +10,7 @@ class MenuColumn extends StatelessWidget {
     super.key,
   });
 
-  /// List of (group, availableItems) pairs. Groups with empty items are omitted
+  /// List of (group, items) pairs. Groups with empty items are omitted
   /// by the caller.
   final List<(MenuGroup, List<MenuItem>)> groupEntries;
 
@@ -18,6 +19,7 @@ class MenuColumn extends StatelessWidget {
     final colors = context.colors;
     final typography = context.typography;
     final spacing = context.spacing;
+    final l10n = context.l10n;
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: spacing.xxl),
@@ -50,17 +52,27 @@ class MenuColumn extends StatelessWidget {
                       child: Text(
                         item.name,
                         style: typography.body.copyWith(
-                          color: colors.foreground,
+                          color: item.available
+                              ? colors.foreground
+                              : colors.mutedForeground,
                         ),
                       ),
                     ),
                     SizedBox(width: spacing.lg),
-                    Text(
-                      formatPrice(item.price),
-                      style: typography.body.copyWith(
-                        color: colors.mutedForeground,
+                    if (item.available)
+                      Text(
+                        formatPrice(item.price),
+                        style: typography.body.copyWith(
+                          color: colors.mutedForeground,
+                        ),
+                      )
+                    else
+                      Text(
+                        l10n.notAvailable,
+                        style: typography.caption.copyWith(
+                          color: colors.statusDestructiveForeground,
+                        ),
                       ),
-                    ),
                   ],
                 ),
               ),

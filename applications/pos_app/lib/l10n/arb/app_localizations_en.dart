@@ -136,4 +136,19 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ordersColumnCustomer => 'Customer';
+
+  @override
+  String get posStockManagement => 'Stock';
+
+  @override
+  String posStockItemCount(int available, int total) {
+    return '$available/$total in stock';
+  }
+
+  @override
+  String get cartItemUnavailable => 'Unavailable';
+
+  @override
+  String get cartRemoveUnavailableToCheckout =>
+      'Remove unavailable items to proceed';
 }
