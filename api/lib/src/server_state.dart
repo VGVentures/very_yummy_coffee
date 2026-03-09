@@ -141,6 +141,7 @@ class ServerState {
                   'id': payload['lineItemId'] as String,
                   'name': payload['itemName'] as String,
                   'price': payload['itemPrice'] as int,
+                  'menuItemId': payload['menuItemId'] as String?,
                   'modifiers':
                       payload['modifiers'] as List<dynamic>? ?? const [],
                   'quantity': payload['quantity'] as int? ?? 1,

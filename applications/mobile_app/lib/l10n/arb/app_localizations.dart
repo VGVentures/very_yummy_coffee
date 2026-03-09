@@ -315,6 +315,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your name (optional)'**
   String get checkoutCustomerNameHint;
+
+  /// Badge label shown on cart line items that are no longer available
+  ///
+  /// In en, this message translates to:
+  /// **'Unavailable'**
+  String get cartItemUnavailable;
+
+  /// Warning message shown when the cart contains unavailable items
+  ///
+  /// In en, this message translates to:
+  /// **'Remove unavailable items to proceed'**
+  String get cartRemoveUnavailableToCheckout;
 }
 
 class _AppLocalizationsDelegate

@@ -1,27 +1,60 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:menu_repository/menu_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_kiosk_app/cart/cart.dart';
 
 class _MockOrderRepository extends Mock implements OrderRepository {}
 
+class _MockMenuRepository extends Mock implements MenuRepository {}
+
+const _menuGroup = MenuGroup(
+  id: 'g1',
+  name: 'Coffee',
+  description: '',
+  color: 0xFF000000,
+);
+
+const _allAvailableMenu = (
+  groups: [_menuGroup],
+  items: [
+    MenuItem(id: 'menu-1', name: 'Latte', price: 500, groupId: 'g1'),
+  ],
+  modifierGroups: <ModifierGroup>[],
+);
+
+const _menuWithUnavailable = (
+  groups: [_menuGroup],
+  items: [
+    MenuItem(
+      id: 'menu-1',
+      name: 'Latte',
+      price: 500,
+      groupId: 'g1',
+      available: false,
+    ),
+  ],
+  modifierGroups: <ModifierGroup>[],
+);
+
 void main() {
   group('CartBloc', () {
     late OrderRepository orderRepository;
+    late MenuRepository menuRepository;
 
     setUp(() {
       orderRepository = _MockOrderRepository();
+      menuRepository = _MockMenuRepository();
     });
 
+    CartBloc buildBloc() => CartBloc(
+      orderRepository: orderRepository,
+      menuRepository: menuRepository,
+    );
+
     test('initial state is CartState', () {
-      when(
-        () => orderRepository.currentOrderStream,
-      ).thenAnswer((_) => const Stream.empty());
-      expect(
-        CartBloc(orderRepository: orderRepository).state,
-        const CartState(),
-      );
+      expect(buildBloc().state, const CartState());
     });
 
     group('CartSubscriptionRequested', () {
@@ -33,13 +66,21 @@ void main() {
               const Order(
                 id: '1',
                 items: [
-                  LineItem(id: 'a', name: 'Latte', price: 500),
+                  LineItem(
+                    id: 'a',
+                    name: 'Latte',
+                    price: 500,
+                    menuItemId: 'menu-1',
+                  ),
                 ],
                 status: OrderStatus.pending,
               ),
             ),
           );
-          return CartBloc(orderRepository: orderRepository);
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => Stream.value(_allAvailableMenu),
+          );
+          return buildBloc();
         },
         act: (bloc) => bloc.add(const CartSubscriptionRequested()),
         expect: () => [
@@ -47,7 +88,14 @@ void main() {
             status: CartStatus.success,
             order: Order(
               id: '1',
-              items: [LineItem(id: 'a', name: 'Latte', price: 500)],
+              items: [
+                LineItem(
+                  id: 'a',
+                  name: 'Latte',
+                  price: 500,
+                  menuItemId: 'menu-1',
+                ),
+              ],
               status: OrderStatus.pending,
             ),
           ),
@@ -60,10 +108,58 @@ void main() {
           when(
             () => orderRepository.currentOrderStream,
           ).thenAnswer((_) => Stream.error(Exception('error')));
-          return CartBloc(orderRepository: orderRepository);
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => Stream.value(_allAvailableMenu),
+          );
+          return buildBloc();
         },
         act: (bloc) => bloc.add(const CartSubscriptionRequested()),
         expect: () => [const CartState(status: CartStatus.failure)],
+      );
+
+      blocTest<CartBloc, CartState>(
+        'emits unavailableLineItemIds when menu item is unavailable',
+        build: () {
+          when(() => orderRepository.currentOrderStream).thenAnswer(
+            (_) => Stream.value(
+              const Order(
+                id: '1',
+                items: [
+                  LineItem(
+                    id: 'a',
+                    name: 'Latte',
+                    price: 500,
+                    menuItemId: 'menu-1',
+                  ),
+                ],
+                status: OrderStatus.pending,
+              ),
+            ),
+          );
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => Stream.value(_menuWithUnavailable),
+          );
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(const CartSubscriptionRequested()),
+        expect: () => [
+          const CartState(
+            status: CartStatus.success,
+            order: Order(
+              id: '1',
+              items: [
+                LineItem(
+                  id: 'a',
+                  name: 'Latte',
+                  price: 500,
+                  menuItemId: 'menu-1',
+                ),
+              ],
+              status: OrderStatus.pending,
+            ),
+            unavailableLineItemIds: ['a'],
+          ),
+        ],
       );
     });
 
@@ -72,12 +168,9 @@ void main() {
         'calls updateItemQuantity on repository',
         build: () {
           when(
-            () => orderRepository.currentOrderStream,
-          ).thenAnswer((_) => const Stream.empty());
-          when(
             () => orderRepository.updateItemQuantity(any(), any()),
           ).thenReturn(null);
-          return CartBloc(orderRepository: orderRepository);
+          return buildBloc();
         },
         act: (bloc) => bloc.add(
           const CartItemQuantityUpdated(lineItemId: 'a', quantity: 2),

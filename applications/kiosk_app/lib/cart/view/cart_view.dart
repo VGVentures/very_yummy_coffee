@@ -49,8 +49,17 @@ class CartView extends StatelessWidget {
                     : Row(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Expanded(child: _CartItemList(items: items)),
-                          _OrderSummaryPanel(order: order!),
+                          Expanded(
+                            child: _CartItemList(
+                              items: items,
+                              unavailableLineItemIds:
+                                  state.unavailableLineItemIds,
+                            ),
+                          ),
+                          _OrderSummaryPanel(
+                            order: order!,
+                            hasUnavailableItems: state.hasUnavailableItems,
+                          ),
                         ],
                       ),
               ),
@@ -63,9 +72,13 @@ class CartView extends StatelessWidget {
 }
 
 class _CartItemList extends StatelessWidget {
-  const _CartItemList({required this.items});
+  const _CartItemList({
+    required this.items,
+    this.unavailableLineItemIds = const [],
+  });
 
   final List<LineItem> items;
+  final List<String> unavailableLineItemIds;
 
   @override
   Widget build(BuildContext context) {
@@ -74,15 +87,22 @@ class _CartItemList extends StatelessWidget {
       itemCount: items.length,
       separatorBuilder: (_, _) =>
           Divider(height: 1, color: context.colors.border),
-      itemBuilder: (_, index) => _CartItemRow(item: items[index]),
+      itemBuilder: (_, index) => _CartItemRow(
+        item: items[index],
+        isUnavailable: unavailableLineItemIds.contains(items[index].id),
+      ),
     );
   }
 }
 
 class _CartItemRow extends StatelessWidget {
-  const _CartItemRow({required this.item});
+  const _CartItemRow({
+    required this.item,
+    this.isUnavailable = false,
+  });
 
   final LineItem item;
+  final bool isUnavailable;
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +138,9 @@ class _CartItemRow extends StatelessWidget {
                   Text(
                     item.name,
                     style: typography.subtitle.copyWith(
-                      color: colors.foreground,
+                      color: isUnavailable
+                          ? colors.mutedForeground
+                          : colors.foreground,
                     ),
                   ),
                   if (item.modifiers.isNotEmpty) ...[
@@ -128,6 +150,12 @@ class _CartItemRow extends StatelessWidget {
                       style: typography.small.copyWith(
                         color: colors.mutedForeground,
                       ),
+                    ),
+                  ],
+                  if (isUnavailable) ...[
+                    SizedBox(height: spacing.xs),
+                    OutOfStockBadge(
+                      label: context.l10n.cartItemUnavailable,
                     ),
                   ],
                   SizedBox(height: spacing.sm),
@@ -238,9 +266,13 @@ class _QuantityControls extends StatelessWidget {
 }
 
 class _OrderSummaryPanel extends StatelessWidget {
-  const _OrderSummaryPanel({required this.order});
+  const _OrderSummaryPanel({
+    required this.order,
+    this.hasUnavailableItems = false,
+  });
 
   final Order order;
+  final bool hasUnavailableItems;
 
   @override
   Widget build(BuildContext context) {
@@ -287,9 +319,20 @@ class _OrderSummaryPanel extends StatelessWidget {
                 style: typography.headline.copyWith(color: colors.foreground),
               ),
               const Spacer(),
+              if (hasUnavailableItems)
+                Padding(
+                  padding: EdgeInsets.only(bottom: spacing.sm),
+                  child: Text(
+                    l10n.cartRemoveUnavailableToCheckout,
+                    textAlign: TextAlign.center,
+                    style: typography.caption.copyWith(
+                      color: colors.destructive,
+                    ),
+                  ),
+                ),
               BaseButton(
                 label: l10n.kioskProceedToCheckout,
-                onPressed: isEmpty
+                onPressed: isEmpty || hasUnavailableItems
                     ? null
                     : () => context.go('/home/menu/cart/checkout'),
               ),

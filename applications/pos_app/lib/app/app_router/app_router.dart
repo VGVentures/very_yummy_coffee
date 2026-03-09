@@ -5,6 +5,7 @@ import 'package:very_yummy_coffee_pos_app/app/app.dart';
 import 'package:very_yummy_coffee_pos_app/order_complete/order_complete.dart';
 import 'package:very_yummy_coffee_pos_app/order_history/order_history.dart';
 import 'package:very_yummy_coffee_pos_app/ordering/ordering.dart';
+import 'package:very_yummy_coffee_pos_app/stock_management/stock_management.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class AppRouter {
@@ -53,6 +54,12 @@ class AppRouter {
           path: OrderHistoryPage.routeName,
           pageBuilder: (context, state) => NoTransitionPage(
             child: OrderHistoryPage.pageBuilder(context, state),
+          ),
+        ),
+        GoRoute(
+          path: StockManagementPage.routeName,
+          pageBuilder: (context, state) => NoTransitionPage(
+            child: StockManagementPage.pageBuilder(context, state),
           ),
         ),
       ],

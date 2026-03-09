@@ -15,15 +15,11 @@ final class MenuDisplayState with MenuDisplayStateMappable {
   final List<MenuItem> items;
 
   MenuItem? get featuredLeft => groups.isNotEmpty
-      ? items
-            .where((i) => i.groupId == groups.first.id && i.available)
-            .firstOrNull
+      ? items.where((i) => i.groupId == groups.first.id).firstOrNull
       : null;
 
   MenuItem? get featuredRight => groups.isNotEmpty
-      ? items
-            .where((i) => i.groupId == groups.last.id && i.available)
-            .firstOrNull
+      ? items.where((i) => i.groupId == groups.last.id).firstOrNull
       : null;
 
   int get _midpoint => (groups.length / 2).ceil();
@@ -36,10 +32,7 @@ final class MenuDisplayState with MenuDisplayStateMappable {
 
   List<(MenuGroup, List<MenuItem>)> _groupEntriesFor(List<MenuGroup> gs) => gs
       .map(
-        (g) => (
-          g,
-          items.where((i) => i.groupId == g.id && i.available).toList(),
-        ),
+        (g) => (g, items.where((i) => i.groupId == g.id).toList()),
       )
       .where((entry) => entry.$2.isNotEmpty)
       .toList();

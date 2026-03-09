@@ -72,6 +72,7 @@ class OrderRepository {
     required String itemName,
     required int itemPrice,
     required int quantity,
+    String? menuItemId,
     List<SelectedModifier> modifiers = const [],
   }) async {
     if (_currentOrderId == null) {
@@ -83,6 +84,7 @@ class OrderRepository {
       'lineItemId': _uuid.v4(),
       'itemName': itemName,
       'itemPrice': itemPrice,
+      'menuItemId': menuItemId,
       'modifiers': modifiers.map((m) => m.toMap()).toList(),
       'quantity': quantity,
     });

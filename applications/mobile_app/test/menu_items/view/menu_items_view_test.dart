@@ -122,6 +122,44 @@ void main() {
       });
     });
 
+    group('out of stock', () {
+      testWidgets('shows UnavailableOverlay for OOS item', (tester) async {
+        await tester.pumpMenuItemsView(
+          const MenuItemsState(
+            status: MenuItemsStatus.success,
+            menuItems: [
+              MenuItem(
+                id: '1',
+                name: 'Espresso',
+                price: 300,
+                groupId: 'drinks',
+                available: false,
+              ),
+            ],
+          ),
+        );
+        expect(find.byType(UnavailableOverlay), findsOneWidget);
+        expect(find.byType(OutOfStockBadge), findsOneWidget);
+      });
+
+      testWidgets('does not show badge for available item', (tester) async {
+        await tester.pumpMenuItemsView(
+          const MenuItemsState(
+            status: MenuItemsStatus.success,
+            menuItems: [
+              MenuItem(
+                id: '1',
+                name: 'Espresso',
+                price: 300,
+                groupId: 'drinks',
+              ),
+            ],
+          ),
+        );
+        expect(find.byType(OutOfStockBadge), findsNothing);
+      });
+    });
+
     group('back button', () {
       testWidgets('renders back arrow icon', (tester) async {
         await tester.pumpMenuItemsView(

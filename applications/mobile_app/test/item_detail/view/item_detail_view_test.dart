@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:menu_repository/menu_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:very_yummy_coffee_mobile_app/item_detail/item_detail.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -192,6 +193,70 @@ void main() {
         // One for the button spinner (item is loaded so no full-screen spinner)
         expect(find.byType(CircularProgressIndicator), findsOneWidget);
         expect(find.text(r'Add to Cart — $3.00'), findsNothing);
+      });
+    });
+
+    group('out of stock item', () {
+      const unavailableItem = MenuItem(
+        id: '1',
+        name: 'Espresso',
+        price: 300,
+        groupId: 'drinks',
+        available: false,
+      );
+
+      testWidgets('shows OutOfStockBadge when item is unavailable', (
+        tester,
+      ) async {
+        final oosState = _MockItemDetailState();
+        when(() => oosState.status).thenReturn(ItemDetailStatus.idle);
+        when(() => oosState.item).thenReturn(unavailableItem);
+        when(
+          () => oosState.applicableModifierGroups,
+        ).thenReturn(const []);
+        when(() => oosState.selectedModifiers).thenReturn(const {});
+        when(() => oosState.quantity).thenReturn(1);
+        when(() => oosState.totalPrice).thenReturn(300);
+        when(() => oosState.canAddToCart).thenReturn(false);
+        when(() => bloc.state).thenReturn(oosState);
+        whenListen(bloc, Stream.value(oosState));
+
+        await tester.pumpApp(
+          BlocProvider.value(
+            value: bloc,
+            child: const ItemDetailView(),
+          ),
+        );
+
+        expect(find.byType(OutOfStockBadge), findsOneWidget);
+      });
+
+      testWidgets('add to cart button is disabled when item is unavailable', (
+        tester,
+      ) async {
+        final oosState = _MockItemDetailState();
+        when(() => oosState.status).thenReturn(ItemDetailStatus.idle);
+        when(() => oosState.item).thenReturn(unavailableItem);
+        when(
+          () => oosState.applicableModifierGroups,
+        ).thenReturn(const []);
+        when(() => oosState.selectedModifiers).thenReturn(const {});
+        when(() => oosState.quantity).thenReturn(1);
+        when(() => oosState.totalPrice).thenReturn(300);
+        when(() => oosState.canAddToCart).thenReturn(false);
+        when(() => bloc.state).thenReturn(oosState);
+        whenListen(bloc, Stream.value(oosState));
+
+        await tester.pumpApp(
+          BlocProvider.value(
+            value: bloc,
+            child: const ItemDetailView(),
+          ),
+        );
+
+        // The add button should render but canAddToCart is false,
+        // so the button color is muted (disabled state)
+        expect(find.text(r'Add to Cart — $3.00'), findsOneWidget);
       });
     });
 

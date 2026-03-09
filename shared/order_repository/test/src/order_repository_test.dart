@@ -240,6 +240,49 @@ void main() {
         expect(captured['lineItemId'], isA<String>());
       });
 
+      test('includes menuItemId in payload when provided', () async {
+        orderRepository = OrderRepository(
+          wsRpcClient: wsRpcClient,
+          currentOrderId: 'order-abc',
+        );
+
+        await orderRepository.addItemToCurrentOrder(
+          itemName: 'Latte',
+          itemPrice: 500,
+          quantity: 1,
+          menuItemId: '101',
+        );
+
+        final captured =
+            verify(
+                  () => wsRpcClient.sendAction('addItemToOrder', captureAny()),
+                ).captured.single
+                as Map<String, dynamic>;
+
+        expect(captured['menuItemId'], '101');
+      });
+
+      test('sends null menuItemId when not provided', () async {
+        orderRepository = OrderRepository(
+          wsRpcClient: wsRpcClient,
+          currentOrderId: 'order-abc',
+        );
+
+        await orderRepository.addItemToCurrentOrder(
+          itemName: 'Latte',
+          itemPrice: 500,
+          quantity: 1,
+        );
+
+        final captured =
+            verify(
+                  () => wsRpcClient.sendAction('addItemToOrder', captureAny()),
+                ).captured.single
+                as Map<String, dynamic>;
+
+        expect(captured['menuItemId'], isNull);
+      });
+
       test('propagates exception when auto-create fails', () async {
         when(
           () => wsRpcClient.sendAction('createOrder', any()),

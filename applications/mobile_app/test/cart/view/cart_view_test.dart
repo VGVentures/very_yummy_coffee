@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_mobile_app/cart/cart.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 import '../../helpers/helpers.dart';
 
@@ -230,6 +231,43 @@ void main() {
             verify(() => goRouter.go('/home/menu')).called(1);
           },
         );
+      });
+
+      group('with unavailable items', () {
+        setUp(() {
+          const state = CartState(
+            order: _testOrder,
+            status: CartStatus.success,
+            unavailableLineItemIds: ['li-1'],
+          );
+          when(() => bloc.state).thenReturn(state);
+          whenListen(bloc, Stream.value(state));
+        });
+
+        testWidgets('shows OutOfStockBadge on unavailable item', (
+          tester,
+        ) async {
+          await tester.pumpApp(buildSubject());
+          expect(find.byType(OutOfStockBadge), findsOneWidget);
+        });
+
+        testWidgets('shows warning message', (tester) async {
+          await tester.pumpApp(buildSubject());
+          expect(
+            find.text('Remove unavailable items to proceed'),
+            findsOneWidget,
+          );
+        });
+
+        testWidgets('disables checkout button', (tester) async {
+          final goRouter = MockGoRouter();
+          await tester.pumpApp(buildSubject(), goRouter: goRouter);
+
+          await tester.tap(find.textContaining('Proceed to Checkout'));
+          await tester.pump();
+
+          verifyNever(() => goRouter.go(any()));
+        });
       });
 
       group('with empty order', () {

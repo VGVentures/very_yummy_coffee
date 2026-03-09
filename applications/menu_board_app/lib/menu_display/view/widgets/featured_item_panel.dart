@@ -48,29 +48,42 @@ class FeaturedItemPanel extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: spacing.md),
-          if (item != null) ...[
+          if (item case final item?) ...[
             Text(
-              item!.name,
-              style: typography.subtitle.copyWith(color: colors.foreground),
+              item.name,
+              style: typography.subtitle.copyWith(
+                color: item.available
+                    ? colors.foreground
+                    : colors.mutedForeground,
+              ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: spacing.sm),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: spacing.lg,
-                vertical: spacing.sm,
-              ),
-              decoration: BoxDecoration(
-                color: colors.primary,
-                borderRadius: BorderRadius.circular(radius.pill),
-              ),
-              child: Text(
-                formatPrice(item!.price),
-                style: typography.subtitle.copyWith(
-                  color: colors.primaryForeground,
+            if (item.available)
+              Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: spacing.lg,
+                  vertical: spacing.sm,
                 ),
+                decoration: BoxDecoration(
+                  color: colors.primary,
+                  borderRadius: BorderRadius.circular(radius.pill),
+                ),
+                child: Text(
+                  formatPrice(item.price),
+                  style: typography.subtitle.copyWith(
+                    color: colors.primaryForeground,
+                  ),
+                ),
+              )
+            else
+              Text(
+                context.l10n.notAvailable,
+                style: typography.body.copyWith(
+                  color: colors.statusDestructiveForeground,
+                ),
+                textAlign: TextAlign.center,
               ),
-            ),
           ] else
             Text(
               context.l10n.notAvailable,

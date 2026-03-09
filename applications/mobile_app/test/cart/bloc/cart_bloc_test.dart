@@ -1,16 +1,20 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:menu_repository/menu_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_mobile_app/cart/cart.dart';
 
 class _MockOrderRepository extends Mock implements OrderRepository {}
 
+class _MockMenuRepository extends Mock implements MenuRepository {}
+
 const _testItem = LineItem(
   id: 'li-1',
   name: 'Espresso',
   price: 300,
   quantity: 2,
+  menuItemId: 'menu-1',
 );
 
 const _testOrder = Order(
@@ -19,15 +23,49 @@ const _testOrder = Order(
   status: OrderStatus.pending,
 );
 
+const _menuGroup = MenuGroup(
+  id: 'g1',
+  name: 'Coffee',
+  description: '',
+  color: 0xFF000000,
+);
+
+const _allAvailableMenu = (
+  groups: [_menuGroup],
+  items: [
+    MenuItem(id: 'menu-1', name: 'Espresso', price: 300, groupId: 'g1'),
+  ],
+  modifierGroups: <ModifierGroup>[],
+);
+
+const _menuWithUnavailable = (
+  groups: [_menuGroup],
+  items: [
+    MenuItem(
+      id: 'menu-1',
+      name: 'Espresso',
+      price: 300,
+      groupId: 'g1',
+      available: false,
+    ),
+  ],
+  modifierGroups: <ModifierGroup>[],
+);
+
 void main() {
   group('CartBloc', () {
     late OrderRepository orderRepository;
+    late MenuRepository menuRepository;
 
     setUp(() {
       orderRepository = _MockOrderRepository();
+      menuRepository = _MockMenuRepository();
     });
 
-    CartBloc buildBloc() => CartBloc(orderRepository: orderRepository);
+    CartBloc buildBloc() => CartBloc(
+      orderRepository: orderRepository,
+      menuRepository: menuRepository,
+    );
 
     test('initial state is CartState(status: CartStatus.loading)', () {
       expect(buildBloc().state, const CartState());
@@ -39,6 +77,9 @@ void main() {
         build: () {
           when(() => orderRepository.currentOrderStream).thenAnswer(
             (_) => Stream.value(_testOrder),
+          );
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => Stream.value(_allAvailableMenu),
           );
           return buildBloc();
         },
@@ -58,6 +99,9 @@ void main() {
           );
           when(() => orderRepository.currentOrderStream).thenAnswer(
             (_) => Stream.fromIterable([_testOrder, updatedOrder]),
+          );
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => Stream.value(_allAvailableMenu),
           );
           return buildBloc();
         },
@@ -81,11 +125,55 @@ void main() {
           when(() => orderRepository.currentOrderStream).thenAnswer(
             (_) => Stream.error(Exception('oops')),
           );
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => Stream.value(_allAvailableMenu),
+          );
           return buildBloc();
         },
         act: (bloc) => bloc.add(const CartSubscriptionRequested()),
         expect: () => [
           const CartState(status: CartStatus.failure),
+        ],
+      );
+
+      blocTest<CartBloc, CartState>(
+        'emits unavailableLineItemIds when menu item is unavailable',
+        build: () {
+          when(() => orderRepository.currentOrderStream).thenAnswer(
+            (_) => Stream.value(_testOrder),
+          );
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => Stream.value(_menuWithUnavailable),
+          );
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(const CartSubscriptionRequested()),
+        expect: () => [
+          const CartState(
+            order: _testOrder,
+            status: CartStatus.success,
+            unavailableLineItemIds: ['li-1'],
+          ),
+        ],
+      );
+
+      blocTest<CartBloc, CartState>(
+        'emits empty unavailableLineItemIds when all items available',
+        build: () {
+          when(() => orderRepository.currentOrderStream).thenAnswer(
+            (_) => Stream.value(_testOrder),
+          );
+          when(() => menuRepository.getMenuGroupsAndItems()).thenAnswer(
+            (_) => Stream.value(_allAvailableMenu),
+          );
+          return buildBloc();
+        },
+        act: (bloc) => bloc.add(const CartSubscriptionRequested()),
+        expect: () => [
+          const CartState(
+            order: _testOrder,
+            status: CartStatus.success,
+          ),
         ],
       );
     });

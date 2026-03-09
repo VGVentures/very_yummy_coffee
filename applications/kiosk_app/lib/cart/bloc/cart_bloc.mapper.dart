@@ -408,15 +408,28 @@ class CartStateMapper extends ClassMapperBase<CartState> {
     opt: true,
     def: CartStatus.loading,
   );
+  static List<String> _$unavailableLineItemIds(CartState v) =>
+      v.unavailableLineItemIds;
+  static const Field<CartState, List<String>> _f$unavailableLineItemIds = Field(
+    'unavailableLineItemIds',
+    _$unavailableLineItemIds,
+    opt: true,
+    def: const [],
+  );
 
   @override
   final MappableFields<CartState> fields = const {
     #order: _f$order,
     #status: _f$status,
+    #unavailableLineItemIds: _f$unavailableLineItemIds,
   };
 
   static CartState _instantiate(DecodingData data) {
-    return CartState(order: data.dec(_f$order), status: data.dec(_f$status));
+    return CartState(
+      order: data.dec(_f$order),
+      status: data.dec(_f$status),
+      unavailableLineItemIds: data.dec(_f$unavailableLineItemIds),
+    );
   }
 
   @override
@@ -479,7 +492,13 @@ extension CartStateValueCopy<$R, $Out> on ObjectCopyWith<$R, CartState, $Out> {
 abstract class CartStateCopyWith<$R, $In extends CartState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
   OrderCopyWith<$R, Order, Order>? get order;
-  $R call({Order? order, CartStatus? status});
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get unavailableLineItemIds;
+  $R call({
+    Order? order,
+    CartStatus? status,
+    List<String>? unavailableLineItemIds,
+  });
   CartStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -495,16 +514,33 @@ class _CartStateCopyWithImpl<$R, $Out>
   OrderCopyWith<$R, Order, Order>? get order =>
       $value.order?.copyWith.$chain((v) => call(order: v));
   @override
-  $R call({Object? order = $none, CartStatus? status}) => $apply(
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>
+  get unavailableLineItemIds => ListCopyWith(
+    $value.unavailableLineItemIds,
+    (v, t) => ObjectCopyWith(v, $identity, t),
+    (v) => call(unavailableLineItemIds: v),
+  );
+  @override
+  $R call({
+    Object? order = $none,
+    CartStatus? status,
+    List<String>? unavailableLineItemIds,
+  }) => $apply(
     FieldCopyWithData({
       if (order != $none) #order: order,
       if (status != null) #status: status,
+      if (unavailableLineItemIds != null)
+        #unavailableLineItemIds: unavailableLineItemIds,
     }),
   );
   @override
   CartState $make(CopyWithData data) => CartState(
     order: data.get(#order, or: $value.order),
     status: data.get(#status, or: $value.status),
+    unavailableLineItemIds: data.get(
+      #unavailableLineItemIds,
+      or: $value.unavailableLineItemIds,
+    ),
   );
 
   @override
