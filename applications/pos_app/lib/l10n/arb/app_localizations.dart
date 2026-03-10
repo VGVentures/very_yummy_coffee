@@ -369,6 +369,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove unavailable items to proceed'**
   String get cartRemoveUnavailableToCheckout;
+
+  /// Progress button for submitted orders
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get actionStart;
+
+  /// Progress button for in-progress orders
+  ///
+  /// In en, this message translates to:
+  /// **'Mark Ready'**
+  String get actionMarkReady;
+
+  /// Progress button for ready orders
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get actionComplete;
+
+  /// Cancel text button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get actionCancel;
+
+  /// AlertDialog title for cancel confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Order?'**
+  String get cancelOrderDialogTitle;
+
+  /// AlertDialog body for cancel confirmation
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel order {orderNumber}? This cannot be undone.'**
+  String cancelOrderDialogMessage(String orderNumber);
+
+  /// Destructive confirm button in cancel dialog
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, Cancel'**
+  String get cancelOrderDialogConfirm;
+
+  /// Dismiss button in cancel dialog
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get cancelOrderDialogDismiss;
 }
 
 class _AppLocalizationsDelegate

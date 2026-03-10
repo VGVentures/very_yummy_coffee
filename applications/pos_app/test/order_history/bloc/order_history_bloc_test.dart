@@ -159,5 +159,75 @@ void main() {
         ],
       );
     });
+
+    group('OrderHistoryOrderStarted', () {
+      blocTest<OrderHistoryBloc, OrderHistoryState>(
+        'calls orderRepository.startOrder with orderId',
+        build: () {
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          when(() => orderRepository.startOrder(any())).thenReturn(null);
+          return OrderHistoryBloc(orderRepository: orderRepository);
+        },
+        act: (bloc) => bloc.add(const OrderHistoryOrderStarted('order-1')),
+        verify: (_) {
+          verify(() => orderRepository.startOrder('order-1')).called(1);
+        },
+      );
+    });
+
+    group('OrderHistoryOrderMarkedReady', () {
+      blocTest<OrderHistoryBloc, OrderHistoryState>(
+        'calls orderRepository.markOrderReady with orderId',
+        build: () {
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          when(() => orderRepository.markOrderReady(any())).thenReturn(null);
+          return OrderHistoryBloc(orderRepository: orderRepository);
+        },
+        act: (bloc) => bloc.add(const OrderHistoryOrderMarkedReady('order-2')),
+        verify: (_) {
+          verify(() => orderRepository.markOrderReady('order-2')).called(1);
+        },
+      );
+    });
+
+    group('OrderHistoryOrderCompleted', () {
+      blocTest<OrderHistoryBloc, OrderHistoryState>(
+        'calls orderRepository.markOrderCompleted with orderId',
+        build: () {
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          when(
+            () => orderRepository.markOrderCompleted(any()),
+          ).thenReturn(null);
+          return OrderHistoryBloc(orderRepository: orderRepository);
+        },
+        act: (bloc) => bloc.add(const OrderHistoryOrderCompleted('order-3')),
+        verify: (_) {
+          verify(() => orderRepository.markOrderCompleted('order-3')).called(1);
+        },
+      );
+    });
+
+    group('OrderHistoryOrderCancelled', () {
+      blocTest<OrderHistoryBloc, OrderHistoryState>(
+        'calls orderRepository.cancelOrder with orderId',
+        build: () {
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          when(() => orderRepository.cancelOrder(any())).thenReturn(null);
+          return OrderHistoryBloc(orderRepository: orderRepository);
+        },
+        act: (bloc) => bloc.add(const OrderHistoryOrderCancelled('order-4')),
+        verify: (_) {
+          verify(() => orderRepository.cancelOrder('order-4')).called(1);
+        },
+      );
+    });
   });
 }

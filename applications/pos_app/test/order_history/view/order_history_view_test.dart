@@ -27,6 +27,20 @@ final _activeOrder = Order(
   submittedAt: DateTime(2026, 3, 1, 10),
 );
 
+final _inProgressOrder = Order(
+  id: 'order-3333',
+  items: const [_testItem],
+  status: OrderStatus.inProgress,
+  submittedAt: DateTime(2026, 3, 1, 10),
+);
+
+final _readyOrder = Order(
+  id: 'order-4444',
+  items: const [_testItem],
+  status: OrderStatus.ready,
+  submittedAt: DateTime(2026, 3, 1, 10),
+);
+
 void main() {
   group('OrderHistoryView', () {
     late OrderHistoryBloc orderHistoryBloc;
@@ -118,5 +132,214 @@ void main() {
       expect(find.text(_pendingOrder.orderNumber), findsOneWidget);
       expect(find.text(_activeOrder.orderNumber), findsOneWidget);
     });
+
+    testWidgets(
+      'submitted order card shows Start and Cancel buttons',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            activeOrders: [_activeOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+
+        expect(find.text('Start'), findsOneWidget);
+        expect(find.text('Cancel'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'in-progress order card shows Mark Ready and Cancel buttons',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            activeOrders: [_inProgressOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+
+        expect(find.text('Mark Ready'), findsOneWidget);
+        expect(find.text('Cancel'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'ready order card shows Complete button but no Cancel',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            activeOrders: [_readyOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+
+        expect(find.text('Complete'), findsOneWidget);
+        expect(find.text('Cancel'), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'pending order card shows no action buttons',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          const OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            pendingOrders: [_pendingOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+
+        expect(find.text('Start'), findsNothing);
+        expect(find.text('Mark Ready'), findsNothing);
+        expect(find.text('Complete'), findsNothing);
+        expect(find.text('Cancel'), findsNothing);
+      },
+    );
+
+    testWidgets(
+      'tap Mark Ready dispatches OrderHistoryOrderMarkedReady',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            activeOrders: [_inProgressOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+        await tester.tap(find.text('Mark Ready'));
+
+        verify(
+          () => orderHistoryBloc.add(
+            OrderHistoryOrderMarkedReady(_inProgressOrder.id),
+          ),
+        ).called(1);
+      },
+    );
+
+    testWidgets(
+      'tap Complete dispatches OrderHistoryOrderCompleted',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            activeOrders: [_readyOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+        await tester.tap(find.text('Complete'));
+
+        verify(
+          () => orderHistoryBloc.add(
+            OrderHistoryOrderCompleted(_readyOrder.id),
+          ),
+        ).called(1);
+      },
+    );
+
+    testWidgets(
+      'tap Start dispatches OrderHistoryOrderStarted',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            activeOrders: [_activeOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+        await tester.tap(find.text('Start'));
+
+        verify(
+          () => orderHistoryBloc.add(
+            OrderHistoryOrderStarted(_activeOrder.id),
+          ),
+        ).called(1);
+      },
+    );
+
+    testWidgets(
+      'tap Cancel opens confirmation dialog',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            activeOrders: [_activeOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+        await tester.tap(find.text('Cancel'));
+        await tester.pumpAndSettle();
+
+        expect(find.text('Cancel Order?'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'confirm cancel dispatches OrderHistoryOrderCancelled',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            activeOrders: [_activeOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+        await tester.tap(find.text('Cancel'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('Yes, Cancel'));
+        await tester.pumpAndSettle();
+
+        verify(
+          () => orderHistoryBloc.add(
+            OrderHistoryOrderCancelled(_activeOrder.id),
+          ),
+        ).called(1);
+      },
+    );
+
+    testWidgets(
+      'dismiss cancel dialog does not dispatch event',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            activeOrders: [_activeOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+        await tester.tap(find.text('Cancel'));
+        await tester.pumpAndSettle();
+        await tester.tap(find.text('No'));
+        await tester.pumpAndSettle();
+
+        verifyNever(
+          () => orderHistoryBloc.add(
+            OrderHistoryOrderCancelled(_activeOrder.id),
+          ),
+        );
+      },
+    );
   });
 }
