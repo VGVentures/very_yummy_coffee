@@ -703,6 +703,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "10.2.0"
+  very_yummy_coffee_models:
+    dependency: transitive
+    description:
+      path: "../../shared/very_yummy_coffee_models"
+      relative: true
+    source: path
+    version: "0.1.0+1"
   very_yummy_coffee_ui:
     dependency: "direct main"
     description:

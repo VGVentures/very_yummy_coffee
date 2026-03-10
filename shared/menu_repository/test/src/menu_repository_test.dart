@@ -9,6 +9,15 @@ class _MockWsRpcClient extends Mock implements WsRpcClient {}
 
 void main() {
   group('MenuRepository', () {
+    setUpAll(() {
+      registerFallbackValue(
+        const UpdateMenuItemAvailabilityAction(
+          itemId: '',
+          available: false,
+        ),
+      );
+    });
+
     test('can be instantiated', () {
       expect(
         MenuRepository(wsRpcClient: _MockWsRpcClient()),
@@ -54,7 +63,7 @@ void main() {
         wsRpcClient = _MockWsRpcClient();
         wsController = StreamController<Map<String, dynamic>>.broadcast();
         when(
-          () => wsRpcClient.subscribe('menu'),
+          () => wsRpcClient.subscribe(RpcTopics.menu),
         ).thenAnswer((_) => wsController.stream);
         when(() => wsRpcClient.unsubscribe(any())).thenReturn(null);
       });
@@ -163,31 +172,38 @@ void main() {
 
       setUp(() {
         wsRpcClient = _MockWsRpcClient();
+        when(() => wsRpcClient.sendAction(any())).thenReturn(null);
       });
 
-      test('sends updateMenuItemAvailability action with available false', () {
+      test('sends UpdateMenuItemAvailabilityAction with false', () {
         MenuRepository(
           wsRpcClient: wsRpcClient,
         ).setItemAvailability('101', available: false);
 
         verify(
-          () => wsRpcClient.sendAction('updateMenuItemAvailability', {
-            'itemId': '101',
-            'available': false,
-          }),
+          () => wsRpcClient.sendAction(
+            any(
+              that: isA<UpdateMenuItemAvailabilityAction>()
+                  .having((a) => a.itemId, 'itemId', '101')
+                  .having((a) => a.available, 'available', false),
+            ),
+          ),
         ).called(1);
       });
 
-      test('sends updateMenuItemAvailability action with available true', () {
+      test('sends UpdateMenuItemAvailabilityAction with true', () {
         MenuRepository(
           wsRpcClient: wsRpcClient,
         ).setItemAvailability('101', available: true);
 
         verify(
-          () => wsRpcClient.sendAction('updateMenuItemAvailability', {
-            'itemId': '101',
-            'available': true,
-          }),
+          () => wsRpcClient.sendAction(
+            any(
+              that: isA<UpdateMenuItemAvailabilityAction>()
+                  .having((a) => a.itemId, 'itemId', '101')
+                  .having((a) => a.available, 'available', true),
+            ),
+          ),
         ).called(1);
       });
     });
