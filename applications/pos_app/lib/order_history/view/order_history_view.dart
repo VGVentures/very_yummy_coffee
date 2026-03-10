@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_pos_app/l10n/l10n.dart';
@@ -76,12 +77,7 @@ class _OrdersBody extends StatelessWidget {
                     children: [
                       for (int i = 0; i < state.pendingOrders.length; i++) ...[
                         if (i > 0) SizedBox(width: spacing.lg),
-                        Opacity(
-                          opacity: 0.6,
-                          child: _ActiveOrderCard(
-                            order: state.pendingOrders[i],
-                          ),
-                        ),
+                        _PendingOrderCard(order: state.pendingOrders[i]),
                       ],
                     ],
                   ),
@@ -240,6 +236,56 @@ class _CountBadge extends StatelessWidget {
           fontWeight: FontWeight.w700,
           color: colors.primaryForeground,
         ),
+      ),
+    );
+  }
+}
+
+class _PendingOrderCard extends StatelessWidget {
+  const _PendingOrderCard({required this.order});
+
+  final Order order;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final typography = context.typography;
+    final spacing = context.spacing;
+    final l10n = context.l10n;
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(context.radius.small),
+      onTap: () {
+        context.read<OrderHistoryBloc>().add(
+          OrderHistoryPendingOrderResumeRequested(order.id),
+        );
+        context.go('/ordering');
+      },
+      child: Stack(
+        children: [
+          _ActiveOrderCard(order: order),
+          Positioned(
+            right: spacing.sm,
+            top: spacing.sm,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.edit_outlined,
+                  size: 14,
+                  color: colors.mutedForeground,
+                ),
+                SizedBox(width: spacing.xs),
+                Text(
+                  l10n.ordersPendingEditHint,
+                  style: typography.caption.copyWith(
+                    color: colors.mutedForeground,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

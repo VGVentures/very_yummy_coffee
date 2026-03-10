@@ -160,6 +160,75 @@ void main() {
       );
     });
 
+    group('OrderHistoryPendingOrderResumeRequested', () {
+      blocTest<OrderHistoryBloc, OrderHistoryState>(
+        'calls clearCurrentOrder then setCurrentOrderId '
+        'when orderId differs from currentOrderId',
+        build: () {
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          when(() => orderRepository.currentOrderId).thenReturn('other-order');
+          when(() => orderRepository.clearCurrentOrder()).thenReturn(null);
+          when(
+            () => orderRepository.setCurrentOrderId(any()),
+          ).thenReturn(null);
+          return OrderHistoryBloc(orderRepository: orderRepository);
+        },
+        act: (bloc) => bloc.add(
+          const OrderHistoryPendingOrderResumeRequested('order-6'),
+        ),
+        verify: (_) {
+          verify(() => orderRepository.clearCurrentOrder()).called(1);
+          verify(() => orderRepository.setCurrentOrderId('order-6')).called(1);
+        },
+      );
+
+      blocTest<OrderHistoryBloc, OrderHistoryState>(
+        'calls clearCurrentOrder then setCurrentOrderId '
+        'when currentOrderId is null',
+        build: () {
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          when(() => orderRepository.currentOrderId).thenReturn(null);
+          when(() => orderRepository.clearCurrentOrder()).thenReturn(null);
+          when(
+            () => orderRepository.setCurrentOrderId(any()),
+          ).thenReturn(null);
+          return OrderHistoryBloc(orderRepository: orderRepository);
+        },
+        act: (bloc) => bloc.add(
+          const OrderHistoryPendingOrderResumeRequested('order-6'),
+        ),
+        verify: (_) {
+          verify(() => orderRepository.clearCurrentOrder()).called(1);
+          verify(() => orderRepository.setCurrentOrderId('order-6')).called(1);
+        },
+      );
+
+      blocTest<OrderHistoryBloc, OrderHistoryState>(
+        'does not call clearCurrentOrder when orderId matches currentOrderId',
+        build: () {
+          when(() => orderRepository.ordersStream).thenAnswer(
+            (_) => const Stream.empty(),
+          );
+          when(() => orderRepository.currentOrderId).thenReturn('order-6');
+          when(
+            () => orderRepository.setCurrentOrderId(any()),
+          ).thenReturn(null);
+          return OrderHistoryBloc(orderRepository: orderRepository);
+        },
+        act: (bloc) => bloc.add(
+          const OrderHistoryPendingOrderResumeRequested('order-6'),
+        ),
+        verify: (_) {
+          verifyNever(() => orderRepository.clearCurrentOrder());
+          verify(() => orderRepository.setCurrentOrderId('order-6')).called(1);
+        },
+      );
+    });
+
     group('OrderHistoryOrderStarted', () {
       blocTest<OrderHistoryBloc, OrderHistoryState>(
         'calls orderRepository.startOrder with orderId',
