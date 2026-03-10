@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:api/src/server_state.dart';
 import 'package:dart_frog/dart_frog.dart';
 import 'package:dart_frog_web_socket/dart_frog_web_socket.dart';
+import 'package:very_yummy_coffee_models/very_yummy_coffee_models.dart';
 
 Handler get onRequest => webSocketHandler((channel, protocol) {
       log('[rpc] client connected');
@@ -13,31 +14,31 @@ Handler get onRequest => webSocketHandler((channel, protocol) {
         (message) {
           log('[rpc] received: $message');
           final json = jsonDecode(message as String) as Map<String, dynamic>;
-          final type = json['type'] as String?;
 
-          switch (type) {
-            case 'subscribe':
-              final topic = json['topic'] as String;
-              log('[rpc] subscribe: $topic');
-              serverState.subscribe(topic, sink);
-              sink.add(
-                jsonEncode({
-                  'type': 'update',
-                  'topic': topic,
-                  'payload': serverState.snapshotForTopic(topic),
-                }),
-              );
+          try {
+            final msg = RpcClientMessageMapper.fromMap(json);
+            switch (msg) {
+              case RpcSubscribeMessage(:final topic):
+                log('[rpc] subscribe: $topic');
+                serverState.subscribe(topic, sink);
+                sink.add(
+                  jsonEncode({
+                    'type': 'update',
+                    'topic': topic,
+                    'payload': serverState.snapshotForTopic(topic),
+                  }),
+                );
 
-            case 'unsubscribe':
-              log('[rpc] unsubscribe: ${json['topic']}');
-              serverState.unsubscribe(json['topic'] as String, sink);
+              case RpcUnsubscribeMessage(:final topic):
+                log('[rpc] unsubscribe: $topic');
+                serverState.unsubscribe(topic, sink);
 
-            case 'action':
-              log('[rpc] action: ${json['action']}');
-              serverState.handleAction(
-                json['action'] as String,
-                json['payload'] as Map<String, dynamic>,
-              );
+              case RpcActionClientMessage(:final action, :final payload):
+                log('[rpc] action: $action');
+                serverState.handleAction(action, payload);
+            }
+          } on Exception catch (e) {
+            log('[rpc] malformed message: $e');
           }
         },
         onDone: () {

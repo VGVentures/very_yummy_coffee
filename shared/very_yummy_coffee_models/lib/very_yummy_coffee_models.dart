@@ -2,3 +2,4 @@
 library;
 
 export 'src/models/models.dart';
+export 'src/rpc/rpc.dart';

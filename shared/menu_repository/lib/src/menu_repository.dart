@@ -103,10 +103,9 @@ class MenuRepository {
   /// Sends an `updateMenuItemAvailability` WS action. The server will
   /// broadcast the updated menu to all subscribed clients.
   void setItemAvailability(String itemId, {required bool available}) {
-    _wsRpcClient.sendAction('updateMenuItemAvailability', {
-      'itemId': itemId,
-      'available': available,
-    });
+    _wsRpcClient.sendAction(
+      UpdateMenuItemAvailabilityAction(itemId: itemId, available: available),
+    );
   }
 
   void _initMenuIfNeeded() {
@@ -114,7 +113,7 @@ class MenuRepository {
 
     _menuSubject = BehaviorSubject<_MenuCache>();
 
-    _menuWsSub = _wsRpcClient.subscribe('menu').listen((payload) {
+    _menuWsSub = _wsRpcClient.subscribe(RpcTopics.menu).listen((payload) {
       final groupList = payload['groups'] as List<dynamic>?;
       final itemList = payload['items'] as List<dynamic>?;
       if (groupList == null || itemList == null) return;
@@ -143,7 +142,7 @@ class MenuRepository {
   void _decrementMenuCount() {
     _menuListenerCount -= 1;
     if (_menuListenerCount == 0) {
-      _wsRpcClient.unsubscribe('menu');
+      _wsRpcClient.unsubscribe(RpcTopics.menu);
       unawaited(_menuWsSub?.cancel());
       _menuWsSub = null;
       unawaited(_menuSubject?.close());

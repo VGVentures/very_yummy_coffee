@@ -19,3 +19,5 @@ dependencies:
   dart_mappable: ^4.6.1
   rxdart: ^0.28.0
   uuid: ^4.5.2
+  very_yummy_coffee_models:
+    path: ../very_yummy_coffee_models
