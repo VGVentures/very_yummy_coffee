@@ -48,6 +48,20 @@ final class OrderHistoryOrderCompleted extends OrderHistoryEvent {
   int get hashCode => orderId.hashCode;
 }
 
+final class OrderHistoryPendingOrderResumeRequested extends OrderHistoryEvent {
+  const OrderHistoryPendingOrderResumeRequested(this.orderId);
+
+  final String orderId;
+
+  @override
+  bool operator ==(Object other) =>
+      other is OrderHistoryPendingOrderResumeRequested &&
+      other.orderId == orderId;
+
+  @override
+  int get hashCode => orderId.hashCode;
+}
+
 final class OrderHistoryOrderCancelled extends OrderHistoryEvent {
   const OrderHistoryOrderCancelled(this.orderId);
 
