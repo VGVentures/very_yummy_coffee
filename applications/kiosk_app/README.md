@@ -1,17 +1,31 @@
-# very_yummy_coffee_kiosk_app
+# Very Yummy Coffee — Kiosk App
 
-A new Flutter project.
+[![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
 
-## Getting Started
+An in-store self-service kiosk for Very Yummy Coffee. Designed for landscape tablet displays (1366x1024) where customers can place orders independently.
 
-This project is a starting point for a Flutter application.
+## Overview
 
-A few resources to get you started if this is your first Flutter project:
+The kiosk app provides a touch-friendly ordering flow optimized for unattended use:
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- Splash screen with a "Start Order" call to action
+- Browse menu groups and items
+- View item details and add to cart
+- Review cart, adjust quantities, and proceed to checkout
+- Order confirmation screen with auto-reset back to the splash
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The app connects to the backend via WebSocket for real-time menu availability and order submission. It automatically redirects to a connecting screen if the connection drops (except on the order complete screen).
+
+## Running
+
+```sh
+flutter run
+```
+
+The app targets landscape orientation. Run on a tablet simulator or physical device for the best experience. The backend (`api/`) must be running locally on port 8080.
+
+## Testing
+
+```sh
+flutter test
+```

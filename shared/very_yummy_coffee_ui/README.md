@@ -1,67 +1,34 @@
-# Very Yummy Coffee Ui
+# Very Yummy Coffee UI
 
-[![style: very good analysis][very_good_analysis_badge]][very_good_analysis_link]
-[![Powered by Mason](https://img.shields.io/endpoint?url=https%3A%2F%2Ftinyurl.com%2Fmason-badge)](https://github.com/felangel/mason)
-[![License: MIT][license_badge]][license_link]
+[![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
 
-A shared UI package for all the stylings and themes for Very Yummy Coffee.
+A shared UI package providing the theme, design tokens, and reusable widgets for all Very Yummy Coffee applications.
 
-## Installation 💻
+## Overview
 
-**❗ In order to start using Very Yummy Coffee Ui you must have the [Flutter SDK][flutter_install_link] installed on your machine.**
+This is a pure UI package with no domain dependencies. All applications depend on it for consistent styling.
 
-Install via `flutter pub add`:
+### Design Tokens
 
-```sh
-dart pub add very_yummy_coffee_ui
-```
+Accessed via `BuildContext` extensions:
 
----
+- **`context.colors`** — named color tokens (`AppColors`: surface, text, primary, accent, status colors, etc.)
+- **`context.spacing`** — spacing scale (`AppSpacing`: xxs=2, xs=4, sm=8, md=12, lg=16, xl=20, xxl=24, huge=32)
+- **`context.radius`** — border radius tokens (`AppRadius`: small=12, medium=14, large=18, card=20, pill=9999)
+- **`context.typography`** — text styles (`AppTypography`: pageTitle, subtitle, label, body, muted, caption, etc.)
 
-## Continuous Integration 🤖
+### Shared Widgets
 
-Very Yummy Coffee Ui comes with a built-in [GitHub Actions workflow][github_actions_link] powered by [Very Good Workflows][very_good_workflows_link] but you can also add your preferred CI/CD solution.
+- **`AppTopBar`** — dark top bar with connection indicator, title, live clock, and optional middle/action widget slots
+- **`BaseButton`** — primary, secondary, and cancel button variants with loading state support
+- **`CustomBackButton`** — standard back arrow for colored headers
 
-Out of the box, on each pull request and push, the CI `formats`, `lints`, and `tests` the code. This ensures the code remains consistent and behaves correctly as you add functionality or make changes. The project uses [Very Good Analysis][very_good_analysis_link] for a strict set of analysis options used by our team. Code coverage is enforced using the [Very Good Workflows][very_good_coverage_link].
+### Widget Gallery
 
----
+A gallery app for previewing shared widgets is available at `gallery/`.
 
-## Running Tests 🧪
-
-For first time users, install the [very_good_cli][very_good_cli_link]:
-
-```sh
-dart pub global activate very_good_cli
-```
-
-To run all unit tests:
+## Testing
 
 ```sh
-very_good test --coverage
+flutter test
 ```
-
-To view the generated coverage report you can use [lcov](https://github.com/linux-test-project/lcov).
-
-```sh
-# Generate Coverage Report
-genhtml coverage/lcov.info -o coverage/
-
-# Open Coverage Report
-open coverage/index.html
-```
-
-[flutter_install_link]: https://docs.flutter.dev/get-started/install
-[github_actions_link]: https://docs.github.com/en/actions/learn-github-actions
-[license_badge]: https://img.shields.io/badge/license-MIT-blue.svg
-[license_link]: https://opensource.org/licenses/MIT
-[logo_black]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_black.png#gh-light-mode-only
-[logo_white]: https://raw.githubusercontent.com/VGVentures/very_good_brand/main/styles/README/vgv_logo_white.png#gh-dark-mode-only
-[mason_link]: https://github.com/felangel/mason
-[very_good_analysis_badge]: https://img.shields.io/badge/style-very_good_analysis-B22C89.svg
-[very_good_analysis_link]: https://pub.dev/packages/very_good_analysis
-[very_good_cli_link]: https://pub.dev/packages/very_good_cli
-[very_good_coverage_link]: https://github.com/marketplace/actions/very-good-coverage
-[very_good_ventures_link]: https://verygood.ventures
-[very_good_ventures_link_light]: https://verygood.ventures#gh-light-mode-only
-[very_good_ventures_link_dark]: https://verygood.ventures#gh-dark-mode-only
-[very_good_workflows_link]: https://github.com/VeryGoodOpenSource/very_good_workflows
