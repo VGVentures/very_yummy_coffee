@@ -12,6 +12,18 @@ class OrderHistoryBloc extends Bloc<OrderHistoryEvent, OrderHistoryState> {
     : _orderRepository = orderRepository,
       super(const OrderHistoryState()) {
     on<OrderHistorySubscriptionRequested>(_onSubscriptionRequested);
+    on<OrderHistoryOrderStarted>(
+      (event, _) => _orderRepository.startOrder(event.orderId),
+    );
+    on<OrderHistoryOrderMarkedReady>(
+      (event, _) => _orderRepository.markOrderReady(event.orderId),
+    );
+    on<OrderHistoryOrderCompleted>(
+      (event, _) => _orderRepository.markOrderCompleted(event.orderId),
+    );
+    on<OrderHistoryOrderCancelled>(
+      (event, _) => _orderRepository.cancelOrder(event.orderId),
+    );
   }
 
   final OrderRepository _orderRepository;

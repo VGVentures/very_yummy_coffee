@@ -151,4 +151,30 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cartRemoveUnavailableToCheckout =>
       'Remove unavailable items to proceed';
+
+  @override
+  String get actionStart => 'Start';
+
+  @override
+  String get actionMarkReady => 'Mark Ready';
+
+  @override
+  String get actionComplete => 'Complete';
+
+  @override
+  String get actionCancel => 'Cancel';
+
+  @override
+  String get cancelOrderDialogTitle => 'Cancel Order?';
+
+  @override
+  String cancelOrderDialogMessage(String orderNumber) {
+    return 'Are you sure you want to cancel order $orderNumber? This cannot be undone.';
+  }
+
+  @override
+  String get cancelOrderDialogConfirm => 'Yes, Cancel';
+
+  @override
+  String get cancelOrderDialogDismiss => 'No';
 }

@@ -120,7 +120,23 @@ class _OrdersBody extends StatelessWidget {
                     children: [
                       for (int i = 0; i < state.activeOrders.length; i++) ...[
                         if (i > 0) SizedBox(width: spacing.lg),
-                        _ActiveOrderCard(order: state.activeOrders[i]),
+                        _ActiveOrderCard(
+                          order: state.activeOrders[i],
+                          onProgressTapped: () => _dispatchProgress(
+                            context,
+                            state.activeOrders[i],
+                          ),
+                          onCancelTapped:
+                              state.activeOrders[i].status ==
+                                      OrderStatus.submitted ||
+                                  state.activeOrders[i].status ==
+                                      OrderStatus.inProgress
+                              ? () => _showCancelDialog(
+                                  context,
+                                  state.activeOrders[i],
+                                )
+                              : null,
+                        ),
                       ],
                     ],
                   ),
@@ -149,6 +165,55 @@ class _OrdersBody extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  void _dispatchProgress(BuildContext context, Order order) {
+    final bloc = context.read<OrderHistoryBloc>();
+    switch (order.status) {
+      case OrderStatus.submitted:
+        bloc.add(OrderHistoryOrderStarted(order.id));
+      case OrderStatus.inProgress:
+        bloc.add(OrderHistoryOrderMarkedReady(order.id));
+      case OrderStatus.ready:
+        bloc.add(OrderHistoryOrderCompleted(order.id));
+      case OrderStatus.pending:
+      case OrderStatus.completed:
+      case OrderStatus.cancelled:
+        break;
+    }
+  }
+
+  Future<void> _showCancelDialog(BuildContext context, Order order) async {
+    final l10n = context.l10n;
+    final colors = context.colors;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(l10n.cancelOrderDialogTitle),
+        content: Text(
+          l10n.cancelOrderDialogMessage(order.orderNumber),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.cancelOrderDialogDismiss),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            style: FilledButton.styleFrom(
+              backgroundColor: colors.statusDestructiveBackground,
+              foregroundColor: colors.statusDestructiveForeground,
+            ),
+            child: Text(l10n.cancelOrderDialogConfirm),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true && context.mounted) {
+      context.read<OrderHistoryBloc>().add(
+        OrderHistoryOrderCancelled(order.id),
+      );
+    }
   }
 }
 
@@ -181,9 +246,15 @@ class _CountBadge extends StatelessWidget {
 }
 
 class _ActiveOrderCard extends StatelessWidget {
-  const _ActiveOrderCard({required this.order});
+  const _ActiveOrderCard({
+    required this.order,
+    this.onProgressTapped,
+    this.onCancelTapped,
+  });
 
   final Order order;
+  final VoidCallback? onProgressTapped;
+  final VoidCallback? onCancelTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -261,10 +332,56 @@ class _ActiveOrderCard extends StatelessWidget {
               _StatusChip(status: order.status, l10n: l10n),
             ],
           ),
+          if (onProgressTapped != null) ...[
+            SizedBox(height: spacing.md),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (onCancelTapped != null)
+                  TextButton(
+                    onPressed: onCancelTapped,
+                    style: TextButton.styleFrom(
+                      foregroundColor: colors.mutedForeground,
+                      padding: EdgeInsets.symmetric(horizontal: spacing.xs),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Text(l10n.actionCancel),
+                  )
+                else
+                  const SizedBox.shrink(),
+                Flexible(
+                  child: FilledButton(
+                    onPressed: onProgressTapped,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: colors.primary,
+                      foregroundColor: colors.primaryForeground,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: spacing.md,
+                        vertical: spacing.sm,
+                      ),
+                    ),
+                    child: Text(
+                      _progressLabel(order.status, l10n),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ],
       ),
     );
   }
+
+  String _progressLabel(OrderStatus status, AppLocalizations l10n) =>
+      switch (status) {
+        OrderStatus.submitted => l10n.actionStart,
+        OrderStatus.inProgress => l10n.actionMarkReady,
+        OrderStatus.ready => l10n.actionComplete,
+        _ => '',
+      };
 
   String _buildItemSummary(List<LineItem> items) {
     if (items.isEmpty) return '';
