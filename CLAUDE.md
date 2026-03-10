@@ -17,7 +17,7 @@ Very Yummy Coffee is a Flutter/Dart monorepo for a coffee ordering app. It targe
 | `api_client` (shared) | HTTP + WebSocket client; exports `ApiClient`, `LiveConnection`, `WsRpcClient` |
 | `menu_repository` (shared) | Menu domain; lazy WS subscription with ref-counting |
 | `order_repository` (shared) | Order domain; WS-synced mutations |
-| `very_yummy_coffee_models` (shared) | Shared models: `MenuGroup`, `MenuItem` (with `groupId` + `available`) |
+| `very_yummy_coffee_models` (shared) | Shared models: `MenuGroup`, `MenuItem` (with `groupId` + `available`); typed RPC protocol classes |
 | `rxdart` | `BehaviorSubject` for replay streams, `doOnCancel` for ref-counting |
 | `dart_mappable` | JSON serialization for all models |
 
@@ -27,7 +27,7 @@ Very Yummy Coffee is a Flutter/Dart monorepo for a coffee ordering app. It targe
 
 Real-time sync uses a single WebSocket endpoint at `GET /api/rpc` (`routes/api/rpc.dart`). Clients connect once per app via `WsRpcClient` (`shared/api_client/lib/src/ws_rpc_client.dart`), which multiplexes multiple topic subscriptions over one connection.
 
-**Client → server messages:**
+**Client → server messages** (typed via sealed classes in `very_yummy_coffee_models/lib/src/rpc/`):
 ```json
 {"type": "subscribe",   "topic": "menu"}
 {"type": "subscribe",   "topic": "orders"}
@@ -36,9 +36,12 @@ Real-time sync uses a single WebSocket endpoint at `GET /api/rpc` (`routes/api/r
 {"type": "action", "action": "updateMenuItemAvailability", "payload": {"itemId": "101", "available": false}}
 {"type": "action", "action": "createOrder",         "payload": {"id": "<uuid>"}}
 {"type": "action", "action": "addItemToOrder",      "payload": {"orderId": "<uuid>", "lineItemId": "<uuid>", "itemName": "...", "itemPrice": 550, "menuItemId": "101"}}
-{"type": "action", "action": "removeItemFromOrder", "payload": {"orderId": "<uuid>", "lineItemId": "<uuid>"}}
+{"type": "action", "action": "updateItemQuantity",  "payload": {"orderId": "<uuid>", "lineItemId": "<uuid>", "quantity": 2}}
+{"type": "action", "action": "submitOrder",         "payload": {"orderId": "<uuid>"}}
+{"type": "action", "action": "startOrder",          "payload": {"orderId": "<uuid>"}}
+{"type": "action", "action": "markOrderReady",      "payload": {"orderId": "<uuid>"}}
 {"type": "action", "action": "completeOrder",       "payload": {"orderId": "<uuid>"}}
-{"type": "action", "action": "updateNameOnOrder",  "payload": {"orderId": "<uuid>", "customerName": "Marcus"}}
+{"type": "action", "action": "updateNameOnOrder",   "payload": {"orderId": "<uuid>", "customerName": "Marcus"}}
 {"type": "action", "action": "cancelOrder",         "payload": {"orderId": "<uuid>"}}
 ```
 
@@ -55,9 +58,21 @@ On `subscribe`, the server immediately sends the current snapshot, then sends up
 
 `api/lib/src/server_state.dart` — in-memory singleton (`serverState`) holding the current menu (loaded from `fixtures/menu.json`) and all orders. Manages topic subscriptions as `Map<String, Set<StreamSink>>` and broadcasts to relevant subscribers after each action.
 
+### Typed RPC Protocol
+
+All RPC types live in `shared/very_yummy_coffee_models/lib/src/rpc/`:
+
+- **`RpcAction`** — sealed class hierarchy with typed subtypes for each action (e.g., `CreateOrderAction`, `AddItemToOrderAction`). Each subtype has typed fields and `toPayloadMap()`/`actionName` getters. Repositories construct these directly.
+- **`RpcClientMessage`** — sealed `dart_mappable` class for client→server wire messages (`RpcSubscribeMessage`, `RpcUnsubscribeMessage`, `RpcActionClientMessage`). Server parses via `RpcClientMessageMapper.fromMap()`.
+- **`RpcTopics`** — constants for topic names (`RpcTopics.menu`, `RpcTopics.orders`, `RpcTopics.order(id)`).
+
 ### WsRpcClient
 
 `shared/api_client/lib/src/ws_rpc_client.dart` — calling `subscribe(topic)` twice returns the same broadcast stream (no duplicate WS messages). Created via `WsRpcClient.fromApiClient(apiClient)`.
+
+- `sendAction(RpcAction action)` — accepts typed `RpcAction` subtypes, serializes internally.
+- `subscribe(topic)`/`unsubscribe(topic)` — use typed `RpcSubscribeMessage`/`RpcUnsubscribeMessage` internally.
+- Repositories construct typed actions: `_wsRpcClient.sendAction(CreateOrderAction(id: id))`.
 
 ### Repository Subscription Pattern
 

@@ -15,6 +15,7 @@ on:
       - "shared/api_client/**"
       - "shared/connection_repository/**"
       - "shared/order_repository/**"
+      - "shared/very_yummy_coffee_models/**"
       - "shared/very_yummy_coffee_ui/**"
   push:
     branches:
@@ -26,6 +27,7 @@ on:
       - "shared/api_client/**"
       - "shared/connection_repository/**"
       - "shared/order_repository/**"
+      - "shared/very_yummy_coffee_models/**"
       - "shared/very_yummy_coffee_ui/**"
 
 jobs:

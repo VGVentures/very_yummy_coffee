@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:api_client/api_client.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:test/test.dart';
+import 'package:very_yummy_coffee_models/very_yummy_coffee_models.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 
 class _MockLiveConnection extends Mock
@@ -36,11 +37,12 @@ void main() {
     });
 
     group('subscribe', () {
-      test('sends subscribe message on first call', () {
+      test('sends typed subscribe message on first call', () {
         _buildClient(connection).subscribe('menu');
 
         verify(
-          () => connection.send({'type': 'subscribe', 'topic': 'menu'}),
+          () =>
+              connection.send(const RpcSubscribeMessage(topic: 'menu').toMap()),
         ).called(1);
       });
 
@@ -77,7 +79,8 @@ void main() {
           ..subscribe('menu');
 
         verify(
-          () => connection.send({'type': 'subscribe', 'topic': 'menu'}),
+          () =>
+              connection.send(const RpcSubscribeMessage(topic: 'menu').toMap()),
         ).called(1);
       });
 
@@ -103,28 +106,40 @@ void main() {
       );
     });
 
+    group('unsubscribe', () {
+      test('sends typed unsubscribe message', () {
+        _buildClient(connection)
+          ..subscribe('menu')
+          ..unsubscribe('menu');
+
+        verify(
+          () => connection.send(
+            const RpcUnsubscribeMessage(topic: 'menu').toMap(),
+          ),
+        ).called(1);
+      });
+    });
+
     group('reconnect re-subscription', () {
-      test(
-        're-sends subscribe messages for all active topics on Reconnected',
-        () async {
-          _buildClient(connection)
-            ..subscribe('menu')
-            ..subscribe('orders');
+      test('re-sends typed subscribe messages for all active topics '
+          'on Reconnected', () async {
+        _buildClient(connection)
+          ..subscribe('menu')
+          ..subscribe('orders');
 
-          // Simulate a reconnect
-          connectionStateController.add(const Reconnected());
-          await Future<void>.delayed(Duration.zero);
+        connectionStateController.add(const Reconnected());
+        await Future<void>.delayed(Duration.zero);
 
-          // Each topic should have been subscribed once initially and once
-          // on reconnect — 2 calls total per topic.
-          verify(
-            () => connection.send({'type': 'subscribe', 'topic': 'menu'}),
-          ).called(2);
-          verify(
-            () => connection.send({'type': 'subscribe', 'topic': 'orders'}),
-          ).called(2);
-        },
-      );
+        verify(
+          () =>
+              connection.send(const RpcSubscribeMessage(topic: 'menu').toMap()),
+        ).called(2);
+        verify(
+          () => connection.send(
+            const RpcSubscribeMessage(topic: 'orders').toMap(),
+          ),
+        ).called(2);
+      });
 
       test('does not re-send for non-Reconnected connection states', () async {
         _buildClient(connection).subscribe('menu');
@@ -132,24 +147,24 @@ void main() {
         connectionStateController.add(const Connected());
         await Future<void>.delayed(Duration.zero);
 
-        // Only the initial subscribe should have been sent.
         verify(
-          () => connection.send({'type': 'subscribe', 'topic': 'menu'}),
+          () =>
+              connection.send(const RpcSubscribeMessage(topic: 'menu').toMap()),
         ).called(1);
       });
     });
 
     group('sendAction', () {
-      test('sends action with correct JSON format', () {
+      test('sends typed action with correct JSON format', () {
         _buildClient(
           connection,
-        ).sendAction('createOrder', {'orderId': 'abc-123'});
+        ).sendAction(const CreateOrderAction(id: 'abc-123'));
 
         verify(
           () => connection.send({
             'type': 'action',
             'action': 'createOrder',
-            'payload': {'orderId': 'abc-123'},
+            'payload': {'id': 'abc-123'},
           }),
         ).called(1);
       });

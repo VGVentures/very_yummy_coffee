@@ -8,6 +8,8 @@ environment:
 
 dependencies:
   http: ^1.4.0
+  very_yummy_coffee_models:
+    path: ../very_yummy_coffee_models
   web_socket_client: ^0.2.1
 
 dev_dependencies:

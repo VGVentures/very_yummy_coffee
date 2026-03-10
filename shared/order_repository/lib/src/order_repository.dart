@@ -5,6 +5,7 @@ import 'package:collection/collection.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:uuid/uuid.dart';
+import 'package:very_yummy_coffee_models/very_yummy_coffee_models.dart';
 
 /// {@template order_repository}
 /// A repository managing the ordering domain.
@@ -61,7 +62,7 @@ class OrderRepository {
   Future<void> createOrder() async {
     final id = _uuid.v4();
     _currentOrderId = id;
-    _wsRpcClient.sendAction('createOrder', {'id': id});
+    _wsRpcClient.sendAction(CreateOrderAction(id: id));
   }
 
   /// Adds an item to the current order on the server.
@@ -79,15 +80,17 @@ class OrderRepository {
       await createOrder();
     }
     assert(_currentOrderId != null, 'createOrder must set _currentOrderId');
-    _wsRpcClient.sendAction('addItemToOrder', {
-      'orderId': currentOrderId,
-      'lineItemId': _uuid.v4(),
-      'itemName': itemName,
-      'itemPrice': itemPrice,
-      'menuItemId': menuItemId,
-      'modifiers': modifiers.map((m) => m.toMap()).toList(),
-      'quantity': quantity,
-    });
+    _wsRpcClient.sendAction(
+      AddItemToOrderAction(
+        orderId: currentOrderId!,
+        lineItemId: _uuid.v4(),
+        itemName: itemName,
+        itemPrice: itemPrice,
+        menuItemId: menuItemId,
+        modifiers: modifiers.map((m) => m.toMap()).toList(),
+        quantity: quantity,
+      ),
+    );
   }
 
   /// Updates the quantity of a line item in the current order on the server.
@@ -95,15 +98,15 @@ class OrderRepository {
   /// Passing [quantity] of 0 removes the item.
   void updateItemQuantity(String lineItemId, int quantity) {
     if (currentOrderId == null) return;
-    _wsRpcClient.sendAction('updateItemQuantity', {
-      'orderId': currentOrderId,
-      'lineItemId': lineItemId,
-      'quantity': quantity,
-    });
+    _wsRpcClient.sendAction(
+      UpdateItemQuantityAction(
+        orderId: currentOrderId!,
+        lineItemId: lineItemId,
+        quantity: quantity,
+      ),
+    );
   }
 
-  /// Updates the customer name on the current order.
-  ///
   /// Updates the customer name on the current order.
   ///
   /// No-op if [currentOrderId] is null. The name is trimmed; if empty after
@@ -111,38 +114,40 @@ class OrderRepository {
   Future<void> updateNameOnCurrentOrder(String customerName) async {
     if (_currentOrderId == null) return;
     final trimmed = customerName.trim();
-    _wsRpcClient.sendAction('updateNameOnOrder', {
-      'orderId': _currentOrderId,
-      'customerName': trimmed.isEmpty ? null : trimmed,
-    });
+    _wsRpcClient.sendAction(
+      UpdateNameOnOrderAction(
+        orderId: _currentOrderId!,
+        customerName: trimmed.isEmpty ? null : trimmed,
+      ),
+    );
   }
 
-  /// Submits the current order on the server (pending → submitted).
+  /// Submits the current order on the server (pending -> submitted).
   ///
   /// Sends a `submitOrder` WS action and clears [currentOrderId].
   /// No-op if [currentOrderId] is null.
   void submitCurrentOrder() {
     final orderId = _currentOrderId;
     if (orderId == null) return;
-    _wsRpcClient.sendAction('submitOrder', {'orderId': orderId});
+    _wsRpcClient.sendAction(SubmitOrderAction(orderId: orderId));
     _currentOrderId = null;
   }
 
   /// Completes the current order on the server.
   void completeCurrentOrder() {
     if (currentOrderId == null) return;
-    _wsRpcClient.sendAction('completeOrder', {'orderId': currentOrderId});
+    _wsRpcClient.sendAction(CompleteOrderAction(orderId: currentOrderId!));
     _currentOrderId = null;
   }
 
-  /// Transitions order from submitted → inProgress on the server.
+  /// Transitions order from submitted -> inProgress on the server.
   void startOrder(String orderId) {
-    _wsRpcClient.sendAction('startOrder', {'orderId': orderId});
+    _wsRpcClient.sendAction(StartOrderAction(orderId: orderId));
   }
 
-  /// Transitions order from inProgress → ready on the server.
+  /// Transitions order from inProgress -> ready on the server.
   void markOrderReady(String orderId) {
-    _wsRpcClient.sendAction('markOrderReady', {'orderId': orderId});
+    _wsRpcClient.sendAction(MarkOrderReadyAction(orderId: orderId));
   }
 
   /// Transitions a specific order to completed (KDS-facing, orderId-based).
@@ -150,12 +155,12 @@ class OrderRepository {
   /// Distinct from [completeCurrentOrder] which clears the customer's tracked
   /// order ID. Use this when completing orders by explicit ID (e.g., KDS).
   void markOrderCompleted(String orderId) {
-    _wsRpcClient.sendAction('completeOrder', {'orderId': orderId});
+    _wsRpcClient.sendAction(CompleteOrderAction(orderId: orderId));
   }
 
   /// Cancels a specific order by orderId.
   void cancelOrder(String orderId) {
-    _wsRpcClient.sendAction('cancelOrder', {'orderId': orderId});
+    _wsRpcClient.sendAction(CancelOrderAction(orderId: orderId));
   }
 
   /// Cancels the current order and clears the tracked order ID.
@@ -165,7 +170,7 @@ class OrderRepository {
   void clearCurrentOrder() {
     final orderId = _currentOrderId;
     if (orderId == null) return;
-    _wsRpcClient.sendAction('cancelOrder', {'orderId': orderId});
+    _wsRpcClient.sendAction(CancelOrderAction(orderId: orderId));
     _currentOrderId = null;
   }
 
@@ -184,7 +189,7 @@ class OrderRepository {
 
     _ordersSubject = BehaviorSubject.seeded(const Orders(orders: []));
 
-    _ordersWsSub = _wsRpcClient.subscribe('orders').listen((payload) {
+    _ordersWsSub = _wsRpcClient.subscribe(RpcTopics.orders).listen((payload) {
       final orderList = payload['orders'] as List<dynamic>?;
       if (orderList == null) return;
 

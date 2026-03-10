@@ -13,6 +13,7 @@ on:
       - ".github/workflows/order_repository_verify_and_test.yaml"
       - "shared/order_repository/**"
       - "shared/api_client/**"
+      - "shared/very_yummy_coffee_models/**"
   push:
     branches:
       - master
@@ -21,6 +22,7 @@ on:
       - ".github/workflows/**"
       - "shared/order_repository/**"
       - "shared/api_client/**"
+      - "shared/very_yummy_coffee_models/**"
 
 jobs:
   verify_and_test:

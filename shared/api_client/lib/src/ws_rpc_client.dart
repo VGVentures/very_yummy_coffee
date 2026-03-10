@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:api_client/api_client.dart';
+import 'package:very_yummy_coffee_models/very_yummy_coffee_models.dart';
 import 'package:web_socket_client/web_socket_client.dart';
 
 /// {@template ws_rpc_client}
@@ -62,20 +63,25 @@ class WsRpcClient {
     }
     _controllers[topic] = StreamController<Map<String, dynamic>>.broadcast();
     _ensureListening();
-    _connection.send({'type': 'subscribe', 'topic': topic});
+    _connection.send(RpcSubscribeMessage(topic: topic).toMap());
     return _controllers[topic]!.stream;
   }
 
   /// Sends an unsubscribe message for [topic] and closes its stream.
   void unsubscribe(String topic) {
-    _connection.send({'type': 'unsubscribe', 'topic': topic});
+    _connection.send(RpcUnsubscribeMessage(topic: topic).toMap());
     _controllers.remove(topic)?.close();
   }
 
-  /// Sends an action to the server, which processes it and broadcasts the
-  /// updated state to all relevant topic subscribers.
-  void sendAction(String action, Map<String, dynamic> payload) {
-    _connection.send({'type': 'action', 'action': action, 'payload': payload});
+  /// Sends a typed action to the server, which processes it and broadcasts
+  /// the updated state to all relevant topic subscribers.
+  void sendAction(RpcAction action) {
+    _connection.send(
+      RpcActionClientMessage(
+        action: action.actionName,
+        payload: action.toPayloadMap(),
+      ).toMap(),
+    );
   }
 
   /// Closes the connection and all topic streams.
@@ -105,7 +111,7 @@ class WsRpcClient {
     _connectionSub = _connection.connection.listen((state) {
       if (state is Reconnected) {
         for (final topic in _controllers.keys) {
-          _connection.send({'type': 'subscribe', 'topic': topic});
+          _connection.send(RpcSubscribeMessage(topic: topic).toMap());
         }
       }
     });
