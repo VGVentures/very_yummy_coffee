@@ -6,6 +6,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_pos_app/order_history/order_history.dart';
 
+import '../../helpers/go_router.dart';
 import '../../helpers/pump_app.dart';
 
 class _MockOrderHistoryBloc
@@ -96,7 +97,9 @@ void main() {
       expect(find.text('Pending'), findsOneWidget);
     });
 
-    testWidgets('renders pending cards with Opacity', (tester) async {
+    testWidgets('renders pending cards at full opacity with edit hint', (
+      tester,
+    ) async {
       setLandscapeSize(tester);
       when(() => orderHistoryBloc.state).thenReturn(
         const OrderHistoryState(
@@ -107,10 +110,70 @@ void main() {
 
       await tester.pumpApp(buildSubject());
 
-      final opacityWidget = tester.widget<Opacity>(find.byType(Opacity));
-      expect(opacityWidget.opacity, 0.6);
+      expect(find.byType(Opacity), findsNothing);
       expect(find.text(_pendingOrder.orderNumber), findsOneWidget);
+      expect(find.text('Tap to edit'), findsOneWidget);
+      expect(find.byIcon(Icons.edit_outlined), findsOneWidget);
     });
+
+    testWidgets(
+      'tapping pending card dispatches OrderHistoryPendingOrderResumeRequested',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          const OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            pendingOrders: [_pendingOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+        await tester.tap(find.byType(InkWell).first);
+
+        verify(
+          () => orderHistoryBloc.add(
+            OrderHistoryPendingOrderResumeRequested(_pendingOrder.id),
+          ),
+        ).called(1);
+      },
+    );
+
+    testWidgets(
+      'tapping pending card navigates to /ordering',
+      (tester) async {
+        setLandscapeSize(tester);
+        final goRouter = MockGoRouter();
+        when(() => goRouter.go(any())).thenReturn(null);
+        when(() => orderHistoryBloc.state).thenReturn(
+          const OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            pendingOrders: [_pendingOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject(), goRouter: goRouter);
+        await tester.tap(find.byType(InkWell).first);
+
+        verify(() => goRouter.go('/ordering')).called(1);
+      },
+    );
+
+    testWidgets(
+      'non-pending order cards are not wrapped in InkWell for editing',
+      (tester) async {
+        setLandscapeSize(tester);
+        when(() => orderHistoryBloc.state).thenReturn(
+          OrderHistoryState(
+            status: OrderHistoryStatus.success,
+            activeOrders: [_activeOrder],
+          ),
+        );
+
+        await tester.pumpApp(buildSubject());
+
+        expect(find.text('Tap to edit'), findsNothing);
+      },
+    );
 
     testWidgets('renders both Pending and In Progress sections', (
       tester,

@@ -163,6 +163,17 @@ class OrderRepository {
     _wsRpcClient.sendAction(CancelOrderAction(orderId: orderId));
   }
 
+  /// Sets an existing order as the current order without sending any RPC
+  /// action.
+  ///
+  /// Use this to resume editing a pending order that was previously created.
+  /// The [currentOrderStream] (derived from [ordersStream]) will start
+  /// emitting the matching order on the next server broadcast.
+  void setCurrentOrderId(String orderId) {
+    assert(orderId.isNotEmpty, 'orderId must not be empty');
+    _currentOrderId = orderId;
+  }
+
   /// Cancels the current order and clears the tracked order ID.
   ///
   /// Use on the POS "Clear" action. Unlike [cancelOrder], this also

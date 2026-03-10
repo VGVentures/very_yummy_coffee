@@ -177,4 +177,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cancelOrderDialogDismiss => 'No';
+
+  @override
+  String get ordersPendingEditHint => 'Tap to edit';
 }

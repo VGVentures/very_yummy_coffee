@@ -24,9 +24,20 @@ class OrderHistoryBloc extends Bloc<OrderHistoryEvent, OrderHistoryState> {
     on<OrderHistoryOrderCancelled>(
       (event, _) => _orderRepository.cancelOrder(event.orderId),
     );
+    on<OrderHistoryPendingOrderResumeRequested>(_onPendingOrderResumeRequested);
   }
 
   final OrderRepository _orderRepository;
+
+  void _onPendingOrderResumeRequested(
+    OrderHistoryPendingOrderResumeRequested event,
+    Emitter<OrderHistoryState> emit,
+  ) {
+    if (event.orderId != _orderRepository.currentOrderId) {
+      _orderRepository.clearCurrentOrder();
+    }
+    _orderRepository.setCurrentOrderId(event.orderId);
+  }
 
   Future<void> _onSubscriptionRequested(
     OrderHistorySubscriptionRequested event,

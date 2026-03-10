@@ -123,6 +123,55 @@ void main() {
       });
     });
 
+    group('setCurrentOrderId', () {
+      test('updates currentOrderId getter', () {
+        orderRepository = OrderRepository(wsRpcClient: wsRpcClient)
+          ..setCurrentOrderId('order-abc');
+
+        expect(orderRepository.currentOrderId, 'order-abc');
+      });
+
+      test('currentOrderStream emits matching order on next ordersStream '
+          'update', () async {
+        final controller = StreamController<Map<String, dynamic>>.broadcast();
+        when(
+          () => wsRpcClient.subscribe(RpcTopics.orders),
+        ).thenAnswer((_) => controller.stream);
+        orderRepository = OrderRepository(wsRpcClient: wsRpcClient);
+        addTearDown(() async {
+          await orderRepository.dispose();
+          await controller.close();
+        });
+
+        orderRepository.setCurrentOrderId('order-abc');
+
+        final emitted = <Order?>[];
+        final sub = orderRepository.currentOrderStream.listen(emitted.add);
+
+        controller.add({
+          'orders': <dynamic>[
+            <String, dynamic>{
+              'id': 'order-abc',
+              'items': <dynamic>[],
+              'status': 'pending',
+            },
+          ],
+        });
+        await Future<void>.delayed(Duration.zero);
+        await sub.cancel();
+
+        expect(emitted.last, isNotNull);
+        expect(emitted.last!.id, 'order-abc');
+      });
+
+      test('does not send any WS action', () {
+        orderRepository = OrderRepository(wsRpcClient: wsRpcClient)
+          ..setCurrentOrderId('order-abc');
+
+        verifyNever(() => wsRpcClient.sendAction(any()));
+      });
+    });
+
     group('startOrder', () {
       test('sends StartOrderAction with orderId', () {
         orderRepository = OrderRepository(wsRpcClient: wsRpcClient)

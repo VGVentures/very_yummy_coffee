@@ -229,5 +229,9 @@
   "cancelOrderDialogDismiss": "No",
   "@cancelOrderDialogDismiss": {
     "description": "Dismiss button in cancel dialog"
+  },
+  "ordersPendingEditHint": "Tap to edit",
+  "@ordersPendingEditHint": {
+    "description": "Hint text on pending order cards indicating they can be tapped to resume editing"
   }
 }

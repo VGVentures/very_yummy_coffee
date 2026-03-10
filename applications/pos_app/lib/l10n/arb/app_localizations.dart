@@ -417,6 +417,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No'**
   String get cancelOrderDialogDismiss;
+
+  /// Hint text on pending order cards indicating they can be tapped to resume editing
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to edit'**
+  String get ordersPendingEditHint;
 }
 
 class _AppLocalizationsDelegate
