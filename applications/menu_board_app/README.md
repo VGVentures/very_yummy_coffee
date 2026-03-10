@@ -1,17 +1,28 @@
-# very_yummy_coffee_menu_board_app
+# Very Yummy Coffee — Menu Board App
 
-A new Flutter project.
+[![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg)](https://pub.dev/packages/very_good_analysis)
 
-## Getting Started
+A digital menu board display for Very Yummy Coffee. Designed for large screens or TVs mounted in-store.
 
-This project is a starting point for a Flutter application.
+## Overview
 
-A few resources to get you started if this is your first Flutter project:
+The menu board app displays the full menu with real-time updates:
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- Shows all menu groups and items with prices
+- Reflects stock availability changes in real time (items marked out-of-stock are visually indicated)
+- Includes an order status panel showing active order progress
+- Connects via WebSocket for live updates without manual refresh
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Running
+
+```sh
+flutter run
+```
+
+The backend (`api/`) must be running locally on port 8080.
+
+## Testing
+
+```sh
+flutter test
+```
