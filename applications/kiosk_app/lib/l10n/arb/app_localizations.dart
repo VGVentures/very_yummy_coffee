@@ -315,6 +315,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Remove unavailable items to proceed'**
   String get cartRemoveUnavailableToCheckout;
+
+  /// Message shown on the connecting screen while the app connects to the server
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting…'**
+  String get connecting;
 }
 
 class _AppLocalizationsDelegate

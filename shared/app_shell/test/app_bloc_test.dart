@@ -1,8 +1,8 @@
+import 'package:app_shell/app_shell.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:connection_repository/connection_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:very_yummy_coffee_kiosk_app/app/app.dart';
 
 class _MockConnectionRepository extends Mock implements ConnectionRepository {}
 
@@ -47,6 +47,36 @@ void main() {
         },
         act: (bloc) => bloc.add(const AppStarted()),
         expect: () => [const AppState(status: AppStatus.disconnected)],
+      );
+
+      blocTest<AppBloc, AppState>(
+        'emits [connected, disconnected] when connection drops',
+        build: () {
+          when(
+            () => connectionRepository.isConnected,
+          ).thenAnswer((_) => Stream.fromIterable([true, false]));
+          return AppBloc(connectionRepository: connectionRepository);
+        },
+        act: (bloc) => bloc.add(const AppStarted()),
+        expect: () => [
+          const AppState(status: AppStatus.connected),
+          const AppState(status: AppStatus.disconnected),
+        ],
+      );
+
+      blocTest<AppBloc, AppState>(
+        'emits [disconnected, connected] when connection recovers',
+        build: () {
+          when(
+            () => connectionRepository.isConnected,
+          ).thenAnswer((_) => Stream.fromIterable([false, true]));
+          return AppBloc(connectionRepository: connectionRepository);
+        },
+        act: (bloc) => bloc.add(const AppStarted()),
+        expect: () => [
+          const AppState(status: AppStatus.disconnected),
+          const AppState(status: AppStatus.connected),
+        ],
       );
     });
   });

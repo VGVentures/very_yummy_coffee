@@ -1,7 +1,7 @@
+import 'package:app_shell/app_shell.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:very_yummy_coffee_kiosk_app/app/app.dart';
+import 'package:very_yummy_coffee_kiosk_app/app/view/view.dart';
 import 'package:very_yummy_coffee_kiosk_app/cart/cart.dart';
 import 'package:very_yummy_coffee_kiosk_app/checkout/checkout.dart';
 import 'package:very_yummy_coffee_kiosk_app/home/home.dart';
@@ -18,31 +18,20 @@ class AppRouter {
   }) {
     _goRouter = GoRouter(
       navigatorKey: navigatorKey,
-      initialLocation: ConnectingPage.routeName,
+      initialLocation: AppShellRoutes.connecting,
       refreshListenable: GoRouterRefreshStream(appBloc.stream),
-      redirect: (context, state) {
-        final status = context.read<AppBloc>().state.status;
-        final onConnecting = state.uri.path == ConnectingPage.routeName;
-        // Exempt the order complete screen from disconnect redirect
-        // so a brief network blip doesn't yank the customer off their
-        // confirmation screen.
-        final onOrderComplete = state.uri.path.contains('/confirmation/');
-        if (status != AppStatus.connected &&
-            !onConnecting &&
-            !onOrderComplete) {
-          return ConnectingPage.routeName;
-        }
-        if (status == AppStatus.connected && onConnecting) {
-          return HomePage.routeName;
-        }
-        return null;
-      },
+      redirect: (context, state) => redirect(
+        context,
+        state,
+        connectedHomePath: HomePage.routeName,
+        allowedWhenDisconnected: const ['/confirmation/'],
+      ),
       routes: [
         GoRoute(
-          name: ConnectingPage.routeName,
-          path: ConnectingPage.routeName,
+          name: AppShellRoutes.connecting,
+          path: AppShellRoutes.connecting,
           pageBuilder: (context, state) => NoTransitionPage(
-            name: ConnectingPage.routeName,
+            name: AppShellRoutes.connecting,
             child: ConnectingPage.pageBuilder(context, state),
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:app_shell/app_shell.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,13 +8,20 @@ import 'package:go_router/go_router.dart';
 import 'package:menu_repository/menu_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:order_repository/order_repository.dart';
-import 'package:very_yummy_coffee_kiosk_app/app/app.dart';
 import 'package:very_yummy_coffee_kiosk_app/l10n/arb/app_localizations.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 import 'go_router.dart';
 
 class _MockAppBloc extends MockBloc<AppEvent, AppState> implements AppBloc {}
+
+AppBloc _defaultAppBloc() {
+  final bloc = _MockAppBloc();
+  when(() => bloc.state).thenReturn(
+    const AppState(status: AppStatus.connected),
+  );
+  return bloc;
+}
 
 class _MockOrderRepository extends Mock implements OrderRepository {}
 
@@ -45,7 +53,7 @@ extension AppTester on WidgetTester {
         ],
         child: MultiBlocProvider(
           providers: [
-            BlocProvider.value(value: appBloc ?? _MockAppBloc()),
+            BlocProvider.value(value: appBloc ?? _defaultAppBloc()),
           ],
           child: MockGoRouterProvider(
             goRouter: goRouter ?? MockGoRouter(),

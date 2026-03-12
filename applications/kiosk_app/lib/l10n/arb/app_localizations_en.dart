@@ -137,4 +137,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get cartRemoveUnavailableToCheckout =>
       'Remove unavailable items to proceed';
+
+  @override
+  String get connecting => 'Connecting…';
 }
