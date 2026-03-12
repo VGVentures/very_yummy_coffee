@@ -33,7 +33,7 @@ class OutOfStockBadge extends StatelessWidget {
         ),
         decoration: BoxDecoration(
           color: colors.statusDestructiveBackground,
-          borderRadius: BorderRadius.all(Radius.circular(radius.small)),
+          borderRadius: BorderRadius.circular(radius.small),
         ),
         child: Text(
           label,

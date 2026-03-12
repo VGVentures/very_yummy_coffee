@@ -95,6 +95,9 @@ Before building any custom widget, check `shared/very_yummy_coffee_ui/lib/src/wi
 - **`AppTopBar`** — shared dark top bar with connection dot, title, live clock, and optional `middleWidgets`/`actionWidgets` slots. Used by both KDS and POS apps.
 - **`BaseButton`** — primary/secondary/cancel variants, supports `isLoading`. Use for all full-width and inline action buttons.
 - **`CustomBackButton`** — standard back arrow for colored headers. Use instead of raw `GestureDetector + Icon(arrow_back)`.
+- **`OrderCard`** — order summary card (order number, customer, line summaries, total, optional status pill, elapsed, trailing actions). Primitives only; apps map `Order` to display params.
+- **`OrderLineItemRow`** — single line item row (name, quantity, modifiers, price, optional remove, optional out-of-stock badge). Use in order ticket and read-only lists.
+- **`StatusBadge`** — pill-shaped status label with configurable colors. Use for order status in cards and tables.
 
 When implementing a new widget that is used in more than one screen, or that is a general-purpose UI primitive (buttons, cards, inputs, chips, etc.), place it in `shared/very_yummy_coffee_ui/lib/src/widgets/` and export it from the package. Do not duplicate UI patterns across feature views.
 
