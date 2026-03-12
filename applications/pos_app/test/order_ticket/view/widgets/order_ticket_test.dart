@@ -50,6 +50,10 @@ void main() {
   late _MockMenuBloc menuBloc;
   late _MockOrderTicketBloc orderTicketBloc;
 
+  setUpAll(() {
+    registerFallbackValue(const OrderTicketSubscriptionRequested());
+  });
+
   setUp(() {
     menuBloc = _MockMenuBloc();
     orderTicketBloc = _MockOrderTicketBloc();
@@ -93,6 +97,22 @@ void main() {
       testWidgets('charge button is enabled', (tester) async {
         await tester.pumpApp(buildSubject());
         expect(find.textContaining('Charge'), findsOneWidget);
+      });
+
+      testWidgets('tap remove on line item dispatches OrderTicketItemRemoved', (
+        tester,
+      ) async {
+        await tester.pumpApp(buildSubject());
+        await tester.tap(find.byIcon(Icons.close));
+        final captured = verify(
+          () => orderTicketBloc.add(captureAny()),
+        ).captured;
+        expect(captured, hasLength(1));
+        expect(captured.single, isA<OrderTicketItemRemoved>());
+        expect(
+          (captured.single as OrderTicketItemRemoved).lineItemId,
+          _testItem.id,
+        );
       });
     });
 

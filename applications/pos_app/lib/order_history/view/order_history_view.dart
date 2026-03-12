@@ -8,6 +8,57 @@ import 'package:very_yummy_coffee_pos_app/order_history/bloc/order_history_bloc.
 import 'package:very_yummy_coffee_pos_app/ordering/ordering.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
+/// Maps [OrderStatus] to StatusBadge colors (backgroundColor, foregroundColor).
+(Color, Color) _statusChipColors(AppColors colors, OrderStatus status) =>
+    switch (status) {
+      OrderStatus.submitted || OrderStatus.inProgress => (
+        colors.statusWarningBackground,
+        colors.statusWarningForeground,
+      ),
+      OrderStatus.ready || OrderStatus.completed => (
+        colors.statusSuccessBackground,
+        colors.statusSuccessForeground,
+      ),
+      OrderStatus.cancelled => (
+        colors.statusDestructiveBackground,
+        colors.statusDestructiveForeground,
+      ),
+      OrderStatus.pending => (
+        colors.statusNeutralBackground,
+        colors.statusNeutralForeground,
+      ),
+    };
+
+String _statusLabel(OrderStatus status, AppLocalizations l10n) =>
+    switch (status) {
+      OrderStatus.submitted => l10n.orderStatusSubmitted,
+      OrderStatus.inProgress => l10n.orderStatusInProgress,
+      OrderStatus.ready => l10n.orderStatusReady,
+      OrderStatus.completed => l10n.orderStatusCompleted,
+      OrderStatus.cancelled => l10n.orderStatusCancelled,
+      OrderStatus.pending => l10n.orderStatusPending,
+    };
+
+String _progressLabel(OrderStatus status, AppLocalizations l10n) =>
+    switch (status) {
+      OrderStatus.submitted => l10n.actionStart,
+      OrderStatus.inProgress => l10n.actionMarkReady,
+      OrderStatus.ready => l10n.actionComplete,
+      _ => '',
+    };
+
+String _formatElapsed(Duration d) {
+  if (d.inHours >= 1) return '${d.inHours}h ${d.inMinutes.remainder(60)}m';
+  if (d.inMinutes >= 1) return '${d.inMinutes} min';
+  return '<1 min';
+}
+
+List<String> _orderLineSummaries(List<LineItem> items) =>
+    items.map((i) => '${i.quantity}× ${i.name}').toList();
+
+const double _tableHeaderRowHeight = 44;
+const double _tableDataRowHeight = 52;
+
 class OrderHistoryView extends StatelessWidget {
   const OrderHistoryView({super.key});
 
@@ -105,10 +156,7 @@ class _OrdersBody extends StatelessWidget {
               ),
               SizedBox(height: spacing.lg),
               if (state.activeOrders.isEmpty)
-                Text(
-                  l10n.ordersEmpty,
-                  style: TextStyle(color: colors.mutedForeground),
-                )
+                Text(l10n.ordersEmpty, style: typography.muted)
               else
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -225,7 +273,10 @@ class _CountBadge extends StatelessWidget {
     final spacing = context.spacing;
     final radius = context.radius;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: spacing.xs),
+      padding: EdgeInsets.symmetric(
+        horizontal: spacing.sm,
+        vertical: spacing.xs,
+      ),
       decoration: BoxDecoration(
         color: colors.primary,
         borderRadius: BorderRadius.circular(radius.card),
@@ -252,6 +303,10 @@ class _PendingOrderCard extends StatelessWidget {
     final typography = context.typography;
     final spacing = context.spacing;
     final l10n = context.l10n;
+    final (statusBg, statusFg) = _statusChipColors(
+      context.colors,
+      order.status,
+    );
 
     return InkWell(
       borderRadius: BorderRadius.circular(context.radius.small),
@@ -263,7 +318,23 @@ class _PendingOrderCard extends StatelessWidget {
       },
       child: Stack(
         children: [
-          _ActiveOrderCard(order: order),
+          SizedBox(
+            width: 290,
+            child: OrderCard(
+              orderNumber: order.orderNumber,
+              customerName: order.customerName,
+              lineSummaries: _orderLineSummaries(order.items),
+              totalDisplayText: '\$${(order.total / 100).toStringAsFixed(2)}',
+              statusLabel: _statusLabel(order.status, l10n),
+              statusBackgroundColor: statusBg,
+              statusForegroundColor: statusFg,
+              elapsed: order.submittedAt != null
+                  ? _formatElapsed(
+                      DateTime.now().difference(order.submittedAt!),
+                    )
+                  : null,
+            ),
+          ),
           Positioned(
             right: spacing.sm,
             top: spacing.sm,
@@ -272,7 +343,7 @@ class _PendingOrderCard extends StatelessWidget {
               children: [
                 Icon(
                   Icons.edit_outlined,
-                  size: 14,
+                  size: context.iconSize.medium,
                   color: colors.mutedForeground,
                 ),
                 SizedBox(width: spacing.xs),
@@ -306,201 +377,70 @@ class _ActiveOrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = context.colors;
-    final typography = context.typography;
     final spacing = context.spacing;
-    final radius = context.radius;
+    final (statusBg, statusFg) = _statusChipColors(
+      context.colors,
+      order.status,
+    );
 
-    final submittedAt = order.submittedAt;
-    final elapsed = submittedAt != null
-        ? _formatElapsed(DateTime.now().difference(submittedAt))
-        : '';
-    final itemSummary = _buildItemSummary(order.items);
-
-    return Container(
-      width: 290,
-      padding: EdgeInsets.all(spacing.xl),
-      decoration: BoxDecoration(
-        color: colors.card,
-        borderRadius: BorderRadius.circular(radius.small),
-        border: Border.all(color: colors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    Widget? trailing;
+    if (onProgressTapped != null) {
+      trailing = Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                order.orderNumber,
-                style: typography.pageTitle.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: colors.foreground,
+          if (onCancelTapped != null)
+            TextButton(
+              onPressed: onCancelTapped,
+              style: TextButton.styleFrom(
+                foregroundColor: colors.mutedForeground,
+                padding: EdgeInsets.symmetric(horizontal: spacing.xs),
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Text(l10n.actionCancel),
+            )
+          else
+            const SizedBox.shrink(),
+          Flexible(
+            child: FilledButton(
+              onPressed: onProgressTapped,
+              style: FilledButton.styleFrom(
+                backgroundColor: colors.primary,
+                foregroundColor: colors.primaryForeground,
+                padding: EdgeInsets.symmetric(
+                  horizontal: spacing.md,
+                  vertical: spacing.sm,
                 ),
               ),
-              if (elapsed.isNotEmpty)
-                Text(
-                  elapsed,
-                  style: typography.caption.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: colors.mutedForeground,
-                  ),
-                ),
-            ],
-          ),
-          if (order.customerName case final name? when name.isNotEmpty)
-            Padding(
-              padding: EdgeInsets.only(top: spacing.xs),
               child: Text(
-                name,
-                style: typography.body.copyWith(
-                  color: colors.mutedForeground,
-                ),
+                _progressLabel(order.status, l10n),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
-          SizedBox(height: spacing.md),
-          Text(
-            itemSummary,
-            style: typography.caption.copyWith(color: colors.mutedForeground),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
           ),
-          SizedBox(height: spacing.md),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '\$${(order.total / 100).toStringAsFixed(2)}',
-                style: typography.body.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: colors.foreground,
-                ),
-              ),
-              _StatusChip(status: order.status, l10n: l10n),
-            ],
-          ),
-          if (onProgressTapped != null) ...[
-            SizedBox(height: spacing.md),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                if (onCancelTapped != null)
-                  TextButton(
-                    onPressed: onCancelTapped,
-                    style: TextButton.styleFrom(
-                      foregroundColor: colors.mutedForeground,
-                      padding: EdgeInsets.symmetric(horizontal: spacing.xs),
-                      minimumSize: Size.zero,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    child: Text(l10n.actionCancel),
-                  )
-                else
-                  const SizedBox.shrink(),
-                Flexible(
-                  child: FilledButton(
-                    onPressed: onProgressTapped,
-                    style: FilledButton.styleFrom(
-                      backgroundColor: colors.primary,
-                      foregroundColor: colors.primaryForeground,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: spacing.md,
-                        vertical: spacing.sm,
-                      ),
-                    ),
-                    child: Text(
-                      _progressLabel(order.status, l10n),
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
         ],
+      );
+    }
+
+    return SizedBox(
+      width: 290,
+      child: OrderCard(
+        orderNumber: order.orderNumber,
+        customerName: order.customerName,
+        lineSummaries: _orderLineSummaries(order.items),
+        totalDisplayText: '\$${(order.total / 100).toStringAsFixed(2)}',
+        statusLabel: _statusLabel(order.status, l10n),
+        statusBackgroundColor: statusBg,
+        statusForegroundColor: statusFg,
+        elapsed: order.submittedAt != null
+            ? _formatElapsed(
+                DateTime.now().difference(order.submittedAt!),
+              )
+            : null,
+        trailing: trailing,
       ),
     );
   }
-
-  String _progressLabel(OrderStatus status, AppLocalizations l10n) =>
-      switch (status) {
-        OrderStatus.submitted => l10n.actionStart,
-        OrderStatus.inProgress => l10n.actionMarkReady,
-        OrderStatus.ready => l10n.actionComplete,
-        _ => '',
-      };
-
-  String _buildItemSummary(List<LineItem> items) {
-    if (items.isEmpty) return '';
-    const maxVisible = 2;
-    final names = items.take(maxVisible).map((i) => i.name).toList();
-    final extra = items.length - maxVisible;
-    final base = names.join(', ');
-    return extra > 0 ? '$base, +$extra' : base;
-  }
-
-  String _formatElapsed(Duration d) {
-    if (d.inHours >= 1) return '${d.inHours}h ${d.inMinutes.remainder(60)}m';
-    if (d.inMinutes >= 1) return '${d.inMinutes} min';
-    return '<1 min';
-  }
-}
-
-class _StatusChip extends StatelessWidget {
-  const _StatusChip({required this.status, required this.l10n});
-
-  final OrderStatus status;
-  final AppLocalizations l10n;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = context.colors;
-    final typography = context.typography;
-    final spacing = context.spacing;
-    final radius = context.radius;
-    final (bg, fg) = _chipColors(colors);
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: 5),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(radius.card),
-      ),
-      child: Text(
-        _label(),
-        style: typography.caption.copyWith(
-          fontWeight: FontWeight.w600,
-          color: fg,
-        ),
-      ),
-    );
-  }
-
-  (Color, Color) _chipColors(AppColors colors) => switch (status) {
-    OrderStatus.submitted || OrderStatus.inProgress => (
-      colors.statusWarningBackground,
-      colors.statusWarningForeground,
-    ),
-    OrderStatus.ready || OrderStatus.completed => (
-      colors.statusSuccessBackground,
-      colors.statusSuccessForeground,
-    ),
-    OrderStatus.cancelled => (
-      colors.statusDestructiveBackground,
-      colors.statusDestructiveForeground,
-    ),
-    OrderStatus.pending => (
-      colors.statusNeutralBackground,
-      colors.statusNeutralForeground,
-    ),
-  };
-
-  String _label() => switch (status) {
-    OrderStatus.submitted => l10n.orderStatusSubmitted,
-    OrderStatus.inProgress => l10n.orderStatusInProgress,
-    OrderStatus.ready => l10n.orderStatusReady,
-    OrderStatus.completed => l10n.orderStatusCompleted,
-    OrderStatus.cancelled => l10n.orderStatusCancelled,
-    OrderStatus.pending => l10n.orderStatusPending,
-  };
 }
 
 class _HistoryTable extends StatelessWidget {
@@ -512,15 +452,13 @@ class _HistoryTable extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colors = context.colors;
+    final typography = context.typography;
     final radius = context.radius;
 
     if (orders.isEmpty) {
       return Align(
         alignment: Alignment.topLeft,
-        child: Text(
-          l10n.ordersEmpty,
-          style: TextStyle(color: colors.mutedForeground),
-        ),
+        child: Text(l10n.ordersEmpty, style: typography.muted),
       );
     }
 
@@ -557,7 +495,7 @@ class _TableHeaderRow extends StatelessWidget {
     final colors = context.colors;
     final spacing = context.spacing;
     return Container(
-      height: 44,
+      height: _tableHeaderRowHeight,
       color: colors.secondary,
       padding: EdgeInsets.symmetric(horizontal: spacing.xl),
       child: Row(
@@ -615,6 +553,7 @@ class _TableDataRow extends StatelessWidget {
     final colors = context.colors;
     final typography = context.typography;
     final spacing = context.spacing;
+    final (statusBg, statusFg) = _statusChipColors(colors, order.status);
     final itemNames = order.items.map((i) => i.name).join(', ');
     final submittedAt = order.submittedAt;
     final timeStr = submittedAt != null
@@ -622,7 +561,7 @@ class _TableDataRow extends StatelessWidget {
         : '—';
 
     return Container(
-      height: 52,
+      height: _tableDataRowHeight,
       padding: EdgeInsets.symmetric(horizontal: spacing.xl),
       decoration: BoxDecoration(
         border: Border(top: BorderSide(color: colors.border)),
@@ -672,7 +611,11 @@ class _TableDataRow extends StatelessWidget {
           ),
           SizedBox(
             width: 120,
-            child: _StatusChip(status: order.status, l10n: l10n),
+            child: StatusBadge(
+              label: _statusLabel(order.status, l10n),
+              backgroundColor: statusBg,
+              foregroundColor: statusFg,
+            ),
           ),
         ],
       ),
