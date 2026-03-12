@@ -11,7 +11,7 @@ on:
       - main
     paths:
       - ".github/workflows/very_yummy_coffee_mobile_app_verify_and_test.yaml"
-      - ".claude/worktrees/kind-volhard/applications/mobile_app/**"
+      - "applications/mobile_app/**"
       - "shared/api_client/**"
       - "shared/connection_repository/**"
       - "shared/menu_repository/**"
@@ -24,7 +24,7 @@ on:
       - main
     paths:
       - ".github/workflows/**"
-      - ".claude/worktrees/kind-volhard/applications/mobile_app/**"
+      - "applications/mobile_app/**"
       - "shared/api_client/**"
       - "shared/connection_repository/**"
       - "shared/menu_repository/**"
@@ -37,7 +37,7 @@ jobs:
     name: Verify and Test
     defaults:
       run:
-        working-directory: .claude/worktrees/kind-volhard/applications/mobile_app
+        working-directory: applications/mobile_app
 
     runs-on: ubuntu-latest
 
