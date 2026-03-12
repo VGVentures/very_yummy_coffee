@@ -426,6 +426,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.13.0"
+  menu_feature:
+    dependency: "direct main"
+    description:
+      path: "../../shared/menu_feature"
+      relative: true
+    source: path
+    version: "0.1.0+1"
   menu_repository:
     dependency: "direct main"
     description:

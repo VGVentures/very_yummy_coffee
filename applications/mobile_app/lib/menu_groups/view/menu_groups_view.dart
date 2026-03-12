@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:menu_repository/menu_repository.dart';
+import 'package:menu_feature/menu_feature.dart';
 import 'package:very_yummy_coffee_mobile_app/l10n/l10n.dart';
-import 'package:very_yummy_coffee_mobile_app/menu_groups/menu_groups.dart';
-
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class MenuGroupsView extends StatelessWidget {
@@ -22,18 +20,17 @@ class MenuGroupsView extends StatelessWidget {
               const _Header(),
               Expanded(
                 child: switch (state.status) {
-                  MenuGroupsStatus.initial ||
-                  MenuGroupsStatus.loading => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                  MenuGroupsStatus.initial || MenuGroupsStatus.loading =>
+                    const Center(child: CircularProgressIndicator()),
                   MenuGroupsStatus.failure => Center(
                     child: Text(
                       context.l10n.errorSomethingWentWrong,
                       style: context.typography.body,
                     ),
                   ),
-                  MenuGroupsStatus.success => _MenuGroupList(
-                    menuGroups: state.menuGroups,
+                  MenuGroupsStatus.success => MenuGroupList(
+                    groups: state.menuGroups,
+                    onGroupTap: (g) => context.go('/home/menu/${g.id}'),
                   ),
                 },
               ),
@@ -78,79 +75,6 @@ class _Header extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _MenuGroupList extends StatelessWidget {
-  const _MenuGroupList({required this.menuGroups});
-
-  final List<MenuGroup> menuGroups;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: EdgeInsets.all(context.spacing.xl),
-      itemCount: menuGroups.length,
-      separatorBuilder: (_, _) => SizedBox(height: context.spacing.lg),
-      itemBuilder: (context, index) {
-        final group = menuGroups[index];
-        return GestureDetector(
-          onTap: () => context.go('/home/menu/${group.id}'),
-          child: _MenuGroupCard(group: group),
-        );
-      },
-    );
-  }
-}
-
-class _MenuGroupCard extends StatelessWidget {
-  const _MenuGroupCard({required this.group});
-
-  final MenuGroup group;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      decoration: BoxDecoration(
-        color: context.colors.card,
-        borderRadius: BorderRadius.circular(context.radius.large),
-        border: Border.all(color: context.colors.border),
-      ),
-      padding: EdgeInsets.all(context.spacing.xl),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  group.name,
-                  style: context.typography.subtitle.copyWith(
-                    fontSize: 20,
-                    color: context.colors.primary,
-                  ),
-                ),
-                SizedBox(height: context.spacing.xs),
-                Text(
-                  group.description,
-                  style: context.typography.muted,
-                ),
-              ],
-            ),
-          ),
-          Container(
-            width: 72,
-            height: 72,
-            decoration: BoxDecoration(
-              color: Color(group.color).withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(context.radius.medium),
-            ),
-          ),
-        ],
       ),
     );
   }
