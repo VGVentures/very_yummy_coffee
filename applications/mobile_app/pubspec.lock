@@ -32,6 +32,13 @@ packages:
       relative: true
     source: path
     version: "0.1.0+1"
+  app_shell:
+    dependency: "direct main"
+    description:
+      path: "../../shared/app_shell"
+      relative: true
+    source: path
+    version: "0.1.0+1"
   args:
     dependency: transitive
     description:

@@ -1,3 +1,4 @@
+import 'package:app_shell/app_shell.dart';
 import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,7 +8,6 @@ import 'package:go_router/go_router.dart';
 import 'package:menu_repository/menu_repository.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:order_repository/order_repository.dart';
-import 'package:very_yummy_coffee_menu_board_app/app/app.dart';
 import 'package:very_yummy_coffee_menu_board_app/l10n/arb/app_localizations.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 

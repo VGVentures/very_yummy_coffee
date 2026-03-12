@@ -1,7 +1,7 @@
+import 'package:app_shell/app_shell.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:very_yummy_coffee_mobile_app/app/app.dart';
+import 'package:very_yummy_coffee_mobile_app/app/view/view.dart';
 import 'package:very_yummy_coffee_mobile_app/cart/cart.dart';
 import 'package:very_yummy_coffee_mobile_app/checkout/checkout.dart';
 import 'package:very_yummy_coffee_mobile_app/home/home.dart';
@@ -18,26 +18,20 @@ class AppRouter {
   }) {
     _goRouter = GoRouter(
       navigatorKey: navigatorKey,
-      initialLocation: ConnectingPage.routeName,
+      initialLocation: AppShellRoutes.connecting,
       refreshListenable: GoRouterRefreshStream(appBloc.stream),
-      redirect: (BuildContext context, GoRouterState state) {
-        final status = context.read<AppBloc>().state.status;
-        final onConnecting = state.uri.path == ConnectingPage.routeName;
-        if (status != AppStatus.connected && !onConnecting) {
-          return ConnectingPage.routeName;
-        }
-        if (status == AppStatus.connected && onConnecting) {
-          return HomePage.routeName;
-        }
-        return null;
-      },
+      redirect: (context, state) => redirect(
+        context,
+        state,
+        connectedHomePath: HomePage.routeName,
+      ),
       routes: [
         GoRoute(
-          name: ConnectingPage.routeName,
-          path: ConnectingPage.routeName,
+          name: AppShellRoutes.connecting,
+          path: AppShellRoutes.connecting,
           pageBuilder: (BuildContext context, GoRouterState state) =>
               NoTransitionPage(
-                name: ConnectingPage.routeName,
+                name: AppShellRoutes.connecting,
                 child: ConnectingPage.pageBuilder(context, state),
               ),
         ),

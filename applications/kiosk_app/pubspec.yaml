@@ -10,6 +10,8 @@ environment:
 dependencies:
   api_client:
     path: ../../shared/api_client
+  app_shell:
+    path: ../../shared/app_shell
   bloc: ^9.0.0
   connection_repository:
     path: ../../shared/connection_repository

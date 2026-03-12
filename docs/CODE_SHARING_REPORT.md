@@ -106,7 +106,7 @@ Below are concrete ways to move more logic and UI into shared packages so the sh
 | 3 | Shared app shell and connection UX | **1,500–2,000** |
 | 4 | Shared localization (base ARB / shared l10n) | **1,000–1,500** |
 | 5 | More shared widgets in UI package (+ order card, line item, etc.) | **1,500–3,000** *(order card, line item row, status badge done)* |
-| 6 | Shared router / navigation conventions | **~500** (fewer duplicated route defs) |
+| 6 | Shared router / navigation conventions | **~500** *(app shell connecting route + redirect done)* |
 
 ---
 
@@ -115,7 +115,7 @@ Below are concrete ways to move more logic and UI into shared packages so the sh
 - [ ] **1. Shared menu feature** — Create `shared/menu_feature`. Move `MenuGroupsBloc`, `MenuItemsBloc`, and shared menu group/item views from mobile_app and kiosk_app. Wire both apps to use the package. *(Largest single win; do first.)*
 - [ ] **2. Shared ordering feature** — Create `shared/ordering_feature` (or `cart_feature`). Move `CartBloc`, `CheckoutBloc`, `OrderCompleteBloc`, and shared cart/checkout/order-complete views from mobile_app and kiosk_app. Wire both apps to use the package.
 - [x] **3. Shared order list/detail widgets** — Add reusable order card, line item row, and status badge to `very_yummy_coffee_ui` (or a shared feature package). Migrate pos_app order_ticket/order_history, menu_board_app order_status, and kds_app order views to use them. **Done (Mar 2026):** `OrderCard`, `OrderLineItemRow`, and `StatusBadge` added to `very_yummy_coffee_ui`; pos_app order history and order ticket and kds_app `KdsOrderCard` migrated; menu_board continues to use `OrderStatusCard` as-is.
-- [ ] **4. Shared app shell** — Add `ConnectingScreen` (and optional message) to `very_yummy_coffee_ui`. Optionally add `shared/app_shell` with shared `AppBloc` / connection flow. Replace each app’s `ConnectingPage` and duplicate app bootstrap with the shared implementation.
+- [x] **4. Shared app shell** — Add `ConnectingView` (and optional message) to `very_yummy_coffee_ui`. Add `shared/app_shell` with shared `AppBloc`, `AppShellRoutes.connecting`, and `redirect()` helper. All five apps use `ConnectingView`, depend on `app_shell`, and removed local app bloc. **Done (Mar 2026).**
 - [ ] **5. Shared localization** — Create a shared base ARB package or shared l10n package for common strings. Have each app depend on it and extend/override for app-specific copy.
 - [ ] **6. More shared UI primitives** — Add parameterized widgets (order complete screen, cart line item, summary row, etc.) to `very_yummy_coffee_ui`. Refactor mobile, kiosk, and pos to use them.
 - [ ] **7. Shared route constants / builders** — Define shared route name constants and optional `pageBuilder` helpers in shared feature packages. Update app routers to use them.
@@ -141,7 +141,7 @@ Below are concrete ways to move more logic and UI into shared packages so the sh
 
 **Suggestion:**
 
-- Add a **shared connecting screen** in `very_yummy_coffee_ui` (e.g. `ConnectingScreen` with optional message and optional key/route name), so all apps use the same widget and only pass in localized strings.
+- Add a **shared connecting screen** in `very_yummy_coffee_ui` (e.g. `ConnectingView` with optional message and optional key/route name), so all apps use the same widget and only pass in localized strings.
 - If connection/init logic is the same across apps, consider a small **`shared/app_shell`** (or similar) package that provides a reusable `AppBloc` (or base) and a standard “connecting → ready” flow. Apps would depend on it and plug in their routes and home screen.
 
 **Impact:** Removes duplicated “app bootstrap” and connecting UI across five apps (~2,170 lines in app/ today), replacing it with one shared implementation and thin app wiring.

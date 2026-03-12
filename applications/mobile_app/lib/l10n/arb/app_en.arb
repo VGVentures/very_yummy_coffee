@@ -185,5 +185,9 @@
   "cartRemoveUnavailableToCheckout": "Remove unavailable items to proceed",
   "@cartRemoveUnavailableToCheckout": {
     "description": "Warning message shown when the cart contains unavailable items"
+  },
+  "connecting": "Connecting…",
+  "@connecting": {
+    "description": "Message shown on the connecting screen while the app connects to the server"
   }
 }

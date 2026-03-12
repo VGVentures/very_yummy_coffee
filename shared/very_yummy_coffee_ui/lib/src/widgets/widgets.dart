@@ -2,6 +2,7 @@ export 'app_top_bar.dart';
 export 'bottom_tab_bar.dart';
 export 'buttons/buttons.dart';
 export 'coffee_card.dart';
+export 'connecting_view.dart';
 export 'modifier_group_selector.dart';
 export 'modifier_summary_chips.dart';
 export 'order_card.dart';

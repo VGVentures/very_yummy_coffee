@@ -11,7 +11,7 @@ on:
       - main
     paths:
       - ".github/workflows/api_verify_and_test.yaml"
-      - "api/**"
+      - ".claude/worktrees/kind-volhard/api/**"
       - "shared/very_yummy_coffee_models/**"
   push:
     branches:
@@ -19,7 +19,7 @@ on:
       - main
     paths:
       - ".github/workflows/**"
-      - "api/**"
+      - ".claude/worktrees/kind-volhard/api/**"
       - "shared/very_yummy_coffee_models/**"
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
     name: Verify and Test
     defaults:
       run:
-        working-directory: api
+        working-directory: .claude/worktrees/kind-volhard/api
 
     runs-on: ubuntu-latest
 

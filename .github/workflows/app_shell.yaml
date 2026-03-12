@@ -1,4 +1,4 @@
-name: Very Yummy Coffee Mobile App Verify and Test
+name: App Shell Verify and Test
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -10,34 +10,28 @@ on:
       - master
       - main
     paths:
-      - ".github/workflows/very_yummy_coffee_mobile_app_verify_and_test.yaml"
-      - ".claude/worktrees/kind-volhard/applications/mobile_app/**"
+      - ".github/workflows/app_shell_verify_and_test.yaml"
+      - "shared/app_shell/**"
       - "shared/api_client/**"
       - "shared/connection_repository/**"
-      - "shared/menu_repository/**"
-      - "shared/order_repository/**"
       - "shared/very_yummy_coffee_models/**"
-      - "shared/very_yummy_coffee_ui/**"
   push:
     branches:
       - master
       - main
     paths:
       - ".github/workflows/**"
-      - ".claude/worktrees/kind-volhard/applications/mobile_app/**"
+      - "shared/app_shell/**"
       - "shared/api_client/**"
       - "shared/connection_repository/**"
-      - "shared/menu_repository/**"
-      - "shared/order_repository/**"
       - "shared/very_yummy_coffee_models/**"
-      - "shared/very_yummy_coffee_ui/**"
 
 jobs:
   verify_and_test:
     name: Verify and Test
     defaults:
       run:
-        working-directory: .claude/worktrees/kind-volhard/applications/mobile_app
+        working-directory: shared/app_shell
 
     runs-on: ubuntu-latest
 
@@ -63,11 +57,6 @@ jobs:
       
       - name: 🕵️ Analyze
         run: flutter analyze lib test
-
-      - name: ✅ Bloc Lint
-        run: |
-          flutter pub global activate bloc_tools
-          bloc lint .
 
       - name: 🧪 Run Tests
         run: very_good test -j 4 --optimization --coverage --test-randomize-ordering-seed random

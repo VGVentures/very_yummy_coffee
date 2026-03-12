@@ -11,7 +11,7 @@ on:
       - main
     paths:
       - ".github/workflows/connection_repository_verify_and_test.yaml"
-      - "shared/connection_repository/**"
+      - ".claude/worktrees/kind-volhard/shared/connection_repository/**"
       - "shared/api_client/**"
       - "shared/very_yummy_coffee_models/**"
   push:
@@ -20,7 +20,7 @@ on:
       - main
     paths:
       - ".github/workflows/**"
-      - "shared/connection_repository/**"
+      - ".claude/worktrees/kind-volhard/shared/connection_repository/**"
       - "shared/api_client/**"
       - "shared/very_yummy_coffee_models/**"
 
@@ -29,7 +29,7 @@ jobs:
     name: Verify and Test
     defaults:
       run:
-        working-directory: shared/connection_repository
+        working-directory: .claude/worktrees/kind-volhard/shared/connection_repository
 
     runs-on: ubuntu-latest
 

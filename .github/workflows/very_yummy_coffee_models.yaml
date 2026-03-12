@@ -11,7 +11,7 @@ on:
       - main
     paths:
       - ".github/workflows/very_yummy_coffee_models_verify_and_test.yaml"
-      - "shared/very_yummy_coffee_models/**"
+      - ".claude/worktrees/strange-germain/shared/very_yummy_coffee_models/**"
 
   push:
     branches:
@@ -19,7 +19,7 @@ on:
       - main
     paths:
       - ".github/workflows/**"
-      - "shared/very_yummy_coffee_models/**"
+      - ".claude/worktrees/strange-germain/shared/very_yummy_coffee_models/**"
 
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
     name: Verify and Test
     defaults:
       run:
-        working-directory: shared/very_yummy_coffee_models
+        working-directory: .claude/worktrees/strange-germain/shared/very_yummy_coffee_models
 
     runs-on: ubuntu-latest
 
