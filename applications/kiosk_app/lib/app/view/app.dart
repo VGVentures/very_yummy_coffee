@@ -1,8 +1,8 @@
+import 'package:app_shell/app_shell.dart';
 import 'package:connection_repository/connection_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:order_repository/order_repository.dart';
-import 'package:very_yummy_coffee_kiosk_app/app/app.dart';
 import 'package:very_yummy_coffee_kiosk_app/app/app_router/app_router.dart';
 import 'package:very_yummy_coffee_kiosk_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';

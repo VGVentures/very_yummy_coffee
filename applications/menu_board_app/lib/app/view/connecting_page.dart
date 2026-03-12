@@ -1,3 +1,4 @@
+import 'package:app_shell/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:very_yummy_coffee_menu_board_app/l10n/l10n.dart';
@@ -11,25 +12,13 @@ class ConnectingPage extends StatelessWidget {
     GoRouterState _,
   ) => const ConnectingPage(key: Key('connecting_page'));
 
-  static const routeName = '/connecting';
+  static const String routeName = AppShellRoutes.connecting;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const CircularProgressIndicator(),
-            SizedBox(height: context.spacing.lg),
-            Text(
-              context.l10n.connecting,
-              style: context.typography.body.copyWith(
-                color: context.colors.mutedForeground,
-              ),
-            ),
-          ],
-        ),
+        child: ConnectingView(message: context.l10n.connecting),
       ),
     );
   }

@@ -1,7 +1,7 @@
+import 'package:app_shell/app_shell.dart';
 import 'package:connection_repository/connection_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:very_yummy_coffee_menu_board_app/app/app.dart';
 import 'package:very_yummy_coffee_menu_board_app/app/app_router/app_router.dart';
 import 'package:very_yummy_coffee_menu_board_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
@@ -12,7 +12,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppBloc(
+      create: (_) => AppBloc(
         connectionRepository: context.read<ConnectionRepository>(),
       )..add(const AppStarted()),
       child: const _AppView(),
