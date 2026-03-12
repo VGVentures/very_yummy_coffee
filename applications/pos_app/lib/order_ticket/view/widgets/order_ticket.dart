@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:very_yummy_coffee_pos_app/l10n/l10n.dart';
 import 'package:very_yummy_coffee_pos_app/menu/menu.dart';
 import 'package:very_yummy_coffee_pos_app/order_ticket/bloc/order_ticket_bloc.dart';
-import 'package:very_yummy_coffee_pos_app/order_ticket/view/widgets/order_ticket_line_item.dart';
 import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 class OrderTicket extends StatefulWidget {
@@ -166,9 +165,20 @@ class _OrderTicketState extends State<OrderTicket> {
                                 unavailableMenuItemIds.contains(
                                   lineItem.menuItemId,
                                 );
-                            return OrderTicketLineItem(
-                              lineItem: lineItem,
-                              isUnavailable: isUnavailable,
+                            return OrderLineItemRow(
+                              itemName: lineItem.name,
+                              quantity: lineItem.quantity,
+                              modifierLabels: lineItem.modifierOptionNames,
+                              totalCents:
+                                  lineItem.unitPriceWithModifiers *
+                                  lineItem.quantity,
+                              outOfStockLabel: isUnavailable
+                                  ? context.l10n.cartItemUnavailable
+                                  : null,
+                              onRemove: () =>
+                                  context.read<OrderTicketBloc>().add(
+                                    OrderTicketItemRemoved(lineItem.id),
+                                  ),
                             );
                           },
                         ),

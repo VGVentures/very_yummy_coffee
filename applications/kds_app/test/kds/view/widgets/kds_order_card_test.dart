@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_kds_app/kds/view/widgets/kds_elapsed_widget.dart';
 import 'package:very_yummy_coffee_kds_app/kds/view/widgets/kds_order_card.dart';
+import 'package:very_yummy_coffee_ui/very_yummy_coffee_ui.dart';
 
 import '../../../helpers/pump_app.dart';
 
@@ -18,16 +19,19 @@ void main() {
 
     Widget buildCard(
       Order order, {
+      Color? accentColor,
       String? actionLabel = 'Start',
       VoidCallback? onAction = _noop,
       VoidCallback? onCancel = _noop,
     }) {
-      return KdsOrderCard(
-        order: order,
-        accentColor: Colors.orange,
-        actionLabel: actionLabel,
-        onAction: onAction,
-        onCancel: onCancel,
+      return Builder(
+        builder: (context) => KdsOrderCard(
+          order: order,
+          accentColor: accentColor ?? context.colors.primary,
+          actionLabel: actionLabel,
+          onAction: onAction,
+          onCancel: onCancel,
+        ),
       );
     }
 
@@ -82,6 +86,24 @@ void main() {
         expect(find.byType(KdsElapsedWidget), findsOneWidget);
       },
     );
+
+    testWidgets('tap action button invokes onAction', (tester) async {
+      var actionCalled = false;
+      await tester.pumpApp(
+        buildCard(baseOrder, onAction: () => actionCalled = true),
+      );
+      await tester.tap(find.byType(FilledButton));
+      expect(actionCalled, isTrue);
+    });
+
+    testWidgets('tap cancel button invokes onCancel', (tester) async {
+      var cancelCalled = false;
+      await tester.pumpApp(
+        buildCard(baseOrder, onCancel: () => cancelCalled = true),
+      );
+      await tester.tap(find.byType(TextButton));
+      expect(cancelCalled, isTrue);
+    });
   });
 }
 

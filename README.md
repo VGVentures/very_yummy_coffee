@@ -102,9 +102,11 @@ Each package has its own test suite:
 
 ```sh
 cd <package_directory>
-flutter test          # for Flutter packages
+flutter test          # for Flutter packages (apps and very_yummy_coffee_ui)
 dart test             # for pure Dart packages (api, api_client, models, etc.)
 ```
+
+Use `flutter test` for any package that depends on Flutter (e.g. applications); `dart test` will fail with "dart:ui is not available" in those directories.
 
 ### Updating GitHub Actions
 
