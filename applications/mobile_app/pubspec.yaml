@@ -1,7 +1,7 @@
 name: very_yummy_coffee_mobile_app
-description: "Very Yummy Coffee Mobile App"
+description: "Very Yummy Coffee"
 publish_to: "none"
-version: 0.1.0
+version: 0.0.1+1
 
 environment:
   sdk: ^3.11.0
@@ -61,5 +61,7 @@ flutter_launcher_icons:
     theme_color: "#5C4033"
 
 flutter:
+  assets:
+    - shorebird.yaml
   generate: true
   uses-material-design: true

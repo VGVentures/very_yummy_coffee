@@ -1,7 +1,7 @@
 name: very_yummy_coffee_kds_app
-description: "Very Yummy Coffee Kitchen Display App"
+description: "Very Yummy Coffee KDS"
 publish_to: "none"
-version: 0.1.0
+version: 0.0.1+1
 
 environment:
   sdk: ^3.11.0
@@ -54,5 +54,7 @@ flutter_launcher_icons:
     image_path: ../../images/logo.png
 
 flutter:
+  assets:
+    - shorebird.yaml
   generate: true
   uses-material-design: true

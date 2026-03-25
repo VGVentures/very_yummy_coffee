@@ -1,7 +1,7 @@
 name: very_yummy_coffee_menu_board_app
-description: "Very Yummy Coffee Menu Board App"
+description: "Very Yummy Coffee Menu Board"
 publish_to: "none"
-version: 0.1.0
+version: 0.0.1+1
 
 environment:
   sdk: ^3.11.0
@@ -58,3 +58,5 @@ flutter_launcher_icons:
 flutter:
   uses-material-design: true
   generate: true
+  assets:
+    - shorebird.yaml

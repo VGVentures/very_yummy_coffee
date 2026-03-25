@@ -14,12 +14,7 @@ Future<void> main() async {
     DeviceOrientation.landscapeRight,
   ]);
 
-  final apiClient = ApiClient(
-    host: 'localhost',
-    port: 8080,
-    secure: false,
-    apiKey: '',
-  );
+  final apiClient = ApiClient.fromDartDefines();
   final wsRpcClient = WsRpcClient.fromApiClient(apiClient);
 
   runApp(

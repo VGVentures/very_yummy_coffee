@@ -1,11 +1,11 @@
 {
-    "name": "very_yummy_coffee",
-    "short_name": "very_yummy_coffee",
+    "name": "Very Yummy Coffee",
+    "short_name": "Very Yummy Coffee",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#F5EFE6",
     "theme_color": "#5C4033",
-    "description": "A new Flutter project.",
+    "description": "Very Yummy Coffee",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

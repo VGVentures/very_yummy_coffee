@@ -4,6 +4,7 @@ library;
 export 'package:web_socket_client/web_socket_client.dart' show Backoff;
 
 export 'src/api_client.dart';
+export 'src/api_client_port.dart' show parseApiPort;
 export 'src/api_exception.dart';
 export 'src/live_connection.dart';
 export 'src/ws_rpc_client.dart';

@@ -26,6 +26,33 @@ class ApiClient {
        _apiKey = apiKey,
        _getAuthenticationToken = getAuthenticationToken;
 
+  /// Builds an [ApiClient] from compile-time `--dart-define` values.
+  ///
+  /// - `API_HOST` — default `localhost`
+  /// - `API_PORT` — default `8080`; empty string omits an explicit port
+  ///   (`null`)
+  /// - `API_SECURE` — default `false` (`http` / `ws`); `true` uses `https` /
+  ///   `wss`
+  /// - `API_KEY` — default empty (`X-API-KEY` header)
+  factory ApiClient.fromDartDefines({
+    http.Client? client,
+    FutureOr<String?> Function()? getAuthenticationToken,
+  }) {
+    const host = String.fromEnvironment('API_HOST', defaultValue: 'localhost');
+    const portRaw = String.fromEnvironment('API_PORT', defaultValue: '8080');
+    const secure = bool.fromEnvironment('API_SECURE');
+    const apiKey = String.fromEnvironment('API_KEY');
+    final port = parseApiPort(portRaw);
+    return ApiClient(
+      host: host,
+      port: port,
+      secure: secure,
+      apiKey: apiKey,
+      client: client,
+      getAuthenticationToken: getAuthenticationToken,
+    );
+  }
+
   final http.Client _client;
   final String _host;
   final bool _secure;
