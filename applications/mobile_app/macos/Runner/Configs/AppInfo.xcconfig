@@ -8,7 +8,7 @@
 PRODUCT_NAME = very_yummy_coffee
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.veryYummyCoffee
+PRODUCT_BUNDLE_IDENTIFIER = com.marcustwichel.veryyummycoffee.mobile
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2026 com.example. All rights reserved.
