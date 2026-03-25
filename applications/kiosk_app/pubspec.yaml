@@ -1,7 +1,7 @@
 name: very_yummy_coffee_kiosk_app
-description: "Very Yummy Coffee Kiosk App"
+description: "Very Yummy Coffee Kiosk"
 publish_to: "none"
-version: 0.1.0
+version: 0.0.1+1
 
 environment:
   sdk: ^3.11.0
@@ -59,3 +59,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
+    - shorebird.yaml

@@ -8,31 +8,61 @@
       "name": "Mobile App",
       "cwd": "applications/mobile_app",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "toolArgs": [
+        "--dart-define=API_HOST=localhost",
+        "--dart-define=API_PORT=8080",
+        "--dart-define=API_SECURE=false",
+        "--dart-define=API_KEY="
+      ]
     },
     {
       "name": "KDS App",
       "cwd": "applications/kds_app",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "toolArgs": [
+        "--dart-define=API_HOST=localhost",
+        "--dart-define=API_PORT=8080",
+        "--dart-define=API_SECURE=false",
+        "--dart-define=API_KEY="
+      ]
     },
     {
       "name": "POS App",
       "cwd": "applications/pos_app",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "toolArgs": [
+        "--dart-define=API_HOST=localhost",
+        "--dart-define=API_PORT=8080",
+        "--dart-define=API_SECURE=false",
+        "--dart-define=API_KEY="
+      ]
     },
     {
       "name": "Menu Board App",
       "cwd": "applications/menu_board_app",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "toolArgs": [
+        "--dart-define=API_HOST=localhost",
+        "--dart-define=API_PORT=8080",
+        "--dart-define=API_SECURE=false",
+        "--dart-define=API_KEY="
+      ]
     },
     {
       "name": "Kiosk App",
       "cwd": "applications/kiosk_app",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "toolArgs": [
+        "--dart-define=API_HOST=localhost",
+        "--dart-define=API_PORT=8080",
+        "--dart-define=API_SECURE=false",
+        "--dart-define=API_KEY="
+      ]
     },
   ]
 }

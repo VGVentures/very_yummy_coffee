@@ -14,6 +14,23 @@ This package provides the networking layer used by all front-end applications:
 
 Repositories (`menu_repository`, `order_repository`) depend on this package and use `WsRpcClient` for all real-time communication.
 
+## API connection (`dart-define`)
+
+Apps typically construct [`ApiClient.fromDartDefines`](lib/src/api_client.dart). Compile-time flags:
+
+| Define | Meaning | Default |
+|--------|---------|---------|
+| `API_HOST` | Server hostname | `localhost` |
+| `API_PORT` | Port; empty string omits explicit port (default for the scheme) | `8080` |
+| `API_SECURE` | `true` → HTTPS + WSS; `false` → HTTP + WS | `false` |
+| `API_KEY` | `X-API-KEY` header | empty |
+
+Example:
+
+```sh
+flutter run --dart-define=API_HOST=api.example.com --dart-define=API_PORT=443 --dart-define=API_SECURE=true --dart-define=API_KEY=secret
+```
+
 ## Testing
 
 ```sh

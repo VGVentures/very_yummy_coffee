@@ -7,12 +7,7 @@ import 'package:order_repository/order_repository.dart';
 import 'package:very_yummy_coffee_mobile_app/app/app.dart';
 
 void main() {
-  final apiClient = ApiClient(
-    host: 'localhost',
-    port: 8080,
-    secure: false,
-    apiKey: '',
-  );
+  final apiClient = ApiClient.fromDartDefines();
   final wsRpcClient = WsRpcClient.fromApiClient(apiClient);
 
   runApp(
