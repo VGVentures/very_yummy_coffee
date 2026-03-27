@@ -56,3 +56,11 @@ jobs:
       - name: 🚀 Shorebird release (Linux)
         run: |
           ./scripts/shorebird_release_all.sh --apps="${{ inputs.apps }}" --platforms=linux
+
+      # Flutter / Shorebird Linux release output (executable + lib/, data/, etc.)
+      - name: 📤 Upload Linux release bundles
+        uses: actions/upload-artifact@v4
+        with:
+          name: shorebird-linux-${{ github.run_number }}
+          path: applications/*/build/linux/x64/release/bundle
+          if-no-files-found: warn
