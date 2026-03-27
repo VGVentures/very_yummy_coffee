@@ -31,6 +31,10 @@ jobs:
       SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
       API_KEY: ${{ secrets.API_KEY }}
       PRODUCTION_API_BASE_URL: ${{ secrets.PRODUCTION_API_BASE_URL }}
+      # Must match the Flutter revision used for other platforms of the same app version in
+      # Shorebird (see scripts/shorebird_release_all.sh SHOREBIRD_FLUTTER_VERSION). Update when
+      # you bump the app version and re-release all platforms together, or remove if unused.
+      SHOREBIRD_FLUTTER_VERSION: dc4c75c344c6fa5eb1f6fd380cbfdfb9bb109847
 
     steps:
       - name: 📚 Git Checkout

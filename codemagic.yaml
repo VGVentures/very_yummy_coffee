@@ -1,0 +1,498 @@
+# Codemagic CI/CD — Very Yummy Coffee monorepo
+#
+# One workflow per application and platform. Build machines match the target OS:
+#   - linux_x2: Android, Linux desktop, Web
+#   - mac_mini_m2: iOS, macOS (Apple SDK required)
+#
+# Apps and platforms (from applications/*/ and shared/.../gallery):
+#   mobile_app:     android, ios, macos, web
+#   pos_app:        ios, macos (no android/)
+#   kds_app:        android, ios, macos
+#   kiosk_app:      android, ios, macos
+#   menu_board_app: android, ios, linux, macos
+#   gallery:        macos, web (widgetbook)
+#
+# iOS jobs use --no-codesign so they compile without Apple signing in Codemagic.
+# Swap for flutter build ipa + ios_signing / xcode-project use-profiles when ready.
+#
+# Monorepo: run dependency install from repo root, then build inside each app directory.
+
+workflows:
+  # --- mobile_app (Linux hosts) ---
+  mobile-app-android:
+    name: Mobile App — Android
+    instance_type: linux_x2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      java: 17
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+        - $HOME/.gradle/caches
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Build Android APK
+        script: |
+          cd applications/mobile_app
+          flutter build apk --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/mobile_app/build/**/outputs/**/*.apk
+      - applications/mobile_app/build/**/outputs/**/mapping.txt
+
+  mobile-app-web:
+    name: Mobile App — Web
+    instance_type: linux_x2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      java: 17
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Build Web
+        script: |
+          cd applications/mobile_app
+          flutter build web --release
+    artifacts:
+      - applications/mobile_app/build/web/**
+
+  # --- mobile_app (macOS hosts) ---
+  mobile-app-ios:
+    name: Mobile App — iOS (compile, no codesign)
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find applications/mobile_app -name Podfile -execdir pod install \;
+      - name: Build iOS (no codesign)
+        script: |
+          cd applications/mobile_app
+          flutter build ios --release --no-codesign --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/mobile_app/build/ios/**/*.app
+      - /tmp/xcodebuild_logs/*.log
+
+  mobile-app-macos:
+    name: Mobile App — macOS
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find applications/mobile_app -name Podfile -execdir pod install \;
+      - name: Build macOS
+        script: |
+          cd applications/mobile_app
+          flutter build macos --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/mobile_app/build/macos/**/*.app
+
+  # --- pos_app (iOS + macOS only) ---
+  pos-app-ios:
+    name: POS App — iOS (compile, no codesign)
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find applications/pos_app -name Podfile -execdir pod install \;
+      - name: Build iOS (no codesign)
+        script: |
+          cd applications/pos_app
+          flutter build ios --release --no-codesign --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/pos_app/build/ios/**/*.app
+      - /tmp/xcodebuild_logs/*.log
+
+  pos-app-macos:
+    name: POS App — macOS
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find applications/pos_app -name Podfile -execdir pod install \;
+      - name: Build macOS
+        script: |
+          cd applications/pos_app
+          flutter build macos --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/pos_app/build/macos/**/*.app
+
+  # --- kds_app ---
+  kds-app-android:
+    name: KDS App — Android
+    instance_type: linux_x2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      java: 17
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+        - $HOME/.gradle/caches
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Build Android APK
+        script: |
+          cd applications/kds_app
+          flutter build apk --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/kds_app/build/**/outputs/**/*.apk
+
+  kds-app-ios:
+    name: KDS App — iOS (compile, no codesign)
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find applications/kds_app -name Podfile -execdir pod install \;
+      - name: Build iOS (no codesign)
+        script: |
+          cd applications/kds_app
+          flutter build ios --release --no-codesign --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/kds_app/build/ios/**/*.app
+      - /tmp/xcodebuild_logs/*.log
+
+  kds-app-macos:
+    name: KDS App — macOS
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find applications/kds_app -name Podfile -execdir pod install \;
+      - name: Build macOS
+        script: |
+          cd applications/kds_app
+          flutter build macos --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/kds_app/build/macos/**/*.app
+
+  # --- kiosk_app ---
+  kiosk-app-android:
+    name: Kiosk App — Android
+    instance_type: linux_x2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      java: 17
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+        - $HOME/.gradle/caches
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Build Android APK
+        script: |
+          cd applications/kiosk_app
+          flutter build apk --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/kiosk_app/build/**/outputs/**/*.apk
+
+  kiosk-app-ios:
+    name: Kiosk App — iOS (compile, no codesign)
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find applications/kiosk_app -name Podfile -execdir pod install \;
+      - name: Build iOS (no codesign)
+        script: |
+          cd applications/kiosk_app
+          flutter build ios --release --no-codesign --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/kiosk_app/build/ios/**/*.app
+      - /tmp/xcodebuild_logs/*.log
+
+  kiosk-app-macos:
+    name: Kiosk App — macOS
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find applications/kiosk_app -name Podfile -execdir pod install \;
+      - name: Build macOS
+        script: |
+          cd applications/kiosk_app
+          flutter build macos --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/kiosk_app/build/macos/**/*.app
+
+  # --- menu_board_app ---
+  menu-board-android:
+    name: Menu Board App — Android
+    instance_type: linux_x2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      java: 17
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+        - $HOME/.gradle/caches
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Build Android APK
+        script: |
+          cd applications/menu_board_app
+          flutter build apk --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/menu_board_app/build/**/outputs/**/*.apk
+
+  menu-board-linux:
+    name: Menu Board App — Linux
+    instance_type: linux_x2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      java: 17
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install Linux desktop dependencies
+        script: |
+          sudo apt-get update -y
+          sudo apt-get install -y clang cmake ninja-build pkg-config libgtk-3-dev liblzma-dev
+      - name: Build Linux
+        script: |
+          cd applications/menu_board_app
+          flutter build linux --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/menu_board_app/build/linux/**/release/bundle/**
+
+  menu-board-ios:
+    name: Menu Board App — iOS (compile, no codesign)
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find applications/menu_board_app -name Podfile -execdir pod install \;
+      - name: Build iOS (no codesign)
+        script: |
+          cd applications/menu_board_app
+          flutter build ios --release --no-codesign --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/menu_board_app/build/ios/**/*.app
+      - /tmp/xcodebuild_logs/*.log
+
+  menu-board-macos:
+    name: Menu Board App — macOS
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find applications/menu_board_app -name Podfile -execdir pod install \;
+      - name: Build macOS
+        script: |
+          cd applications/menu_board_app
+          flutter build macos --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - applications/menu_board_app/build/macos/**/*.app
+
+  # --- UI gallery (widgetbook) ---
+  gallery-web:
+    name: UI Gallery — Web
+    instance_type: linux_x2
+    max_build_duration: 45
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      java: 17
+    cache:
+      cache_paths:
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Build Web
+        script: |
+          cd shared/very_yummy_coffee_ui/gallery
+          flutter build web --release
+    artifacts:
+      - shared/very_yummy_coffee_ui/gallery/build/web/**
+
+  gallery-macos:
+    name: UI Gallery — macOS
+    instance_type: mac_mini_m2
+    max_build_duration: 45
+    working_directory: .
+    environment:
+      flutter: 3.41.2
+      xcode: latest
+      cocoapods: default
+    cache:
+      cache_paths:
+        - $HOME/Library/Caches/CocoaPods
+        - $HOME/.pub-cache
+    scripts:
+      - name: Install dependencies (monorepo)
+        script: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+      - name: Install CocoaPods
+        script: find shared/very_yummy_coffee_ui/gallery -name Podfile -execdir pod install \;
+      - name: Build macOS
+        script: |
+          cd shared/very_yummy_coffee_ui/gallery
+          flutter build macos --release --build-number=$CM_BUILD_NUMBER
+    artifacts:
+      - shared/very_yummy_coffee_ui/gallery/build/macos/**/*.app

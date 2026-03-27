@@ -112,7 +112,9 @@ Usage: shorebird_release_all.sh [options] [-- extra shorebird args]
   --platforms=android,ios,macos      Build these platforms for every selected app (overrides
                                      SHOREBIRD_PLATFORMS and MENU_BOARD_PLATFORMS for this run).
 
-Environment: SHOREBIRD_PLATFORMS, MENU_BOARD_PLATFORMS, API_HOST, API_KEY, ENV_FILE, etc.
+Environment: SHOREBIRD_PLATFORMS, MENU_BOARD_PLATFORMS, SHOREBIRD_FLUTTER_VERSION, API_HOST,
+  API_KEY, ENV_FILE, etc.  (SHOREBIRD_FLUTTER_VERSION: optional; full Flutter git hash for
+  `shorebird release --flutter-version`, required when matching an existing multi-platform release.)
 
 Examples:
   ./scripts/shorebird_release_all.sh --apps=kds,menu --platforms=ios,macos
@@ -169,7 +171,12 @@ for app_rel in "${SHOREBIRD_SELECTED_APPS[@]}"; do
     if [[ -n "${API_KEY:-}" ]]; then
       _dart_defines+=(--dart-define=API_KEY="${API_KEY}")
     fi
+    _shorebird_flutter_args=()
+    if [[ -n "${SHOREBIRD_FLUTTER_VERSION:-}" ]]; then
+      _shorebird_flutter_args+=(--flutter-version="${SHOREBIRD_FLUTTER_VERSION}")
+    fi
     shorebird release \
+      "${_shorebird_flutter_args[@]}" \
       --platforms "${_platforms}" \
       "${_dart_defines[@]}" \
       "${SHOREBIRD_PASSTHROUGH[@]}"
