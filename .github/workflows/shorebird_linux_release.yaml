@@ -1,0 +1,58 @@
+name: Shorebird Linux Release
+
+# Manual Shorebird release for Linux. Linux targets must be built on Linux (see
+# scripts/shorebird_platforms.sh). Only apps with a linux/ folder are built;
+# in this repo that is menu_board_app by default.
+
+on:
+  workflow_dispatch:
+    inputs:
+      apps:
+        description: >-
+          Comma-separated Shorebird app aliases (menu, kds, kiosk, mobile, pos).
+          Apps without linux/ are skipped by the script.
+        required: false
+        default: menu
+        type: string
+
+concurrency:
+  group: shorebird-linux-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Shorebird release (Linux)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    env:
+      SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
+      API_KEY: ${{ secrets.API_KEY }}
+      PRODUCTION_API_BASE_URL: ${{ secrets.PRODUCTION_API_BASE_URL }}
+
+    steps:
+      - name: 📚 Git Checkout
+        uses: actions/checkout@v6
+
+      - name: Check Shorebird token
+        run: |
+          if [ -z "${SHOREBIRD_TOKEN}" ]; then
+            echo "::error::Add repository secret SHOREBIRD_TOKEN (Shorebird Console → Account → API Keys)."
+            exit 1
+          fi
+
+      - name: 🐦 Setup Shorebird
+        uses: shorebirdtech/setup-shorebird@v1
+        with:
+          cache: true
+
+      - name: 📦 Install Very Good CLI and dependencies
+        run: |
+          dart pub global activate very_good_cli
+          very_good packages get -r
+
+      - name: 🚀 Shorebird release (Linux)
+        run: |
+          ./scripts/shorebird_release_all.sh --apps="${{ inputs.apps }}" --platforms=linux
