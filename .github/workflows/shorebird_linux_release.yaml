@@ -43,6 +43,15 @@ jobs:
             exit 1
           fi
 
+      # Host Flutter/Dart for very_good + pub get. setup-shorebird does not put `dart` on PATH.
+      - name: 🐦 Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.41.2
+          channel: stable
+          cache: true
+          cache-key: flutter-:os:-:channel:-:version:-:arch:-:hash:-${{ hashFiles('**/pubspec.lock') }}
+
       - name: 🐦 Setup Shorebird
         uses: shorebirdtech/setup-shorebird@v1
         with:
