@@ -2,36 +2,91 @@
   "groups": [
     {
       "id": "1",
-      "name": "Main",
-      "description": "Sandwiches, wraps & more",
-      "color": 4293787112
+      "name": "Espresso Drinks",
+      "description": "Bold shots and classic espresso drinks",
+      "color": 4287458915
     },
     {
       "id": "2",
-      "name": "Drinks",
-      "description": "Coffee, tea & beverages",
-      "color": 4292866518
+      "name": "Milk-Based",
+      "description": "Smooth, creamy coffee favorites",
+      "color": 4290554532
     },
     {
       "id": "3",
-      "name": "Desserts",
-      "description": "Pastries, cakes & sweets",
-      "color": 4294637000
+      "name": "Cold Drinks",
+      "description": "Refreshing cold coffee and beverages",
+      "color": 4284790262
+    },
+    {
+      "id": "4",
+      "name": "Tea",
+      "description": "Fine teas and tea lattes",
+      "color": 4286695300
+    },
+    {
+      "id": "5",
+      "name": "Non-Caffeinated",
+      "description": "Caffeine-free favorites for everyone",
+      "color": 4294937189
+    },
+    {
+      "id": "6",
+      "name": "Food",
+      "description": "Fresh pastries and light bites",
+      "color": 4294948685
+    },
+    {
+      "id": "7",
+      "name": "Extras & Add-ons",
+      "description": "Customize your drink just right",
+      "color": 4291728344
     }
   ],
   "items": [
-    { "id": "101", "name": "Club Sandwich", "price": 1200, "groupId": "1", "available": true },
-    { "id": "102", "name": "Caesar Wrap", "price": 1050, "groupId": "1", "available": true },
-    { "id": "201", "name": "Flat White", "price": 550, "groupId": "2", "available": true },
-    { "id": "202", "name": "Chai Latte", "price": 500, "groupId": "2", "available": true },
-    { "id": "301", "name": "Croissant", "price": 450, "groupId": "3", "available": true },
-    { "id": "302", "name": "Chocolate Cake", "price": 650, "groupId": "3", "available": true }
+    { "id": "101", "name": "Espresso", "price": 350, "groupId": "1", "available": true },
+    { "id": "102", "name": "Americano", "price": 425, "groupId": "1", "available": true },
+    { "id": "103", "name": "Cortado", "price": 475, "groupId": "1", "available": true },
+    { "id": "104", "name": "Macchiato", "price": 450, "groupId": "1", "available": true },
+    { "id": "105", "name": "Flat White", "price": 550, "groupId": "1", "available": true },
+
+    { "id": "201", "name": "Latte", "price": 525, "groupId": "2", "available": true },
+    { "id": "202", "name": "Cappuccino", "price": 525, "groupId": "2", "available": true },
+    { "id": "203", "name": "Mocha", "price": 575, "groupId": "2", "available": true },
+    { "id": "204", "name": "Oat Milk Latte", "price": 600, "groupId": "2", "available": true },
+    { "id": "205", "name": "Vanilla Latte", "price": 575, "groupId": "2", "available": true },
+
+    { "id": "301", "name": "Cold Brew", "price": 475, "groupId": "3", "available": true },
+    { "id": "302", "name": "Iced Americano", "price": 450, "groupId": "3", "available": true },
+    { "id": "303", "name": "Iced Latte", "price": 550, "groupId": "3", "available": true },
+    { "id": "304", "name": "Nitro Cold Brew", "price": 550, "groupId": "3", "available": true },
+
+    { "id": "401", "name": "Matcha Latte", "price": 575, "groupId": "4", "available": true },
+    { "id": "402", "name": "Chai Latte", "price": 500, "groupId": "4", "available": true },
+    { "id": "403", "name": "Earl Grey", "price": 375, "groupId": "4", "available": true },
+    { "id": "404", "name": "Green Tea", "price": 350, "groupId": "4", "available": true },
+
+    { "id": "501", "name": "Hot Chocolate", "price": 475, "groupId": "5", "available": true },
+    { "id": "502", "name": "Steamer", "price": 400, "groupId": "5", "available": true },
+    { "id": "503", "name": "Lemonade", "price": 425, "groupId": "5", "available": true },
+
+    { "id": "601", "name": "Croissant", "price": 450, "groupId": "6", "available": true },
+    { "id": "602", "name": "Blueberry Muffin", "price": 425, "groupId": "6", "available": true },
+    { "id": "603", "name": "Banana Bread", "price": 475, "groupId": "6", "available": true },
+    { "id": "604", "name": "Avocado Toast", "price": 950, "groupId": "6", "available": true },
+    { "id": "605", "name": "Yogurt Parfait", "price": 650, "groupId": "6", "available": true },
+
+    { "id": "701", "name": "Extra Shot", "price": 100, "groupId": "7", "available": true },
+    { "id": "702", "name": "Oat Milk Upgrade", "price": 75, "groupId": "7", "available": true },
+    { "id": "703", "name": "Vanilla Syrup", "price": 50, "groupId": "7", "available": true },
+    { "id": "704", "name": "Hazelnut Syrup", "price": 50, "groupId": "7", "available": true },
+    { "id": "705", "name": "Caramel Syrup", "price": 50, "groupId": "7", "available": true }
   ],
   "modifierGroups": [
     {
       "id": "mg-size",
       "name": "Size",
-      "appliesToGroupIds": ["2"],
+      "appliesToGroupIds": ["1", "2", "3", "4", "5"],
       "selectionMode": "single",
       "required": true,
       "defaultOptionId": "size-tall",
@@ -45,7 +100,7 @@
     {
       "id": "mg-milk",
       "name": "Milk",
-      "appliesToGroupIds": ["2"],
+      "appliesToGroupIds": ["1", "2", "4", "5"],
       "selectionMode": "single",
       "required": true,
       "defaultOptionId": "milk-whole",
@@ -60,7 +115,7 @@
     {
       "id": "mg-syrup",
       "name": "Syrup",
-      "appliesToGroupIds": ["2"],
+      "appliesToGroupIds": ["1", "2", "3", "4"],
       "selectionMode": "multi",
       "required": false,
       "options": [
@@ -72,7 +127,7 @@
     {
       "id": "mg-temp",
       "name": "Temperature",
-      "appliesToGroupIds": ["2"],
+      "appliesToGroupIds": ["1", "2", "4"],
       "selectionMode": "single",
       "required": false,
       "defaultOptionId": "temp-hot",
