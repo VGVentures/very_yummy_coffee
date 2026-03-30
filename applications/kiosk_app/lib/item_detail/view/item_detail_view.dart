@@ -78,19 +78,29 @@ class _ItemHeroPanel extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                color: colors.primaryForeground.withValues(alpha: 0.13),
-                shape: BoxShape.circle,
+            if (item.imageUrl != null && item.imageUrl!.trim().isNotEmpty)
+              SizedBox(
+                width: 360,
+                height: 240,
+                child: MenuItemImage(
+                  imageUrl: item.imageUrl,
+                  borderRadius: BorderRadius.circular(context.radius.large),
+                ),
+              )
+            else
+              Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: colors.primaryForeground.withValues(alpha: 0.13),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.local_cafe_outlined,
+                  size: 80,
+                  color: colors.primaryForeground.withValues(alpha: 0.6),
+                ),
               ),
-              child: Icon(
-                Icons.local_cafe_outlined,
-                size: 80,
-                color: colors.primaryForeground.withValues(alpha: 0.6),
-              ),
-            ),
             SizedBox(height: spacing.xxl),
             Text(
               item.name,

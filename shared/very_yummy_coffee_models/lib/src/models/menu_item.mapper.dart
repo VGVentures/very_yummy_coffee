@@ -37,6 +37,12 @@ class MenuItemMapper extends ClassMapperBase<MenuItem> {
     opt: true,
     def: true,
   );
+  static String? _$imageUrl(MenuItem v) => v.imageUrl;
+  static const Field<MenuItem, String> _f$imageUrl = Field(
+    'imageUrl',
+    _$imageUrl,
+    opt: true,
+  );
 
   @override
   final MappableFields<MenuItem> fields = const {
@@ -45,6 +51,7 @@ class MenuItemMapper extends ClassMapperBase<MenuItem> {
     #price: _f$price,
     #groupId: _f$groupId,
     #available: _f$available,
+    #imageUrl: _f$imageUrl,
   };
 
   static MenuItem _instantiate(DecodingData data) {
@@ -54,6 +61,7 @@ class MenuItemMapper extends ClassMapperBase<MenuItem> {
       price: data.dec(_f$price),
       groupId: data.dec(_f$groupId),
       available: data.dec(_f$available),
+      imageUrl: data.dec(_f$imageUrl),
     );
   }
 
@@ -120,6 +128,7 @@ abstract class MenuItemCopyWith<$R, $In extends MenuItem, $Out>
     int? price,
     String? groupId,
     bool? available,
+    String? imageUrl,
   });
   MenuItemCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
@@ -139,6 +148,7 @@ class _MenuItemCopyWithImpl<$R, $Out>
     int? price,
     String? groupId,
     bool? available,
+    Object? imageUrl = $none,
   }) => $apply(
     FieldCopyWithData({
       if (id != null) #id: id,
@@ -146,6 +156,7 @@ class _MenuItemCopyWithImpl<$R, $Out>
       if (price != null) #price: price,
       if (groupId != null) #groupId: groupId,
       if (available != null) #available: available,
+      if (imageUrl != $none) #imageUrl: imageUrl,
     }),
   );
   @override
@@ -155,6 +166,7 @@ class _MenuItemCopyWithImpl<$R, $Out>
     price: data.get(#price, or: $value.price),
     groupId: data.get(#groupId, or: $value.groupId),
     available: data.get(#available, or: $value.available),
+    imageUrl: data.get(#imageUrl, or: $value.imageUrl),
   );
 
   @override

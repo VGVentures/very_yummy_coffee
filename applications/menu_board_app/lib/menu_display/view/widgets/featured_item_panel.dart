@@ -49,6 +49,15 @@ class FeaturedItemPanel extends StatelessWidget {
           ),
           SizedBox(height: spacing.md),
           if (item case final item?) ...[
+            SizedBox(
+              height: 200,
+              width: double.infinity,
+              child: MenuItemImage(
+                imageUrl: item.imageUrl,
+                borderRadius: BorderRadius.circular(radius.large),
+              ),
+            ),
+            SizedBox(height: spacing.lg),
             Text(
               item.name,
               style: typography.subtitle.copyWith(

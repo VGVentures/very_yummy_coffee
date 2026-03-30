@@ -29,7 +29,7 @@ class ItemDetailView extends StatelessWidget {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const _HeroSection(),
+              _HeroSection(item: item),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
@@ -57,42 +57,62 @@ class ItemDetailView extends StatelessWidget {
 }
 
 class _HeroSection extends StatelessWidget {
-  const _HeroSection();
+  const _HeroSection({required this.item});
+
+  final MenuItem item;
 
   @override
   Widget build(BuildContext context) {
+    final hasImage = item.imageUrl != null && item.imageUrl!.trim().isNotEmpty;
+
     return SizedBox(
       height: 280,
       child: Stack(
         fit: StackFit.expand,
         children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  context.colors.primary,
-                  context.colors.foreground,
-                ],
+          if (hasImage)
+            Positioned.fill(
+              child: MenuItemImage(
+                imageUrl: item.imageUrl,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(context.radius.large),
+                  bottomRight: Radius.circular(context.radius.large),
+                ),
               ),
-            ),
-          ),
-          Center(
-            child: Container(
-              width: 160,
-              height: 160,
+            )
+          else
+            DecoratedBox(
               decoration: BoxDecoration(
-                color: context.colors.primaryForeground.withValues(alpha: 0.13),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.local_cafe_outlined,
-                size: 64,
-                color: context.colors.primaryForeground.withValues(alpha: 0.6),
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    context.colors.primary,
+                    context.colors.foreground,
+                  ],
+                ),
               ),
             ),
-          ),
+          if (!hasImage)
+            Center(
+              child: Container(
+                width: 160,
+                height: 160,
+                decoration: BoxDecoration(
+                  color: context.colors.primaryForeground.withValues(
+                    alpha: 0.13,
+                  ),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.local_cafe_outlined,
+                  size: 64,
+                  color: context.colors.primaryForeground.withValues(
+                    alpha: 0.6,
+                  ),
+                ),
+              ),
+            ),
           Positioned(
             top: 0,
             left: 0,

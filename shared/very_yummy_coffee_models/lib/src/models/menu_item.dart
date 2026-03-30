@@ -10,6 +10,7 @@ class MenuItem with MenuItemMappable {
     required this.price,
     required this.groupId,
     this.available = true,
+    this.imageUrl,
   });
 
   final String id;
@@ -23,4 +24,7 @@ class MenuItem with MenuItemMappable {
 
   /// Whether this item is currently available for ordering.
   final bool available;
+
+  /// Optional HTTPS URL for a product photo shown in menus and item detail.
+  final String? imageUrl;
 }

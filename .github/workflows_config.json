@@ -13,7 +13,7 @@
   "clearOldWorkflows": true,
   "mainJobName": "verify_and_test",
   "licenseCheckJobName": "license_check",
-  "preserve": "very_yummy_coffee_kiosk_app.yaml shorebird_linux_release.yaml",
+  "preserve": "very_yummy_coffee_kiosk_app.yaml shorebird_linux_release.yaml docker_ghcr.yaml",
   "runsOn": "ubuntu-latest",
   "setup_step_name": "",
   "setup_step_run": ""
