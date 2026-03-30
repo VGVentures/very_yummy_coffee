@@ -23,9 +23,11 @@ class ServerState {
 
   /// Loads menu data from the fixture file. Called once at server startup.
   void loadMenu() {
-    final fixture = jsonDecode(
-      File('fixtures/menu.json').readAsStringSync(),
-    ) as Map<String, dynamic>;
+    final fixture =
+        jsonDecode(
+              File('fixtures/menu.json').readAsStringSync(),
+            )
+            as Map<String, dynamic>;
     _menuGroups = (fixture['groups'] as List<dynamic>).map((e) {
       final map = e as Map<String, dynamic>;
       MenuGroupMapper.fromMap(map);
@@ -36,7 +38,8 @@ class ServerState {
       MenuItemMapper.fromMap(map);
       return map;
     }).toList();
-    _modifierGroups = (fixture['modifierGroups'] as List<dynamic>?)?.map((e) {
+    _modifierGroups =
+        (fixture['modifierGroups'] as List<dynamic>?)?.map((e) {
           final map = e as Map<String, dynamic>;
           ModifierGroupMapper.fromMap(map);
           return map;
@@ -136,16 +139,16 @@ class ServerState {
         final order = _orders[orderId];
         if (order != null) {
           final items =
-              List<Map<String, dynamic>>.from(order['items'] as List<dynamic>)
-                ..add({
-                  'id': payload['lineItemId'] as String,
-                  'name': payload['itemName'] as String,
-                  'price': payload['itemPrice'] as int,
-                  'menuItemId': payload['menuItemId'] as String?,
-                  'modifiers':
-                      payload['modifiers'] as List<dynamic>? ?? const [],
-                  'quantity': payload['quantity'] as int? ?? 1,
-                });
+              List<Map<String, dynamic>>.from(
+                order['items'] as List<dynamic>,
+              )..add({
+                'id': payload['lineItemId'] as String,
+                'name': payload['itemName'] as String,
+                'price': payload['itemPrice'] as int,
+                'menuItemId': payload['menuItemId'] as String?,
+                'modifiers': payload['modifiers'] as List<dynamic>? ?? const [],
+                'quantity': payload['quantity'] as int? ?? 1,
+              });
           _orders[orderId] = <String, dynamic>{...order, 'items': items};
           broadcast('orders', snapshotForTopic('orders'));
           broadcast('order:$orderId', _orders[orderId]!);
