@@ -173,7 +173,12 @@ for app_rel in "${SHOREBIRD_SELECTED_APPS[@]}"; do
     if [[ -n "${API_KEY:-}" ]]; then
       _dart_defines+=(--dart-define=API_KEY="${API_KEY}")
     fi
+    _shorebird_flutter_args=()
+    if [[ -n "${SHOREBIRD_FLUTTER_VERSION:-}" ]]; then
+      _shorebird_flutter_args+=(--flutter-version="${SHOREBIRD_FLUTTER_VERSION}")
+    fi
     shorebird patch \
+      "${_shorebird_flutter_args[@]}" \
       --platforms "${_platforms}" \
       --release-version "${SHOREBIRD_RELEASE_VERSION}" \
       "${_dart_defines[@]}" \
