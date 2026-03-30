@@ -23,5 +23,31 @@ void main() {
         isNotNull,
       );
     });
+
+    test('fromMap omits imageUrl when key is absent', () {
+      final item = MenuItemMapper.fromMap({
+        'id': '1',
+        'name': 'Latte',
+        'price': 500,
+        'groupId': '2',
+        'available': true,
+      });
+      expect(item.imageUrl, isNull);
+    });
+
+    test('fromMap and toMap round-trip imageUrl', () {
+      const url = 'https://example.com/photo.png';
+      final item = MenuItemMapper.fromMap({
+        'id': '1',
+        'name': 'Latte',
+        'price': 500,
+        'groupId': '2',
+        'available': true,
+        'imageUrl': url,
+      });
+      expect(item.imageUrl, url);
+      final map = item.toMap();
+      expect(map['imageUrl'], url);
+    });
   });
 }

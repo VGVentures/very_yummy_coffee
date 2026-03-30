@@ -44,96 +44,383 @@
     }
   ],
   "items": [
-    { "id": "101", "name": "Espresso", "price": 350, "groupId": "1", "available": true },
-    { "id": "102", "name": "Americano", "price": 425, "groupId": "1", "available": true },
-    { "id": "103", "name": "Cortado", "price": 475, "groupId": "1", "available": true },
-    { "id": "104", "name": "Macchiato", "price": 450, "groupId": "1", "available": true },
-    { "id": "105", "name": "Flat White", "price": 550, "groupId": "1", "available": true },
-
-    { "id": "201", "name": "Latte", "price": 525, "groupId": "2", "available": true },
-    { "id": "202", "name": "Cappuccino", "price": 525, "groupId": "2", "available": true },
-    { "id": "203", "name": "Mocha", "price": 575, "groupId": "2", "available": true },
-    { "id": "204", "name": "Oat Milk Latte", "price": 600, "groupId": "2", "available": true },
-    { "id": "205", "name": "Vanilla Latte", "price": 575, "groupId": "2", "available": true },
-
-    { "id": "301", "name": "Cold Brew", "price": 475, "groupId": "3", "available": true },
-    { "id": "302", "name": "Iced Americano", "price": 450, "groupId": "3", "available": true },
-    { "id": "303", "name": "Iced Latte", "price": 550, "groupId": "3", "available": true },
-    { "id": "304", "name": "Nitro Cold Brew", "price": 550, "groupId": "3", "available": true },
-
-    { "id": "401", "name": "Matcha Latte", "price": 575, "groupId": "4", "available": true },
-    { "id": "402", "name": "Chai Latte", "price": 500, "groupId": "4", "available": true },
-    { "id": "403", "name": "Earl Grey", "price": 375, "groupId": "4", "available": true },
-    { "id": "404", "name": "Green Tea", "price": 350, "groupId": "4", "available": true },
-
-    { "id": "501", "name": "Hot Chocolate", "price": 475, "groupId": "5", "available": true },
-    { "id": "502", "name": "Steamer", "price": 400, "groupId": "5", "available": true },
-    { "id": "503", "name": "Lemonade", "price": 425, "groupId": "5", "available": true },
-
-    { "id": "601", "name": "Croissant", "price": 450, "groupId": "6", "available": true },
-    { "id": "602", "name": "Blueberry Muffin", "price": 425, "groupId": "6", "available": true },
-    { "id": "603", "name": "Banana Bread", "price": 475, "groupId": "6", "available": true },
-    { "id": "604", "name": "Avocado Toast", "price": 950, "groupId": "6", "available": true },
-    { "id": "605", "name": "Yogurt Parfait", "price": 650, "groupId": "6", "available": true },
-
-    { "id": "701", "name": "Extra Shot", "price": 100, "groupId": "7", "available": true },
-    { "id": "702", "name": "Oat Milk Upgrade", "price": 75, "groupId": "7", "available": true },
-    { "id": "703", "name": "Vanilla Syrup", "price": 50, "groupId": "7", "available": true },
-    { "id": "704", "name": "Hazelnut Syrup", "price": 50, "groupId": "7", "available": true },
-    { "id": "705", "name": "Caramel Syrup", "price": 50, "groupId": "7", "available": true }
+    {
+      "id": "101",
+      "name": "Espresso",
+      "price": 350,
+      "groupId": "1",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20190617_Espresso_Single?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "102",
+      "name": "Americano",
+      "price": 425,
+      "groupId": "1",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/CaffeAmericano?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "103",
+      "name": "Cortado",
+      "price": 475,
+      "groupId": "1",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/Cortado?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "104",
+      "name": "Macchiato",
+      "price": 450,
+      "groupId": "1",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20190617_EspressoMacchiato?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "105",
+      "name": "Flat White",
+      "price": 550,
+      "groupId": "1",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20230406_FlatWhite?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "201",
+      "name": "Latte",
+      "price": 525,
+      "groupId": "2",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/CaffeLatte?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "202",
+      "name": "Cappuccino",
+      "price": 525,
+      "groupId": "2",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/Cappuccino?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "203",
+      "name": "Mocha",
+      "price": 575,
+      "groupId": "2",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20220607_CaffeMocha?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "204",
+      "name": "Oat Milk Latte",
+      "price": 600,
+      "groupId": "2",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/LavenderOatmilkLatte?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "205",
+      "name": "Vanilla Latte",
+      "price": 575,
+      "groupId": "2",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/BlondeVanillaLatte?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "301",
+      "name": "Cold Brew",
+      "price": 475,
+      "groupId": "3",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/ColdBrew?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "302",
+      "name": "Iced Americano",
+      "price": 450,
+      "groupId": "3",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/IcedCaffeAmericano?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "303",
+      "name": "Iced Latte",
+      "price": 550,
+      "groupId": "3",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/IcedCaffeLatte?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "304",
+      "name": "Nitro Cold Brew",
+      "price": 550,
+      "groupId": "3",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/NitroColdBrew?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "401",
+      "name": "Matcha Latte",
+      "price": 575,
+      "groupId": "4",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20211115_MatchaTeaLatte?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "402",
+      "name": "Chai Latte",
+      "price": 500,
+      "groupId": "4",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20220411_ChaiLatte?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "403",
+      "name": "Earl Grey",
+      "price": 375,
+      "groupId": "4",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20190624_EarlGreyBlackTea?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "404",
+      "name": "Green Tea",
+      "price": 350,
+      "groupId": "4",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/EmperorCloudsAndMistTea?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "501",
+      "name": "Hot Chocolate",
+      "price": 475,
+      "groupId": "5",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/HotChocolate?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "502",
+      "name": "Steamer",
+      "price": 400,
+      "groupId": "5",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20190617_SteamedMilk?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "503",
+      "name": "Lemonade",
+      "price": 425,
+      "groupId": "5",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20190624_Lemonade?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "601",
+      "name": "Croissant",
+      "price": 450,
+      "groupId": "6",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/HamAndSwissCroissant?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "602",
+      "name": "Blueberry Muffin",
+      "price": 425,
+      "groupId": "6",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/BlueberryStreuselMuffinUS?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "603",
+      "name": "Banana Bread",
+      "price": 475,
+      "groupId": "6",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/BananaWalnutPecanLoafUS?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "604",
+      "name": "Avocado Toast",
+      "price": 950,
+      "groupId": "6",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20190814_AvocadoSpread?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "605",
+      "name": "Yogurt Parfait",
+      "price": 650,
+      "groupId": "6",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20221206_CheeseFruitProteinBox?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "701",
+      "name": "Extra Shot",
+      "price": 100,
+      "groupId": "7",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20190617_Espresso_Single?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "702",
+      "name": "Oat Milk Upgrade",
+      "price": 75,
+      "groupId": "7",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/BrownSugarOatmilkCortado?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "703",
+      "name": "Vanilla Syrup",
+      "price": 50,
+      "groupId": "7",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/VanillaBeanCremeFrappuccino?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "704",
+      "name": "Hazelnut Syrup",
+      "price": 50,
+      "groupId": "7",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/IcedHazelnutOatmilkShakenEspresso?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    },
+    {
+      "id": "705",
+      "name": "Caramel Syrup",
+      "price": 50,
+      "groupId": "7",
+      "available": true,
+      "imageUrl": "https://cloudassets.starbucks.com/is/image/sbuxcorp/SBX20211029_CaramelMacchiato?impolicy=1by1_wide_topcrop_630&crop=180,360,1440,1440&wid=630&hei=630&qlt=85"
+    }
   ],
   "modifierGroups": [
     {
       "id": "mg-size",
       "name": "Size",
-      "appliesToGroupIds": ["1", "2", "3", "4", "5"],
+      "appliesToGroupIds": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
       "selectionMode": "single",
       "required": true,
       "defaultOptionId": "size-tall",
       "options": [
-        { "id": "size-short", "name": "Short", "priceDeltaCents": 0 },
-        { "id": "size-tall", "name": "Tall", "priceDeltaCents": 0 },
-        { "id": "size-grande", "name": "Grande", "priceDeltaCents": 50 },
-        { "id": "size-venti", "name": "Venti", "priceDeltaCents": 100 }
+        {
+          "id": "size-short",
+          "name": "Short",
+          "priceDeltaCents": 0
+        },
+        {
+          "id": "size-tall",
+          "name": "Tall",
+          "priceDeltaCents": 0
+        },
+        {
+          "id": "size-grande",
+          "name": "Grande",
+          "priceDeltaCents": 50
+        },
+        {
+          "id": "size-venti",
+          "name": "Venti",
+          "priceDeltaCents": 100
+        }
       ]
     },
     {
       "id": "mg-milk",
       "name": "Milk",
-      "appliesToGroupIds": ["1", "2", "4", "5"],
+      "appliesToGroupIds": [
+        "1",
+        "2",
+        "4",
+        "5"
+      ],
       "selectionMode": "single",
       "required": true,
       "defaultOptionId": "milk-whole",
       "options": [
-        { "id": "milk-whole", "name": "Whole Milk", "priceDeltaCents": 0 },
-        { "id": "milk-2pct", "name": "2% Milk", "priceDeltaCents": 0 },
-        { "id": "milk-oat", "name": "Oat Milk", "priceDeltaCents": 75 },
-        { "id": "milk-almond", "name": "Almond Milk", "priceDeltaCents": 75 },
-        { "id": "milk-soy", "name": "Soy Milk", "priceDeltaCents": 75 }
+        {
+          "id": "milk-whole",
+          "name": "Whole Milk",
+          "priceDeltaCents": 0
+        },
+        {
+          "id": "milk-2pct",
+          "name": "2% Milk",
+          "priceDeltaCents": 0
+        },
+        {
+          "id": "milk-oat",
+          "name": "Oat Milk",
+          "priceDeltaCents": 75
+        },
+        {
+          "id": "milk-almond",
+          "name": "Almond Milk",
+          "priceDeltaCents": 75
+        },
+        {
+          "id": "milk-soy",
+          "name": "Soy Milk",
+          "priceDeltaCents": 75
+        }
       ]
     },
     {
       "id": "mg-syrup",
       "name": "Syrup",
-      "appliesToGroupIds": ["1", "2", "3", "4"],
+      "appliesToGroupIds": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
       "selectionMode": "multi",
       "required": false,
       "options": [
-        { "id": "syrup-vanilla", "name": "Vanilla", "priceDeltaCents": 50 },
-        { "id": "syrup-hazelnut", "name": "Hazelnut", "priceDeltaCents": 50 },
-        { "id": "syrup-caramel", "name": "Caramel", "priceDeltaCents": 50 }
+        {
+          "id": "syrup-vanilla",
+          "name": "Vanilla",
+          "priceDeltaCents": 50
+        },
+        {
+          "id": "syrup-hazelnut",
+          "name": "Hazelnut",
+          "priceDeltaCents": 50
+        },
+        {
+          "id": "syrup-caramel",
+          "name": "Caramel",
+          "priceDeltaCents": 50
+        }
       ]
     },
     {
       "id": "mg-temp",
       "name": "Temperature",
-      "appliesToGroupIds": ["1", "2", "4"],
+      "appliesToGroupIds": [
+        "1",
+        "2",
+        "4"
+      ],
       "selectionMode": "single",
       "required": false,
       "defaultOptionId": "temp-hot",
       "options": [
-        { "id": "temp-hot", "name": "Hot", "priceDeltaCents": 0 },
-        { "id": "temp-iced", "name": "Iced", "priceDeltaCents": 0 }
+        {
+          "id": "temp-hot",
+          "name": "Hot",
+          "priceDeltaCents": 0
+        },
+        {
+          "id": "temp-iced",
+          "name": "Iced",
+          "priceDeltaCents": 0
+        }
       ]
     }
   ]

@@ -116,6 +116,33 @@ void main() {
         expect(snapshot['customerName'], isNull);
       });
     });
+
+    group('handleAction updateMenuItemAvailability', () {
+      test('preserves imageUrl when toggling availability', () {
+        state.loadMenu();
+        const itemId = '101';
+        final before = state.snapshotForTopic('menu');
+        final itemsBefore = before['items']! as List<dynamic>;
+        final mapBefore = itemsBefore.cast<Map<String, dynamic>>().firstWhere(
+          (e) => e['id'] == itemId,
+        );
+        final imageUrl = mapBefore['imageUrl'] as String?;
+        expect(imageUrl, isNotNull);
+
+        state.handleAction('updateMenuItemAvailability', {
+          'itemId': itemId,
+          'available': false,
+        });
+
+        final after = state.snapshotForTopic('menu');
+        final itemsAfter = after['items']! as List<dynamic>;
+        final mapAfter = itemsAfter.cast<Map<String, dynamic>>().firstWhere(
+          (e) => e['id'] == itemId,
+        );
+        expect(mapAfter['available'], isFalse);
+        expect(mapAfter['imageUrl'], imageUrl);
+      });
+    });
   });
 }
 
