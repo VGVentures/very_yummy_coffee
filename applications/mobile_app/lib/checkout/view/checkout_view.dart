@@ -26,6 +26,9 @@ class _CheckoutViewState extends State<CheckoutView> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CheckoutBloc, CheckoutState>(
+      buildWhen: ( previous, _) => 
+        // don't rebuild while navigating
+        !(previous.status == CheckoutStatus.success && previous.order != null),
       listener: (context, state) {
         final orderId = state.order?.id;
         if (state.status == CheckoutStatus.success && orderId != null) {
