@@ -103,7 +103,7 @@ void main() {
         expect(orders.map((order) => order.drink.id), ['latte', 'mocha']);
       });
 
-      test('ignores refusals and answers it does not recognise', () {
+      test('ignores refusals and answers it does not recognize', () {
         final orders = OrderQuestions.parse([
           {'type': 'refusal', 'name': 'drink_1'},
           _choice('drink_2', 'cappuccino'),

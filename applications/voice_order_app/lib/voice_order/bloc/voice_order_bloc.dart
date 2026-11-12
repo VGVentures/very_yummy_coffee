@@ -13,15 +13,16 @@ part 'voice_order_state.dart';
 /// Keeps the on-screen order in step with what the customer is saying.
 ///
 /// Every transcript change asks the [DecisionClient] for the whole order
-/// again. At most [maxConcurrentDecisions] requests run at once; while they
+/// again. At most `maxConcurrentDecisions` requests run at once; while they
 /// are busy only the newest transcript is kept, so the screen never falls
 /// behind by more than one request.
 class VoiceOrderBloc extends Bloc<VoiceOrderEvent, VoiceOrderState> {
   VoiceOrderBloc({
     required SpeechTranscriber transcriber,
     required DecisionClient decisionClient,
-    this.maxConcurrentDecisions = 2,
-  }) : _transcriber = transcriber,
+    int maxConcurrentDecisions = 2,
+  }) : _maxConcurrentDecisions = maxConcurrentDecisions,
+       _transcriber = transcriber,
        _decisionClient = decisionClient,
        super(const VoiceOrderState()) {
     on<VoiceOrderMicToggled>(_onMicToggled, transformer: sequential());
@@ -34,7 +35,7 @@ class VoiceOrderBloc extends Bloc<VoiceOrderEvent, VoiceOrderState> {
     );
   }
 
-  final int maxConcurrentDecisions;
+  final int _maxConcurrentDecisions;
   final SpeechTranscriber _transcriber;
   final DecisionClient _decisionClient;
 
@@ -134,7 +135,7 @@ class VoiceOrderBloc extends Bloc<VoiceOrderEvent, VoiceOrderState> {
     if (event.transcript.trim().isEmpty) return;
 
     _pendingTranscript = event.transcript;
-    if (_decisionsInFlight >= maxConcurrentDecisions) return;
+    if (_decisionsInFlight >= _maxConcurrentDecisions) return;
 
     while (_pendingTranscript != null) {
       final transcript = _pendingTranscript!;

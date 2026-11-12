@@ -237,7 +237,7 @@ class _ListeningBarsState extends State<_ListeningBars>
   }
 
   double _barHeight(int bar) {
-    // Each bar follows the same triangle wave, offset from its neighbour.
+    // Each bar follows the same triangle wave, offset from its neighbor.
     final phase = (_controller.value + bar / _barCount) % 1;
     final wave = 1 - (phase * 2 - 1).abs();
     return _minHeight + (_maxHeight - _minHeight) * wave;
