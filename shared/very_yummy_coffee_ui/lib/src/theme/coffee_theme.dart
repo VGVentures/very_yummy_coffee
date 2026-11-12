@@ -7,6 +7,15 @@ import 'package:very_yummy_coffee_ui/src/typography/app_typography.dart';
 
 /// The design system theme for Very Yummy Coffee.
 abstract class CoffeeTheme {
+  /// IBM Plex Sans, as Flutter registers it for apps that depend on this
+  /// package.
+  ///
+  /// A font declared in a package's pubspec is registered under
+  /// `packages/<package name>/<family>`, not under the bare family name.
+  /// Asking for plain `IBM Plex Sans` silently falls back to the platform's
+  /// default font.
+  static const _fontFamily = 'packages/very_yummy_coffee_ui/IBM Plex Sans';
+
   /// The light theme data.
   static ThemeData get light {
     const colors = AppColors(
@@ -41,84 +50,84 @@ abstract class CoffeeTheme {
 
     const typography = AppTypography(
       pageTitle: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 22,
         fontWeight: FontWeight.w600,
         color: Color(0xFF4A2A22),
         height: 1.3,
       ),
       sectionTitle: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 32,
         fontWeight: FontWeight.w600,
         color: Color(0xFF4A2A22),
         height: 1.2,
       ),
       headline: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 24,
         fontWeight: FontWeight.w600,
         color: Color(0xFF4A2A22),
         height: 1.3,
       ),
       subtitle: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 18,
         fontWeight: FontWeight.w600,
         color: Color(0xFF4A2A22),
         height: 1.4,
       ),
       label: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 20,
         fontWeight: FontWeight.w700,
         color: Color(0xFF4A2A22),
         height: 1.3,
       ),
       body: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 14,
         fontWeight: FontWeight.normal,
         color: Color(0xFF4A2A22),
         height: 1.5,
       ),
       muted: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 14,
         fontWeight: FontWeight.normal,
         color: Color(0xFF6B5344),
         height: 1.5,
       ),
       caption: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 12,
         fontWeight: FontWeight.normal,
         color: Color(0xFF6B5344),
         height: 1.4,
       ),
       small: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 11,
         fontWeight: FontWeight.normal,
         color: Color(0xFF4A2A22),
         height: 1.3,
       ),
       navLabel: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 11,
         fontWeight: FontWeight.normal,
         color: Color(0xFFB8A99A),
         height: 1.2,
       ),
       navLabelActive: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 11,
         fontWeight: FontWeight.w600,
         color: Color(0xFFE7BD5A),
         height: 1.2,
       ),
       button: TextStyle(
-        fontFamily: 'IBM Plex Sans',
+        fontFamily: _fontFamily,
         fontSize: 14,
         height: 1.2,
       ),
@@ -154,7 +163,7 @@ abstract class CoffeeTheme {
 
     return ThemeData(
       useMaterial3: true,
-      fontFamily: 'IBM Plex Sans',
+      fontFamily: _fontFamily,
       scaffoldBackgroundColor: colors.background,
       colorScheme: ColorScheme.fromSeed(
         seedColor: colors.primary,
