@@ -1,0 +1,32 @@
+name: very_yummy_coffee_voice_order_app
+description: "Very Yummy Coffee voice ordering prototype"
+publish_to: "none"
+version: 0.0.1+1
+
+environment:
+  sdk: ^3.11.0
+  flutter: ^3.41.2
+
+dependencies:
+  bloc: ^9.0.0
+  bloc_concurrency: ^0.3.0
+  equatable: ^2.0.7
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  http: ^1.2.2
+  record: ^6.0.0
+  very_yummy_coffee_ui:
+    path: ../../shared/very_yummy_coffee_ui
+  web_socket_channel: ^3.0.1
+
+dev_dependencies:
+  bloc_lint: ^0.3.6
+  bloc_test: ^10.0.0
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.4
+  very_good_analysis: ^10.0.0
+
+flutter:
+  uses-material-design: true
