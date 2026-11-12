@@ -30,5 +30,7 @@ flutter:
           weight: 300
         - asset: assets/fonts/IBMPlexSans-Medium.ttf
           weight: 500
+        - asset: assets/fonts/IBMPlexSans-SemiBold.ttf
+          weight: 600
         - asset: assets/fonts/IBMPlexSans-Bold.ttf
           weight: 700
